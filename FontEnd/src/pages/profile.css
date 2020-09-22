@@ -1,0 +1,13 @@
+/* .nav-link[data-toggle].collapsed:before {
+    content: " ▾";
+}
+.nav-link[data-toggle]:not(.collapsed):before {
+    content: " ▴";
+} */
+.data-background-profile{
+    background-image: url("../img/hero/category.jpg");
+}
+.alignContainerMain{
+    margin-top: 25px;
+    margin-bottom: 25px;
+}

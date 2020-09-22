@@ -1,0 +1,9 @@
+.data-background-login{
+    background-image: url("../img/hero/category.jpg");
+}
+.loginbackground{
+    background-color: #F4F4F4;
+}
+.formRightbackground{
+    background-color: white !important;
+}
