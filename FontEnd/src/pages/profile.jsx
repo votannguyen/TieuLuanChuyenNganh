@@ -1,17 +1,36 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import "./profile.css";
+import {
+    Form,
+    FormCheck
+} from "react-bootstrap";
 class Profile extends Component {
+    state = {
+        closeForm: false
+
+    }
+    // closeFormResetPassword(){
+    //     this.setState({closeForm: false});
+    // }
+    showFormResetPassword(value) {
+        if (value === false) {
+            this.setState({ closeForm: true });
+        }
+        else {
+            this.setState({ closeForm: false });
+        }
+    }
     render() {
         return (
-            <div>
+            <div className="backGroundLayoutProfile">
                 <div class="slider-area ">
                     <div class="single-slider slider-height2 d-flex align-items-center data-background-profile">
                         <div class="container">
                             <div class="row">
                                 <div class="col-xl-12">
                                     <div class="hero-cap text-center">
-                                        <h2>Register</h2>
+                                        <h2>Thông tin tài khoản</h2>
                                     </div>
                                 </div>
                             </div>
@@ -21,34 +40,126 @@ class Profile extends Component {
                 <div className="container alignContainerMain">
                     <div className="row">
                         <div className="col-md-3">
-                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">Thông tin cá nhân</a>
-                                <a class="nav-link" id="v-pills-order-tab" data-toggle="pill" href="#v-pills-order" role="tab" aria-controls="v-pills-order" aria-selected="false">Quản lý đơn hàng</a>
-                                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Payment</a>
+                            <div className="container backGroundCol containerTopANdBottomLeft">
+                                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">Thông tin cá nhân</a>
+                                    <a class="nav-link" id="v-pills-order-tab" data-toggle="pill" href="#v-pills-order" role="tab" aria-controls="v-pills-order" aria-selected="false">Quản lý đơn hàng</a>
+                                    <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Payment</a>
+                                </div>
                             </div>
                         </div>
                         <div className="col-md-9">
-                            <div class="tab-content" id="v-pills-tabContent">
-                                <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Email address</label>
-                                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            <div className="container backGroundCol containerTopANdBottomRight">
+                                <div class="tab-content" id="v-pills-tabContent">
+                                    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                    <h3>Thông tin tài khoản</h3>
+                                        <form>
+                                            <div class="form-group row">
+                                                <label for="staticEmail" class="col-sm-2 col-form-label">Họ tên</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" readonly class="form-control inputTemp" id="staticName" value="Võ Tấn Nguyên" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="inputPassword" class="col-sm-2 col-form-label">Số điện thoại</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control " id="inputPassword" placeholder="Password" value="0652145869" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control " id="inputPassword" placeholder="Password" value="admin@gmail.com" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="inputPassword" class="col-sm-2 col-form-label">Giới tính</label>
+                                                <div class="col-sm-10">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input mt-2" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
+                                                        <label class="form-check-label mt-2" for="inlineRadio1">Nam</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input mt-2" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
+                                                        <label class="form-check-label mt-2" for="inlineRadio2">Nữ</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="inputPassword" class="col-sm-2 col-form-label">Ngày sinh</label>
+                                                <div class="col-sm-10">
+                                                    <input type="date" class="form-control " id="inputDatetime" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="inputPassword" class="col-sm-2 col-form-label"></label>
+                                                <div class="col-sm-10">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="defaultCheck1" onClick={() => this.showFormResetPassword(this.state.closeForm)} />
+                                                        <label class="form-check-label" for="defaultCheck1">
+                                                            Đổi mật khẩu
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        {
+                                            this.state.closeForm ?
+                                                <form className="resetPassword" id="resetPassword">
+                                                    <div class="form-group row">
+                                                        <label for="staticEmail" class="col-sm-2 col-form-label">Mật khẩu cũ</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="password" readonly class="form-control inputTemp" id="staticName" placeholder="Mật khẩu cũ" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="inputPassword" class="col-sm-2 col-form-label">Mật khẩu mới</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="password" class="form-control " id="inputPassword" placeholder="Mật khẩu mới" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="inputPassword" class="col-sm-2 col-form-label">Nhập lại</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="password" class="form-control " id="inputPassword" placeholder="Nhập lại mật khẩu mới" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="col-sm-2">
+
+                                                        </div>
+                                                        <div className="col-sm-10">
+                                                            <div className="btn btn-primary">
+                                                                Cập nhật
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </form> : null
+                                        }
+                                    </div>
+                                    <div class="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab">
+                                        <div className="row">
+                                            <div className="col-md-1">
+                                                <p>Mã đơn hàng</p>
+                                            </div>
+                                            <div className="col-md-1">
+                                                <p>Ngày mua</p>
+                                            </div>
+                                            <div className="col-md-7">
+                                                <p>Sản phẩm</p>
+                                            </div>
+                                            <div className="col-md-1">
+                                                <p>Tổng tiền</p>
+                                            </div>
+                                            <div className="col-md-2">
+                                                <p>Trạng thái đơn hàng</p>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword1">Password</label>
-                                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </form>
+                                    </div>
+                                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
                                 </div>
-                                <div class="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab">...</div>
-                                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
                             </div>
 
                         </div>

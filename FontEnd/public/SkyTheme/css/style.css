@@ -1069,7 +1069,7 @@ body {
   .ps-list--color li:nth-child(13) a {
     background-color: #50cf96; }
 
-.form-control {
+/* .form-control {
   outline: none;
   height: 50px;
   background-color: #e4e4e4;
@@ -1089,7 +1089,7 @@ body {
     -moz-box-shadow: none;
     -ms-box-shadow: none;
     box-shadow: none;
-    border-color: #2AC37D; }
+    border-color: #2AC37D; } */
 
 textarea.form-control {
   height: auto;

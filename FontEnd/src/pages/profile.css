@@ -8,6 +8,69 @@
     background-image: url("../img/hero/category.jpg");
 }
 .alignContainerMain{
-    margin-top: 25px;
-    margin-bottom: 25px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+.form-control {
+    outline: none;
+    background-color: #e4e4e4;
+    border-color: #e4e4e4;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -ms-box-shadow: none;
+    box-shadow: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    padding: 0 20px; 
+    border-radius: 5px;
+    width: 50% !important;
+}
+.form-control:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #00B1FF; 
+}
+
+.inputTemp{
+    border-bottom: 0% !important;
+
+}
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: black;
+    /* background-color: #007bff; */
+    background-color: #EEEEEE;
+}
+a{color: #676767;}
+a:hover{
+    color:black !important;
+}
+.backGroundLayoutProfile{
+    background-color: #F6F6F6;
+}
+.backGroundCol{
+    background-color: white;
+
+}
+.containerTopANdBottomLeft{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 10px;
+}
+.containerTopANdBottomRight{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 10px;
+    padding-left: 50px;
+}
+h3{
+    padding-bottom: 20px;
+    margin-left: 0px;
+    font-family:"Montserrat", sans-serif  ;
+    color: #007bff;
+    font-weight: bold;
+}
+.col-md-1{
+    padding-left: 5px;
+
 }
