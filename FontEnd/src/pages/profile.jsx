@@ -42,9 +42,9 @@ class Profile extends Component {
                         <div className="col-md-3">
                             <div className="container backGroundCol containerTopANdBottomLeft">
                                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">Thông tin cá nhân</a>
-                                    <a class="nav-link" id="v-pills-order-tab" data-toggle="pill" href="#v-pills-order" role="tab" aria-controls="v-pills-order" aria-selected="false">Quản lý đơn hàng</a>
-                                    <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Payment</a>
+                                    <a class="nav-link active backGroundNavLink" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">Thông tin cá nhân</a>
+                                    <a class="nav-link backGroundNavLink" id="v-pills-order-tab" data-toggle="pill" href="#v-pills-order" role="tab" aria-controls="v-pills-order" aria-selected="false">Quản lý đơn hàng</a>
+                                    <a class="nav-link backGroundNavLink" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Payment</a>
                                 </div>
                             </div>
                         </div>
@@ -139,25 +139,48 @@ class Profile extends Component {
                                                 </form> : null
                                         }
                                     </div>
-                                    <div class="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab">
-                                        <div className="row">
-                                            <div className="col-md-1">
+                                    <div class="tab-pane fade paddingLeftAndRigthOder" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab">
+                                        <div className="row paddingRow">
+                                            <div className="col-md-2">
                                                 <p>Mã đơn hàng</p>
                                             </div>
-                                            <div className="col-md-1">
+                                            <div className="col-md-2 PaddingCol-1">
                                                 <p>Ngày mua</p>
                                             </div>
-                                            <div className="col-md-7">
+                                            <div className="col-md-4">
                                                 <p>Sản phẩm</p>
                                             </div>
-                                            <div className="col-md-1">
+                                            <div className="col-md-2">
                                                 <p>Tổng tiền</p>
                                             </div>
                                             <div className="col-md-2">
-                                                <p>Trạng thái đơn hàng</p>
+                                                <p className="pMarginStatusOder">Trạng thái đơn</p>
+                                                <p className="pPaddingRight">hàng</p>
                                             </div>
                                         </div>
+                                        <hr className="paddingHr"/>
+                                        <div className="row paddingRow">
+                                            <div className="col-md-2">
+                                                <p className=" fontTextOder">794258369</p>
+                                            </div>
+                                            <div className="col-md-2 PaddingCol-1">
+                                                <p className=" fontTextOder">10/09/2020</p>
+                                            </div>
+                                            <div className="col-md-4">
+                                                <p className=" fontTextOder">Máy Xay Hạt Tiêu Điện Tự Động Homgeek Gắn Đèn LED Ánh Sáng Xanh</p>
+                                            </div>
+                                            <div className="col-md-2">
+                                                <p className=" fontTextOder">197.000.000 đ</p>
+                                            </div>
+                                            <div className="col-md-2">
+                                                <p className="pMarginStatusOder fontTextOder">Giao hàng thành</p>
+                                                <p className="pPaddingRight fontTextOder">công</p>
+                                            </div>
+                                        </div>
+                                        <hr className="paddingHr"/>
                                     </div>
+
+                                        
                                     <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
                                 </div>
                             </div>

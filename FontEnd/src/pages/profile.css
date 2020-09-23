@@ -24,7 +24,7 @@
     -ms-border-radius: 0;
     padding: 0 20px; 
     border-radius: 5px;
-    width: 50% !important;
+    width: 75% !important;
 }
 .form-control:focus {
     outline: none;
@@ -41,8 +41,8 @@
     /* background-color: #007bff; */
     background-color: #EEEEEE;
 }
-a{color: #676767;}
-a:hover{
+.backGroundNavLink{color: #676767;}
+.backGroundNavLink:hover{
     color:black !important;
 }
 .backGroundLayoutProfile{
@@ -70,7 +70,28 @@ h3{
     color: #007bff;
     font-weight: bold;
 }
-.col-md-1{
-    padding-left: 5px;
-
+.paddingLeftAndRigthOder{
+    margin-left: -30px;
+}
+.PaddingCol-1{
+    margin-left: -10px;
+}
+.pPaddingRight{
+    text-align: right;
+    margin-top: 5px;
+}
+.pMarginStatusOder{
+    margin-bottom: 5px;
+    text-align: right;
+}
+.paddingRow{
+    padding-bottom: 0px;
+}
+.paddingHr{
+    margin-top: 0px;
+}
+.fontTextOder{
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: black;
 }
