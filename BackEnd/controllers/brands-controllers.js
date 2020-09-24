@@ -62,7 +62,7 @@ const getBrandById = async (req, res, next) => {
 };
 
 const deleteBrandById = async (req, res, next) => {
-    const BrandId = req.params.cateid;
+    const BrandId = req.params.brandid;
     let brands;
     try{
         brands = await Brand.destroy(
@@ -83,7 +83,7 @@ const deleteBrandById = async (req, res, next) => {
 }
 
 const updateBrand = async (req, res, next) => {
-    const BrandId = req.params.cateid;
+    const BrandId = req.params.brandid;
     const errors = validationResult(req);
     if(!errors.isEmpty())
     {
