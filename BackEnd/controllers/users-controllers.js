@@ -34,7 +34,7 @@ const signup = async(req, res, next) =>{
         const error =  new HttpError('Invalid Input! Pls check your data', 400);
         return next(error);
     }
-    const { fullName, email, phone, address, avatarPath, password } = req.body;
+    const { fullName, email, phone, address, password } = req.body;
 
     let userEmail;
     try{
@@ -68,7 +68,7 @@ const signup = async(req, res, next) =>{
         email,
         phone,
         address,
-        avatarPath,
+        avatarPath: req.file.path,
         isAdmin: false,
         password: hashedPassword
     };
@@ -93,8 +93,7 @@ const signup = async(req, res, next) =>{
     }
 
     res.status(201).json({
-        message: 'Signup Successful',
-        userId: createdUser.id, 
+        message: 'Signup Successful', 
         email: createdUser.email,
         token: token
     });
