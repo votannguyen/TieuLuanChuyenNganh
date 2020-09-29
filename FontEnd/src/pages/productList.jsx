@@ -70,21 +70,19 @@ const ProductList = () => {
             <div class="ps-sidebar" data-mh="product-listing">
               <aside class="ps-widget--sidebar ps-widget--category">
                 <div class="ps-widget__header">
-                  <h3>Category</h3>
+                  <h3>Danh mục</h3>
                 </div>
                 <div class="ps-widget__content">
                   <ul class="ps-list--checked">
                     <li class="current"><a href="product-listing.html">Life(521)</a></li>
-                    <li><a href="product-listing.html">Running(76)</a></li>
-                    <li><a href="product-listing.html">Baseball(21)</a></li>
-                    <li><a href="product-listing.html">Football(105)</a></li>
-                    <li><a href="product-listing.html">Soccer(108)</a></li>
-                    <li><a href="product-listing.html">Trainning & game(47)</a></li>
+                    <li><a href="product-listing.html">Giày chạy(76)</a></li>
+                    <li><a href="product-listing.html">Giày đá banh(21)</a></li>
+                    <li><a href="product-listing.html">Giày thời trang(105)</a></li>
                     <li><a href="product-listing.html">More</a></li>
                   </ul>
                 </div>
               </aside>
-              <aside class="ps-widget--sidebar ps-widget--filter">
+              {/* <aside class="ps-widget--sidebar ps-widget--filter">
                 <div class="ps-widget__header">
                   <h3>Category</h3>
                 </div>
@@ -95,20 +93,20 @@ const ProductList = () => {
                     class="ac-slider__value ac-slider__max"></span></p><a class="ac-slider__filter ps-btn"
                       href="#">Filter</a>
                 </div>
-              </aside>
+              </aside> */}
               <aside class="ps-widget--sidebar ps-widget--category">
                 <div class="ps-widget__header">
-                  <h3>Sky Brand</h3>
+                  <h3>Thương hiệu</h3>
                 </div>
                 <div class="ps-widget__content">
                   <ul class="ps-list--checked">
                     <li class="current"><a href="product-listing.html">Nike(521)</a></li>
                     <li><a href="product-listing.html">Adidas(76)</a></li>
-                    <li><a href="product-listing.html">Baseball(69)</a></li>
-                    <li><a href="product-listing.html">Gucci(36)</a></li>
-                    <li><a href="product-listing.html">Dior(108)</a></li>
-                    <li><a href="product-listing.html">B&G(108)</a></li>
-                    <li><a href="product-listing.html">Louis Vuiton(47)</a></li>
+                    <li><a href="product-listing.html">Vans(36)</a></li>
+                    <li><a href="product-listing.html">Converse(108)</a></li>
+                    <li><a href="product-listing.html">Puma(108)</a></li>
+                    <li><a href="product-listing.html">Bitis(47)</a></li>
+                    <li><a href="product-listing.html">Reebok‎(47)</a></li>
                   </ul>
                 </div>
               </aside>

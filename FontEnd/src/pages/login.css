@@ -7,3 +7,6 @@
 .formRightbackground{
     background-color: white !important;
 }
+.radiusFormLogin{
+    border-radius: 10px;
+}
