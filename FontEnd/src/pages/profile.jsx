@@ -57,19 +57,19 @@ class Profile extends Component {
                                             <div class="form-group row">
                                                 <label for="staticEmail" class="col-sm-2 col-form-label">Họ tên</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" readonly class="form-control inputTemp" id="staticName" value="Võ Tấn Nguyên" />
+                                                    <input type="text" readonly class="form-control form-control-Profile inputTemp" id="staticName" value="Võ Tấn Nguyên" />
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label for="inputPassword" class="col-sm-2 col-form-label">Số điện thoại</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control " id="inputPassword" placeholder="Password" value="0652145869" disabled />
+                                                    <input type="text" class="form-control form-control-Profile " id="inputPassword" placeholder="Password" value="0652145869" disabled />
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control " id="inputPassword" placeholder="Password" value="admin@gmail.com" disabled />
+                                                    <input type="text" class="form-control form-control-Profile " id="inputPassword" placeholder="Password" value="admin@gmail.com" disabled />
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -88,7 +88,7 @@ class Profile extends Component {
                                             <div class="form-group row">
                                                 <label for="inputPassword" class="col-sm-2 col-form-label">Ngày sinh</label>
                                                 <div class="col-sm-10">
-                                                    <input type="date" class="form-control " id="inputDatetime" />
+                                                    <input type="date" class="form-control form-control-Profile" id="inputDatetime" />
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -109,19 +109,19 @@ class Profile extends Component {
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-sm-2 col-form-label">Mật khẩu cũ</label>
                                                         <div class="col-sm-10">
-                                                            <input type="password" readonly class="form-control inputTemp" id="staticName" placeholder="Mật khẩu cũ" />
+                                                            <input type="password" readonly class="form-control form-control-Profile inputTemp" id="staticName" placeholder="Mật khẩu cũ" />
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <label for="inputPassword" class="col-sm-2 col-form-label">Mật khẩu mới</label>
                                                         <div class="col-sm-10">
-                                                            <input type="password" class="form-control " id="inputPassword" placeholder="Mật khẩu mới" />
+                                                            <input type="password" class="form-control form-control-Profile" id="inputPassword" placeholder="Mật khẩu mới" />
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <label for="inputPassword" class="col-sm-2 col-form-label">Nhập lại</label>
                                                         <div class="col-sm-10">
-                                                            <input type="password" class="form-control " id="inputPassword" placeholder="Nhập lại mật khẩu mới" />
+                                                            <input type="password" class="form-control form-control-Profile" id="inputPassword" placeholder="Nhập lại mật khẩu mới" />
                                                         </div>
                                                     </div>
                                                     <div className="row">

@@ -56,9 +56,9 @@ body {
   display: block;
   padding: 0.25rem 0.25rem;
 }
-.boderimg {
-  border:0.1px solid !important;
-  border-color:rgb(212, 212, 212)!important;
+.boderimg_Pro {
+  border:0.1px solid ;
+  border-color:rgb(212, 212, 212);
 }
 .aHeart {
   color: #4caf50 !important;

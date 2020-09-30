@@ -219,7 +219,18 @@ class Cart extends Component {
                                                 </span>
                                                     <div class="w-100"></div>
                                                     <span className="vatTextFontSize">(Đã bao gồm thuế VAT)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card borderCardPriceChild">
+                                        <div class="card-body ">
+                                            <div class="row">
+                                                <div className="col-4">
 
+                                                </div>
+                                                <div className="col-8 alignmentRightPrice">
+                                                    <Link to="/checkout"><button className="btn btn-info">Thanh toán</button></Link>
                                                 </div>
                                             </div>
                                         </div>

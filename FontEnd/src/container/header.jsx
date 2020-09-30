@@ -43,8 +43,8 @@ class Header extends Component {
                                             </div>
                                             <div class="header-info-right">
                                                 <ul>
-                                                    <li><Link to="/profile">Tài Khoản Của Tôi </Link></li>
-                                                    <li><Link to="/wishlist">Sản Phẩm Yêu Thích  </Link></li>
+                                                    <li><Link to="/profile">Tài Khoản Của Tôi</Link></li>
+                                                    <li><Link to="/wishlist">Sản Phẩm Yêu Thích</Link></li>
                                                     <li><Link to="/cart">Giỏ Hàng</Link></li>
                                                     <li><Link to="/checkout">Thanh Toán</Link></li>
                                                 </ul>
@@ -110,12 +110,12 @@ class Header extends Component {
                                                 </li>
                                                 <li class=" d-none d-xl-block">
                                                     <div class="favorit-items">
-                                                        <i class="far fa-heart"></i>
+                                                        <Link to="/wishlist"><i class="far fa-heart"></i></Link>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div class="shopping-card">
-                                                        <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                                                        <Link to="/cart"><i class="fas fa-shopping-cart"></i></Link>
                                                     </div>
                                                 </li>
                                                 <li class="d-none d-lg-block"> <Link className="nav-link btn btn1 header-btn" to='/login'>Đăng nhập</Link></li>

@@ -24,7 +24,9 @@
     -ms-border-radius: 0;
     padding: 0 20px; 
     border-radius: 5px;
-    width: 75% !important;
+}
+.form-control-Profile{
+    width: 75%;
 }
 .form-control:focus {
     outline: none;

@@ -10,3 +10,6 @@
 .radiusFormLogin{
     border-radius: 10px;
 }
+.withTextBox{
+    width: 100% !important;
+}

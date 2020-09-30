@@ -195,7 +195,7 @@ const ProductList = () => {
                 <div class="col-12 col-sm-8 col-md-6 col-lg-3 cardPaddingBottom cardMarginTop">
                   <Link className="nav-link-card-product aHeart link backgroundRow">
                     <div class="card showSizeBox  borderNoneCardProduct">
-                      <img class="card-img-top boderimg" src={(require('../img/Shoe/vans.png'))} />
+                      <img class="card-img-top boderimg_Pro" src={(require('../img/Shoe/vans.png'))} />
                       <div class="card-body padding_card_body">
                         <div className="size-box">
                           <span className="size_item pcolor">41</span>
@@ -225,7 +225,7 @@ const ProductList = () => {
                 <div class="col-12 col-sm-8 col-md-6 col-lg-3 cardPaddingBottom cardMarginTop">
                   <Link className="nav-link-card-product aHeart link backgroundRow">
                     <div class="card showSizeBox borderNoneCardProduct">
-                      <img class="card-img-top boderimg" src={(require('../img/Shoe/vans.png'))} />
+                      <img class="card-img-top boderimg_Pro" src={(require('../img/Shoe/vans.png'))} />
                       <div class="card-body padding_card_body">
                         <div className="size-box">
                           <span className="size_item pcolor">41</span>
@@ -255,7 +255,7 @@ const ProductList = () => {
                 <div class="col-12 col-sm-8 col-md-6 col-lg-3 cardPaddingBottom cardMarginTop">
                   <Link className="nav-link-card-product aHeart link backgroundRow">
                     <div class="card showSizeBox borderNoneCardProduct">
-                      <img class="card-img-top boderimg" src={(require('../img/Shoe/vans.png'))} />
+                      <img class="card-img-top boderimg_Pro" src={(require('../img/Shoe/vans.png'))} />
                       <div class="card-body padding_card_body">
                         <div className="size-box">
                           <span className="size_item pcolor">41</span>
@@ -285,7 +285,7 @@ const ProductList = () => {
                 <div class="col-12 col-sm-8 col-md-6 col-lg-3 cardPaddingBottom cardMarginTop">
                   <Link className="nav-link-card-product aHeart link backgroundRow">
                     <div class="card showSizeBox borderNoneCardProduct">
-                      <img class="card-img-top boderimg" src={(require('../img/Shoe/vans.png'))} />
+                      <img class="card-img-top boderimg_Pro" src={(require('../img/Shoe/vans.png'))} />
                       <div class="card-body padding_card_body">
                         <div className="size-box">
                           <span className="size_item pcolor">41</span>
@@ -315,7 +315,7 @@ const ProductList = () => {
                 <div class="col-12 col-sm-8 col-md-6 col-lg-3 cardPaddingBottom cardMarginTop">
                   <Link className="nav-link-card-product aHeart link backgroundRow">
                     <div class="card showSizeBox borderNoneCardProduct">
-                      <img class="card-img-top boderimg" src={(require('../img/Shoe/vans.png'))} />
+                      <img class="card-img-top boderimg_Pro" src={(require('../img/Shoe/vans.png'))} />
                       <div class="card-body padding_card_body">
                         <div className="size-box">
                           <span className="size_item pcolor">41</span>

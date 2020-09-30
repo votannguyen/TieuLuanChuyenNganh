@@ -37,13 +37,13 @@ class Login extends Component {
                                     <div class="login_part_form_iner">
                                         <h3>Chào mừng bạn trở lại ! <br />
                                             Vui lòng đăng nhập ngay bây giờ</h3>
-                                        <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                                        <form class="row contact_form " action="#" method="post" novalidate="novalidate">
                                             <div class="col-md-12 form-group p_star">
-                                                <input type="text" class="form-control" id="name" name="name"
+                                                <input type="text" class="form-control withTextBox" id="name" name="name"
                                                     placeholder="Username" />
                                             </div>
                                             <div class="col-md-12 form-group p_star">
-                                                <input type="password" class="form-control" id="password" name="password"
+                                                <input type="password" class="form-control withTextBox" id="password" name="password"
                                                     placeholder="Password" />
                                             </div>
                                             <div class="col-md-12 form-group">
