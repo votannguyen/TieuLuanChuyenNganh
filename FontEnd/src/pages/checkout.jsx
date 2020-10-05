@@ -4,7 +4,34 @@ import { Link } from 'react-router-dom';
 
 
 class Checkout extends Component {
-    state = {}
+    state = {
+        closeFormInterCard:false,
+        closeFormWallet: false
+    }
+    showFormInterCard(value){
+        if (value === false) {
+            this.setState({ closeFormInterCard: true });
+            this.setState({ closeFormWallet: false });
+        }
+        else {
+            this.setState({ closeFormInterCard: false });
+        }
+
+    }
+    showFormWallet(value){
+        if (value === false) {
+            this.setState({ closeFormWallet: true });
+            this.setState({ closeFormInterCard: false });
+        }
+        else {
+            this.setState({ closeFormWallet: false });
+        }
+
+    }
+    closeFormWalletAndInterCard(){
+        this.setState({ closeFormInterCard: false });
+        this.setState({ closeFormWallet: false });
+    }
     render() {
         return (
             <div className="backgroundCheckout">
@@ -120,14 +147,15 @@ class Checkout extends Component {
                             <h3 className="h3Padding">Phương thức thanh toán</h3>
                             <form className="backgroundContainerCheckout">
                                 <div class="custom-control custom-radio paddingBottomRadio">
-                                    <input type="radio" id="paymentOnDelivery" name="customRadio" class="custom-control-input" />
+                                    <input type="radio" id="paymentOnDelivery" name="customRadio" class="custom-control-input" onClick={() => this.closeFormWalletAndInterCard()}/>
                                     <label class="custom-control-label" for="paymentOnDelivery">Thanh toán khi nhận hàng</label>
                                 </div>
                                 <div class="custom-control custom-radio paddingBottomRadio">
-                                    <input type="radio" id="paymentInternationalCard" name="customRadio" class="custom-control-input" />
+                                    <input type="radio" id="paymentInternationalCard" name="customRadio" class="custom-control-input" onClick={() => this.showFormInterCard(this.state.closeFormInterCard)}/>
                                     <label class="custom-control-label" for="paymentInternationalCard">Thanh toán bằng thẻ quốc tế Visa, Master, JCB</label>
                                 </div>
-                                <div class="card">
+                                {this.state.closeFormInterCard ?
+                                <div class="card paddingBottomRadioWalletCard">
                                     <div class="card-body">
                                         <div className="row">
                                             <div className="col-md-2">
@@ -143,31 +171,43 @@ class Checkout extends Component {
 
                                             </div>
                                         </div>
-                                        <form className="backgroundContainerCheckout">
+                                        <form className="backgroundContainerCheckout1">
                                             <div class="form-group">
                                                 <div className="row">
                                                     <div className="col-md-5">
-                                                        <label className="paddingLable" for="exampleInputEmail1 ">Họ và tên:</label>
-                                                        <input type="text" class="form-control" id="nameUser" placeholder="Họ và tên" />
+                                                        <label className="paddingLable" for="exampleInputEmail1 ">Số thẻ:</label>
+                                                        <input type="text" class="form-control" id="idCard" placeholder="VD: 4564 5265 2598 4587" />
+                                                        <label className="paddingLable" for="exampleInputEmail1 ">Tên in trên thẻ:</label>
+                                                        <input type="text" class="form-control" id="nameUserCard" placeholder="VD: NGUYEN VAN A" />
+                                                        <label className="paddingLable" for="exampleInputEmail1 ">Ngày hết hạn:</label>
+                                                        <input type="text" class="form-control" id="validDate" placeholder="VD: MM/YY" />
+                                                        <label className="paddingLable" for="exampleInputEmail1 ">Mã bảo mật:</label>
+                                                        <input type="text" class="form-control" id="securityCode" placeholder="VD: 123" />
                                                     </div>
                                                     <div className="col-md-7">
+                                                        <br />
+                                                        <br />
+                                                        <br />
                                                         <div class="container containerBoderVisaCard">
-
-                                                                <div className="row">
-                                                                    <div className="col-md-4">
+                                                            <div className="row">
+                                                                <div className="col-md-4">
                                                                     <h2 className="h2Visa">Visa</h2>
-                                                                    </div>
-                                                                    <div className="col-md-4"></div>
-                                                                    <div className="col-md-4"><img class="card-img-top imgSizeVisaCard" src={(require('../img/checkoutIMG/visa-icon.png'))} /></div>
+                                                                </div>
+                                                                <div className="col-md-4"></div>
+                                                                <div className="col-md-4"><img class="card-img-top imgSizeVisaCard" src={(require('../img/checkoutIMG/visa-icon.png'))} /></div>
+                                                            </div>
+                                                            <img class="card-img-top imgChipSize" src={(require('../img/checkoutIMG/Chip-logo-3C162A3B9B-seeklogo.com.png'))} />
 
+                                                            <p className="pIdCard">4564 - 3432 - 3434 - 1236</p>
+                                                            <div className="row">
+                                                                <div className="col-lg-7">
+                                                                    <p className="pNameUserCard">Samuel Richard</p>
                                                                 </div>
-                                                                <div class="upper_Payment">
-                                                                    <h6>Credit</h6>
-                                                                    <h4>Visa</h4>
+                                                                <div className="col-lg-5">
+                                                                    <p className="pNameValidDateCard">Valid date</p>
+                                                                    <p className="pNameValidDateCard">04/22</p>
                                                                 </div>
-                                                                <div class="lower">
-                                                                    <h5>Samuel Richard</h5> <span>4564 - 3432 - 3434 - 1236</span>
-                                                                </div>
+                                                            </div>
 
                                                         </div>
 
@@ -177,11 +217,14 @@ class Checkout extends Component {
                                         </form>
 
                                     </div>
-                                </div>
+                                </div> :null
+                                }
+                                
                                 <div class="custom-control custom-radio paddingBottomRadio">
-                                    <input type="radio" id="paymentWithWallet" name="customRadio" class="custom-control-input" />
+                                    <input type="radio" id="paymentWithWallet" name="customRadio" class="custom-control-input" onClick={() => this.showFormWallet(this.state.closeFormWallet)}/>
                                     <label class="custom-control-label" for="paymentWithWallet">Thanh toán ví online</label>
                                 </div>
+                                {this.state.closeFormWallet?
                                 <div class="card">
                                     <div class="card-body">
                                         <div className="row">
@@ -197,7 +240,8 @@ class Checkout extends Component {
                                         </div>
 
                                     </div>
-                                </div>
+                                </div>:null
+                                }
                             </form>
                         </div>
                         <div className="col-lg-5  ">
