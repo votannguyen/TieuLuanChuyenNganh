@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./checkout.css";
+import "../checkout/checkout.css";
 import { Link } from 'react-router-dom';
 
 
@@ -162,10 +162,10 @@ class Checkout extends Component {
 
                                             </div>
                                             <div className="col-md-4">
-                                                <img class="card-img-top boderimg imgSizePayment" src={(require('../img/checkoutIMG/visa-icon.png'))} />
+                                                <img class="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG/visa-icon.png'))} />
                                             </div>
                                             <div className="col-md-4">
-                                                <img class="card-img-top boderimg imgSizePayment" src={(require('../img/checkoutIMG/master-card-icon-13.jpg'))} />
+                                                <img class="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG/master-card-icon-13.jpg'))} />
                                             </div>
                                             <div className="col-md-2">
 
@@ -194,9 +194,9 @@ class Checkout extends Component {
                                                                     <h2 className="h2Visa">Visa</h2>
                                                                 </div>
                                                                 <div className="col-md-4"></div>
-                                                                <div className="col-md-4"><img class="card-img-top imgSizeVisaCard" src={(require('../img/checkoutIMG/visa-icon.png'))} /></div>
+                                                                <div className="col-md-4"><img class="card-img-top imgSizeVisaCard" src={(require('../../img/checkoutIMG/visa-icon.png'))} /></div>
                                                             </div>
-                                                            <img class="card-img-top imgChipSize" src={(require('../img/checkoutIMG/Chip-logo-3C162A3B9B-seeklogo.com.png'))} />
+                                                            <img class="card-img-top imgChipSize" src={(require('../../img/checkoutIMG/Chip-logo-3C162A3B9B-seeklogo.com.png'))} />
 
                                                             <p className="pIdCard">4564 - 3432 - 3434 - 1236</p>
                                                             <div className="row">
@@ -229,13 +229,13 @@ class Checkout extends Component {
                                     <div class="card-body">
                                         <div className="row">
                                             <div className="col-md-4">
-                                                <Link to="/"><img class="card-img-top boderimg imgSizePayment" src={(require('../img/checkoutIMG/paypallogo.png'))} /></Link>
+                                                <Link to="/"><img class="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG/paypallogo.png'))} /></Link>
                                             </div>
                                             <div className="col-md-4">
-                                                <Link to="/"><div className="container containerMono"><img class="card-img-top boderimg imgSizeMomo" src={(require('../img/checkoutIMG/logo-momo.jpg'))} /></div></Link>
+                                                <Link to="/"><div className="container containerMono"><img class="card-img-top boderimg imgSizeMomo" src={(require('../../img/checkoutIMG/logo-momo.jpg'))} /></div></Link>
                                             </div>
                                             <div className="col-md-4">
-                                                <Link to="/"><img class="card-img-top boderimg imgSizePayment" src={(require('../img/checkoutIMG//vnpay-qrcode-1.png'))} /></Link>
+                                                <Link to="/"><img class="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG//vnpay-qrcode-1.png'))} /></Link>
                                             </div>
                                         </div>
 

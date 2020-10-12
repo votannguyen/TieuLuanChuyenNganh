@@ -1,0 +1,60 @@
+.backGroundLayoutProDetail{
+  background-color: #F6F6F6;
+}
+.backGroundContainerMain{
+  background-color: white;
+}
+.paddingTopAndBottomContainerMain{
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.thumbnailImgProductDetail{
+    margin-bottom: 10px;
+    
+}
+.colmaginProDe{
+    padding-left: 1px;
+    padding-right: 1px;
+}
+.containerRectangleVertical{
+    height: 330px;
+}
+.textCenter{
+    text-align: center;
+    color: black;
+    font-size: 14px;
+}
+.zoomDefine{
+    color: #999;
+    padding-right: 5px;
+}
+
+* {box-sizing: border-box;}
+
+.img-zoom-container {
+  position: relative;
+}
+
+.img-zoom-lens {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  /*set the size of the lens:*/
+  width: 40px;
+  height: 40px;
+}
+
+.img-zoom-result {
+  border: 1px solid #d4d4d4;
+  /*set the size of the result div:*/
+  width: 300px;
+  height: 300px;
+}
+vertical-line{
+  width: 1px; /* Line width */
+  background-color: black; /* Line color */
+  height: 100%; /* Override in-line if you want specific height. */
+  float: left; /* Causes the line to float to left of content.
+    You can instead use position:absolute or display:inline-block
+    if this fits better with your design */
+  border: 1px solid black;
+}

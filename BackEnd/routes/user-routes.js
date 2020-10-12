@@ -12,7 +12,7 @@ router.get('/',usersControllers.getUser);
 router.get('/:uid', usersControllers.getUserById);
 
 router.post('/signup',
-fileUpload.single('avatarPath'),
+// fileUpload.single('avatarPath'),
 [
     check('fullName').not().isEmpty(),
     check('email').normalizeEmail().isEmail(),

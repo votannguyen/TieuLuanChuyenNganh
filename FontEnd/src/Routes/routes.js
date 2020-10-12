@@ -1,13 +1,13 @@
-import Home from "../pages/home";
-import Login from "../pages/login";
-import Page404 from "../pages/page404";
-import Register from "../pages/register";
-import ProductList from "../pages/productList";
-import Cart from "../pages/cart";
-import WishList from "../pages/wishList";
-import Profile from "../pages/profile";
-import Checkout from "../pages/checkout";
-import ProductDetail from "../pages/productDetail";
+import Home from "../pages/home/home";
+import Login from "../pages/login/login";
+import Page404 from "../pages/page404/page404";
+import Register from "../pages/register/register";
+import ProductList from "../pages/productList/productList";
+import Cart from "../pages/cart/cart";
+import WishList from "../pages/wishList/wishList";
+import Profile from "../pages/profile/profile";
+import Checkout from "../pages/checkout/checkout";
+import ProductDetail from "../pages/productDetail/productDetail";
 const routes = [
   { path: "/", exact: true, name: "Home", component: Home },
   { path: "/home", exact: true, name: "Home", component: Home },

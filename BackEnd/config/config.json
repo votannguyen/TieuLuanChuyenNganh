@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "postgres",
-    "password": "postgres",
+    "password": "300699",
     "database": "shoedb",
     "host": "localhost",
     "dialect": "postgres"

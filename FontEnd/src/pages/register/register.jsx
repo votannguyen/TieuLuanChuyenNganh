@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
-import './register.css'
+import '../register/register.css'
 class Register extends Component {
     state = {}
     render() {
@@ -41,7 +41,7 @@ class Register extends Component {
                                         <button type="submit" class="btn_3 register-btn">REGISTER</button>
                                     </form>
                                     <div class="switch-login">
-                                        <a className="nav-link" href="/login" class="or-login">Or Login</a>
+                                        <Link className="nav-link" to="/login" class="or-login">Or Login</Link>
                                     </div>
                                 </div>
                             </div>
@@ -56,27 +56,27 @@ class Register extends Component {
                         <div class="logo-carousel owl-carousel">
                             <div class="logo-item">
                                 <div class="tablecell-inner">
-                                    <img src={require('../')} />
+                                    <img src={require('../..')} />
                                 </div>
                             </div>
                             <div class="logo-item">
                                 <div class="tablecell-inner">
-                                    <img src={require('../')} />
+                                    <img src={require('../..')} />
                                 </div>
                             </div>
                             <div class="logo-item">
                                 <div class="tablecell-inner">
-                                    <img src={require('../')} />
+                                    <img src={require('../..')} />
                                 </div>
                             </div>
                             <div class="logo-item">
                                 <div class="tablecell-inner">
-                                    <img src={require('../')} />
+                                    <img src={require('../..')} />
                                 </div>
                             </div>
                             <div class="logo-item">
                                 <div class="tablecell-inner">
-                                    <img src={require('../')} />
+                                    <img src={require('../..')} />
                                 </div>
                             </div>
                         </div>

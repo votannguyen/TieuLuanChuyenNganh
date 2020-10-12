@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./cart.css";
+import "../cart/cart.css";
 import { Link } from 'react-router-dom';
 class Cart extends Component {
     state = {};
@@ -16,7 +16,7 @@ class Cart extends Component {
                                 <div class="card-body">
                                     <div className="row">
                                         <div className="col-3">
-                                            <img class="card-img-top resizeImage" src={(require('../img/Shoe/vans.png'))} />
+                                            <img class="card-img-top resizeImage" src={(require('../../img/Shoe/vans.png'))} />
                                         </div>
                                         <div className="col-9">
                                             <div className="row">
@@ -64,7 +64,7 @@ class Cart extends Component {
                                 <div class="card-body">
                                     <div className="row">
                                         <div className="col-3">
-                                            <img class="card-img-top resizeImage" src={(require('../img/Shoe/vans.png'))} />
+                                            <img class="card-img-top resizeImage" src={(require('../../img/Shoe/vans.png'))} />
                                         </div>
                                         <div className="col-9">
                                             <div className="row">
@@ -112,7 +112,7 @@ class Cart extends Component {
                                 <div class="card-body">
                                     <div className="row">
                                         <div className="col-3">
-                                            <img class="card-img-top resizeImage" src={(require('../img/Shoe/vans.png'))} />
+                                            <img class="card-img-top resizeImage" src={(require('../../img/Shoe/vans.png'))} />
                                         </div>
                                         <div className="col-9">
                                             <div className="row">

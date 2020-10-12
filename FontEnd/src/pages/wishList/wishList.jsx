@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import "./wishList.css";
+import "../wishList/wishList.css";
 class WishList extends Component {
     state = {}
     render() {
@@ -24,7 +24,7 @@ class WishList extends Component {
                         <div className="col-12 col-sm-8 col-md-6 col-lg-4">
                             <Link className="nav-link-card-product aHeart link backgroundRow">
                                 <div class="card showSizeBox borderNoneCardProduct">
-                                    <img class="card-img-top boderimg" src={(require('../img/Shoe/vans.png'))} />
+                                    <img class="card-img-top boderimg" src={(require('../../img/Shoe/vans.png'))} />
                                     <div class="card-body padding_card_body">
                                         <div className="size-box">
                                             <span className="size_item pcolor">41</span>

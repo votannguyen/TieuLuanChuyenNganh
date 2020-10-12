@@ -20,6 +20,7 @@ module.exports = {
                 address: '222 Phú Nhuận',
                 avatarPath: '/img/user/nguyen.png',
                 isAdmin: true,
+                password: "123456789",
             },
             { 
                 userCode: 'DEF',

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import "./home.css";
+import "../home/home.css";
 class Home extends Component {
     state = {}
     render() {
@@ -15,7 +15,7 @@ class Home extends Component {
                                 <div class="row d-flex align-items-center justify-content-between">
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 d-none d-md-block">
                                         <div class="hero__img" data-animation="bounceIn" data-delay=".4s">
-                                            <img src={require('../img/hero/hero_man.png')} />
+                                            <img src={require('../../img/hero/hero_man.png')} />
                                         </div>
                                     </div>
                                     <div class="col-xl-5 col-lg-5 col-md-5 col-sm-8">
@@ -37,7 +37,7 @@ class Home extends Component {
                                 <div class="row d-flex align-items-center justify-content-between">
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 d-none d-md-block">
                                         <div class="hero__img" data-animation="bounceIn" data-delay=".4s">
-                                            <img src={require('../img/hero/hero_man.png')} />
+                                            <img src={require('../../img/hero/hero_man.png')} />
                                         </div>
                                     </div>
                                     <div class="col-xl-5 col-lg-5 col-md-5 col-sm-8">
@@ -72,7 +72,7 @@ class Home extends Component {
                             <div class="col-xl-4 col-lg-6">
                                 <div class="single-category mb-30">
                                     <div class="category-img">
-                                        <img src={require('../img/categori/cat1.jpg')} />
+                                        <img src={require('../../img/categori/cat1.jpg')} />
                                         <div class="category-caption">
                                             <h2>Owmen`s</h2>
                                             <span class="best"><a href="#">Best New Deals</a></span>
@@ -84,7 +84,7 @@ class Home extends Component {
                             <div class="col-xl-4 col-lg-6">
                                 <div class="single-category mb-30">
                                     <div class="category-img text-center">
-                                        <img src={require('../img/categori/cat2.jpg')} />
+                                        <img src={require('../../img/categori/cat2.jpg')} />
                                         <div class="category-caption">
                                             <span class="collection">Discount!</span>
                                             <h2>Winter Cloth</h2>
@@ -96,7 +96,7 @@ class Home extends Component {
                             <div class="col-xl-4 col-lg-6">
                                 <div class="single-category mb-30">
                                     <div class="category-img">
-                                        <img src={require('../img/categori/cat3.jpg')} />
+                                        <img src={require('../../img/categori/cat3.jpg')} />
                                         <div class="category-caption">
                                             <h2>Man`s Cloth</h2>
                                             <span class="best"><a href="#">Best New Deals</a></span>
@@ -142,7 +142,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product1.png')} />
+                                                <img src={require('../../img/categori/product1.png')} />
                                                 <div class="new-product">
                                                     <span>New</span>
                                                 </div>
@@ -168,7 +168,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product2.png')} />
+                                                <img src={require('../../img/categori/product2.png')} />
                                             </div>
                                             <div class="product-caption">
                                                 <div class="product-ratting">
@@ -191,7 +191,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product3.png')} />
+                                                <img src={require('../../img/categori/product3.png')} />
                                                 <div class="new-product">
                                                     <span>New</span>
                                                 </div>
@@ -217,7 +217,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product4.png')} />
+                                                <img src={require('../../img/categori/product4.png')} />
                                             </div>
                                             <div class="product-caption">
                                                 <div class="product-ratting">
@@ -240,7 +240,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product5.png')} />
+                                                <img src={require('../../img/categori/product5.png')} />
                                             </div>
                                             <div class="product-caption">
                                                 <div class="product-ratting">
@@ -263,7 +263,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product6.png')} />
+                                                <img src={require('../../img/categori/product6.png')} />
                                                 <div class="new-product">
                                                     <span>New</span>
                                                 </div>
@@ -294,7 +294,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product4.png')} />
+                                                <img src={require('../../img/categori/product4.png')} />
                                             </div>
                                             <div class="product-caption">
                                                 <div class="product-ratting">
@@ -317,7 +317,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product5.png')} />
+                                                <img src={require('../../img/categori/product5.png')} />
                                             </div>
                                             <div class="product-caption">
                                                 <div class="product-ratting">
@@ -340,7 +340,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product6.png')} />
+                                                <img src={require('../../img/categori/product6.png')} />
                                                 <div class="new-product">
                                                     <span>New</span>
                                                 </div>
@@ -366,7 +366,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product2.png')} />
+                                                <img src={require('../../img/categori/product2.png')} />
                                             </div>
                                             <div class="product-caption">
                                                 <div class="product-ratting">
@@ -389,7 +389,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product3.png')} />
+                                                <img src={require('../../img/categori/product3.png')} />
                                                 <div class="new-product">
                                                     <span>New</span>
                                                 </div>
@@ -415,7 +415,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product1.png')} />
+                                                <img src={require('../../img/categori/product1.png')} />
                                                 <div class="new-product">
                                                     <span>New</span>
                                                 </div>
@@ -446,7 +446,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product2.png')} />
+                                                <img src={require('../../img/categori/product2.png')} />
                                             </div>
                                             <div class="product-caption">
                                                 <div class="product-ratting">
@@ -469,7 +469,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product3.png')} />
+                                                <img src={require('../../img/categori/product3.png')} />
                                                 <div class="new-product">
                                                     <span>New</span>
                                                 </div>
@@ -495,7 +495,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product1.png')} />
+                                                <img src={require('../../img/categori/product1.png')} />
                                                 <div class="new-product">
                                                     <span>New</span>
                                                 </div>
@@ -521,7 +521,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product4.png')} />
+                                                <img src={require('../../img/categori/product4.png')} />
                                             </div>
                                             <div class="product-caption">
                                                 <div class="product-ratting">
@@ -544,7 +544,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product5.png')} />
+                                                <img src={require('../../img/categori/product5.png')} />
                                                 <div class="new-product">
                                                     <span>New</span>
                                                 </div>
@@ -570,7 +570,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product5.png')} />
+                                                <img src={require('../../img/categori/product5.png')} />
                                             </div>
                                             <div class="product-caption">
                                                 <div class="product-ratting">
@@ -598,7 +598,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product1.png')} />
+                                                <img src={require('../../img/categori/product1.png')} />
                                                 <div class="new-product">
                                                     <span>New</span>
                                                 </div>
@@ -624,7 +624,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product2.png')} />
+                                                <img src={require('../../img/categori/product2.png')} />
                                             </div>
                                             <div class="product-caption">
                                                 <div class="product-ratting">
@@ -647,7 +647,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product3.png')} />
+                                                <img src={require('../../img/categori/product3.png')} />
                                                 <div class="new-product">
                                                     <span>New</span>
                                                 </div>
@@ -673,7 +673,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product4.png')} />
+                                                <img src={require('../../img/categori/product4.png')} />
                                             </div>
                                             <div class="product-caption">
                                                 <div class="product-ratting">
@@ -696,7 +696,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product5.png')} />
+                                                <img src={require('../../img/categori/product5.png')} />
                                             </div>
                                             <div class="product-caption">
                                                 <div class="product-ratting">
@@ -719,7 +719,7 @@ class Home extends Component {
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src={require('../img/categori/product6.png')} />
+                                                <img src={require('../../img/categori/product6.png')} />
                                                 <div class="new-product">
                                                     <span>New</span>
                                                 </div>
@@ -755,7 +755,7 @@ class Home extends Component {
                         <div class="container position-relative">
                             <div class="row justify-content-between align-items-end">
                                 <div class="product-man position-absolute  d-none d-lg-block">
-                                    <img src={require('../img/categori/card-man.png')} />
+                                    <img src={require('../../img/categori/card-man.png')} />
                                 </div>
                                 <div class="col-xl-2 col-lg-2 col-md-2 d-none d-lg-block">
                                     <div class="vertical-text">
@@ -774,7 +774,7 @@ class Home extends Component {
                     </div>
                     {/* <!-- Shape --> */}
                     <div class="shape bounce-animate d-none d-md-block">
-                        <img src={require('../img/categori/card-shape.png')} />
+                        <img src={require('../../img/categori/card-shape.png')} />
                     </div>
                 </div>
                 {/* <!-- Best Product End-->
@@ -790,13 +790,13 @@ class Home extends Component {
                                     <a href="#" class="btn shop1-btn">Shop Now</a>
                                 </div>
                                 <div class="best-left-img mb-30 d-none d-sm-block">
-                                    <img src={require('../img/collection/collection1.png')} />
+                                    <img src={require('../../img/collection/collection1.png')} />
                                 </div>
                             </div>
                             {/* <!-- Mid Img --> */}
                             <div class="col-xl-2 col-lg-2 d-none d-lg-block">
                                 <div class="best-mid-img mb-30 ">
-                                    <img src={require('../img/collection/collection2.png')} />
+                                    <img src={require('../../img/collection/collection2.png')} />
                                 </div>
                             </div>
                             {/* <!-- Riht Caption --> */}
@@ -807,7 +807,7 @@ class Home extends Component {
                                             <h4>Menz Winter<br /> Jacket</h4>
                                         </div>
                                         <div class="single-img">
-                                            <img src={require('../img/collection/collection3.png')} />
+                                            <img src={require('../../img/collection/collection3.png')} />
                                         </div>
                                     </div>
                                 </div>
@@ -817,7 +817,7 @@ class Home extends Component {
                                             <h4>Menz Winter<br />Jacket</h4>
                                         </div>
                                         <div class="single-img">
-                                            <img src={require('../img/collection/collection4.png')} />
+                                            <img src={require('../../img/collection/collection4.png')} />
                                         </div>
                                     </div>
                                 </div>
@@ -827,7 +827,7 @@ class Home extends Component {
                                             <h4>Menz Winter<br /> Jacket</h4>
                                         </div>
                                         <div class="single-img">
-                                            <img src={require('../img/collection/collection5.png')} />
+                                            <img src={require('../../img/collection/collection5.png')} />
                                         </div>
                                     </div>
                                 </div>
@@ -838,7 +838,7 @@ class Home extends Component {
                 {/* <!-- Best Collection End -->
 <!-- Latest Offers Start --> */}
                 <div class="latest-wrapper lf-padding">
-                    <div class="latest-area latest-height d-flex align-items-center" data-background={require("../img/collection/latest-offer.png")}>
+                    <div class="latest-area latest-height d-flex align-items-center" data-background={require("../../img/collection/latest-offer.png")}>
                         <div class="container">
                             <div class="row d-flex align-items-center">
                                 <div class="col-xl-5 col-lg-5 col-md-6 offset-xl-1 offset-lg-1">
@@ -859,7 +859,7 @@ class Home extends Component {
                         </div>
                         {/* <!-- man Shape --> */}
                         <div class="man-shape">
-                            <img src={require('../img/collection/latest-man.png')} />
+                            <img src={require('../../img/collection/latest-man.png')} />
                         </div>
                     </div>
                 </div>
@@ -897,19 +897,19 @@ class Home extends Component {
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="gallery-items">
-                                    <img src={require('../img/gallery/gallery1.jpg')} />
+                                    <img src={require('../../img/gallery/gallery1.jpg')} />
                                 </div>
                                 <div class="gallery-items">
-                                    <img src={require('../img/gallery/gallery2.jpg')} />
+                                    <img src={require('../../img/gallery/gallery2.jpg')} />
                                 </div>
                                 <div class="gallery-items">
-                                    <img src={require('../img/gallery/gallery3.jpg')} />
+                                    <img src={require('../../img/gallery/gallery3.jpg')} />
                                 </div>
                                 <div class="gallery-items">
-                                    <img src={require('../img/gallery/gallery4.jpg')} />
+                                    <img src={require('../../img/gallery/gallery4.jpg')} />
                                 </div>
                                 <div class="gallery-items">
-                                    <img src={require('../img/gallery/gallery5.jpg')} />
+                                    <img src={require('../../img/gallery/gallery5.jpg')} />
                                 </div>
                             </div>
                         </div>

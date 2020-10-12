@@ -66,9 +66,9 @@ const signup = async(req, res, next) =>{
         userCode: uuidv4(),
         fullName,
         email,
-        phone,
-        address,
-        avatarPath: req.file.path,
+        // phone,
+        // address,
+        // avatarPath: req.file.path,
         isAdmin: false,
         password: hashedPassword
     };
