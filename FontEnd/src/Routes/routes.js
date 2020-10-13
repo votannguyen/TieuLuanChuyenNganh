@@ -8,6 +8,7 @@ import WishList from "../pages/wishList/wishList";
 import Profile from "../pages/profile/profile";
 import Checkout from "../pages/checkout/checkout";
 import ProductDetail from "../pages/productDetail/productDetail";
+import InvoiceDetail from "../pages/invoiceDetail/invoiceDetail";
 const routes = [
   { path: "/", exact: true, name: "Home", component: Home },
   { path: "/home", exact: true, name: "Home", component: Home },
@@ -23,6 +24,7 @@ const routes = [
   { path: "/profile", exact: true, name: "Profile", component: Profile },
   { path: "/checkout", exact: true, name: "Checkout", component: Checkout },
   { path: "/productDetail", exact: true, name: "Product Detail", component: ProductDetail },
+  { path: "/invoiceDetail", exact: true, name: "Invoice Detail", component: InvoiceDetail },
   { name: "404", component: Page404 }
 ];
 
