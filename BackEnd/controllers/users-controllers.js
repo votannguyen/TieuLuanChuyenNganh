@@ -2,13 +2,36 @@ const HttpError = require('../error-handle/http-error');  //dùng để giải q
 const models = require('../models'); //vì đang trong controllers nên phải ra ngoài thêm 1 chấm mới thấy đc models
 const User = models.User;
 
-const brcypt = require('bcrypt')
-const {v4: uuidv4} = require('uuid');
+const brcypt = require('bcrypt');
 const { validationResult } = require('express-validator'); //lấy dc lỗi từ body validate
-const jwt = require('jsonwebtoken')
+
+const {JWT_SECRET, GMAIL_USER, GMAIL_PASS} = require('../config')
+const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op; 
+
+const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: GMAIL_USER,
+      pass: GMAIL_PASS
+    },
+  });
+
+const getToken = (user) => {
+    return jwt.sign (
+        {
+          email: user.email,
+          isAdmin: user.isAdmin,
+        },
+        JWT_SECRET,
+        {
+            expiresIn: '1h',
+        }
+    );
+};
 
 const getUser = async (req, res, next) => {
     let users;
@@ -27,14 +50,15 @@ const getUser = async (req, res, next) => {
     res.status(200).json({users});
 };
 
-const signup = async(req, res, next) =>{
+const register = async(req, res, next) =>{
     const errors = validationResult(req);
     if(!errors.isEmpty())
     {
+        console.log(errors);
         const error =  new HttpError('Invalid Input! Pls check your data', 400);
         return next(error);
     }
-    const { fullName, email, phone, address, password } = req.body;
+    const { fullName, email, password } = req.body;
 
     let userEmail;
     try{
@@ -50,6 +74,7 @@ const signup = async(req, res, next) =>{
         const error =  new HttpError('Mail exists already, Pls use another mail', 422);
         return next(error);
     }
+
     let hashedPassword;
     try {
         hashedPassword = await brcypt.hash(password, 9);
@@ -63,13 +88,10 @@ const signup = async(req, res, next) =>{
     }
     
     const createdUser = {
-        userCode: uuidv4(),
         fullName,
         email,
-        // phone,
-        // address,
-        // avatarPath: req.file.path,
         isAdmin: false,
+        isConfirm: false,
         password: hashedPassword
     };
     let Users;
@@ -82,23 +104,20 @@ const signup = async(req, res, next) =>{
 
     let token;
     try {
-        token = jwt.sign(
-            {userId: createdUser.id, email: createdUser.email},
-            'ShoeShop_Key',
-            {expiresIn: '1h'}
-        );
+        token = getToken(createdUser); 
     } catch (err) {
         const error = new HttpError('Signing up failed, please try again later.',500);
-        return next(error)
+         return next(error)
     }
-
+    const url = `http://localhost:5000/api/user/confirmation/${token}`;
+    transporter.sendMail({
+        to: createdUser.email,
+        subject: 'Confirm Email',
+        html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
+      });
     res.status(201).json({
-        message: 'Signup Successful', 
-        email: createdUser.email,
-        token: token
+        email: createdUser.email, isAdmin: createdUser.isAdmin, token:token
     });
-
-
 };
 
 const login = async(req,res,next) => {
@@ -134,32 +153,28 @@ const login = async(req,res,next) => {
 
     let token;
     try {
-        token = jwt.sign(
-            {userId: existingUser.id, email: existingUser.email},
-            'ShoeShop_Key',
-            {expiresIn: '1h'}
-        );
+        token = getToken(existingUser);
     } catch (err) {
         const error = new HttpError('Login failed, please try again later.',500);
         return next(error)
     }
 
     res.status(200).json({
-        message: 'Login Success',
-        userId: existingUser.id,
         email: existingUser.email,
+        isAdmin: existingUser.isAdmin,
         token: token
     })
 
 }
 
-const getUserById = async (req, res, next) => {
-    const userId = req.params.uid;
+const getMyUser = async (req, res, next) => {
     let users;
     try{
-        users = await User.findByPk(userId);
+        users = await User.findOne({
+            where: { email: req.userData.email}
+        });
     } catch (err) {
-        const error = new HttpError('Something went wrong, coud not find any users', 500);
+        const error = new HttpError('You are not log in. Pls login', 500);
         return next(error);
     }
 
@@ -171,11 +186,31 @@ const getUserById = async (req, res, next) => {
     res.status(200).json({users});
 };
 
-/*const deleteUser = async(req,res,next) => {
+const getConfirmation = async(req, res, next) => {
+    const token = req.params.token;
+    const decodedToken = jwt.verify(token, JWT_SECRET);
+    const userData = {
+        email: decodedToken.email
+    };
+    const updatedUser = {
+        isConfirm: true
+    };
+    let users;
+    try{
+        users = await User.update(updatedUser,{
+            where: { email: userData.email}
+        });
+    } catch (err) {
+        const error = new HttpError('Your confirmation is out of time', 500);
+        return next(error);
+    }
 
-}*/ 
+    if(!users)
+    {
+        const error =  new HttpError('Could not find any users', 404);
+        return next(error);
+    }
+    res.status(200).json({message: 'Success'});
+}
 
-exports.getUser = getUser;
-exports.signup = signup;
-exports.login = login;
-exports.getUserById = getUserById;
+module.exports = {getUser, getMyUser, register, login, getConfirmation};

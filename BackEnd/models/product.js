@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       Product.hasMany(models.ProductSize, {foreignKey:'productId'});
       Product.hasMany(models.OrderDetail, {foreignKey:'productId'});
       Product.hasMany(models.ProductSpecification, {foreignKey:'productId'});
-      Product.belongsTo(models.Category, {foreignKey: 'categoryId'});
+      Product.hasMany(models.ProductCategory, {foreignKey: 'ProductId'});
       Product.belongsTo(models.Brand, {foreignKey: 'brandId'});
       
     }
@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     summary: DataTypes.TEXT, 
     amount: DataTypes.INTEGER,
     description: DataTypes.TEXT,
-    color: DataTypes.STRING
+    color: DataTypes.STRING,
+    alias: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'Product',

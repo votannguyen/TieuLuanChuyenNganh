@@ -1,15 +1,21 @@
-const express = require('express');
-const bodyParser = require('body-parser'); //trả về một function hoạt động như một middleware
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 
-const adminRoutes  = require('./routes/admin-routes');  // đăng ký (midleware)
-const userRoutes  = require('./routes/user-routes');
-const HttpError = require('./error-handle/http-error');
+const express = require('express');
+const bodyParser = require('body-parser'); //trả về một function hoạt động như một middleware
 
+const brandRoutes  = require('./routes/brand-routes');  // đăng ký (midleware)
+const userRoutes  = require('./routes/user-routes');
+const categoryRoutes = require('./routes/category-routes');
+const productRoutes = require('./routes/product-routes');
+const HttpError = require('./error-handle/http-error');
 const app = express();
 
+ 
+// parse application/json
 app.use(bodyParser.json());
+
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 //Handling CORS Error
@@ -21,8 +27,11 @@ app.use((req, res, next) => {
     next(); 
 })
 
-app.use('/admin', adminRoutes);
-app.use('/user', userRoutes)
+app.use('/api/product', productRoutes);
+//app.use('/api/bills',billRoutes);
+app.use('/api/brand', brandRoutes);
+app.use('/api/category', categoryRoutes);
+app.use('/api/user', userRoutes);
 
 app.get('/sync', (req, res) =>{
     let models = require('./models');

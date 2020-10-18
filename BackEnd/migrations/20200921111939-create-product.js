@@ -11,7 +11,7 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      productCode: {
+      code: {
         type: Sequelize.STRING
       },
       price: {
@@ -23,14 +23,14 @@ module.exports = {
       availability: {
         type: Sequelize.BOOLEAN
       },
-      summary: {
+      description: {
+        type: Sequelize.TEXT
+      },
+      alias: {
         type: Sequelize.TEXT
       },
       amount: {
         type: Sequelize.INTEGER
-      },
-      description: {
-        type: Sequelize.TEXT
       },
       color: {
         type: Sequelize.STRING

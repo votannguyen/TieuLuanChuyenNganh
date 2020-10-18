@@ -33,7 +33,7 @@ const createBrand = async (req, res, next) => {
     }
     const createdBrand = {
         name: req.body.name,
-        imagePath: req.body.imagePath,
+        imagePath: req.file.path,
         summary: req.body.summary
       };
     let brands
@@ -43,10 +43,14 @@ const createBrand = async (req, res, next) => {
 };
 
 const getBrandById = async (req, res, next) => {
-    const BrandId = req.params.brandid;
+    const name = req.params.brandName;
     let brands;
     try{
-        brands = await Brand.findByPk(BrandId);
+        brands = await Brand.findOne({
+            where: {
+                name: name
+            }
+        });
     } catch (err) {
         const error = new HttpError('Something went wrong, coud not find any Brand', 500);
         return next(error);
@@ -62,11 +66,11 @@ const getBrandById = async (req, res, next) => {
 };
 
 const deleteBrandById = async (req, res, next) => {
-    const BrandId = req.params.brandid;
+    const name = req.params.brandName;
     let brands;
     try{
         brands = await Brand.destroy(
-            {where: {id: BrandId} 
+            {where: {name: name} 
         });
     }
     catch (err) {
@@ -83,7 +87,7 @@ const deleteBrandById = async (req, res, next) => {
 }
 
 const updateBrand = async (req, res, next) => {
-    const BrandId = req.params.brandid;
+    const brandName = req.params.brandName;
     const errors = validationResult(req);
     if(!errors.isEmpty())
     {
@@ -93,19 +97,15 @@ const updateBrand = async (req, res, next) => {
     }
     const updatedBrand = {
         name: req.body.name,
-        imagePath: req.body.imagePath,
+        imagePath: req.file.path,
         summary: req.body.summary
       };
     let brands
     brands = await Brand.update(updatedBrand, {
-        where: {id: BrandId}
+        where: {name: brandName}
     });
     res.status(200).json({brands: updatedBrand});
     
 }
 
-exports.getAllBrand = getAllBrand;
-exports.getBrandById = getBrandById;
-exports.createBrand = createBrand;
-exports.deleteBrandById = deleteBrandById;
-exports.updateBrand = updateBrand;
+module.exports = { getAllBrand, getBrandById, createBrand, updateBrand, deleteBrandById};

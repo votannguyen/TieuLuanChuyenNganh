@@ -8,13 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userCode: {
-        type: Sequelize.STRING
-      },
       fullName: {
         type: Sequelize.STRING
       },
       email: {
+        type: Sequelize.STRING
+      },
+      password: {
         type: Sequelize.STRING
       },
       phone: {
@@ -27,6 +27,9 @@ module.exports = {
         type: Sequelize.TEXT
       },
       isAdmin: {
+        type: Sequelize.BOOLEAN
+      },
+      isConfirm: {
         type: Sequelize.BOOLEAN
       },
       createdAt: {
