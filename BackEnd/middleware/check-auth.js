@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
       isAdmin: decodedToken.isAdmin
     };
     next();
-  } catch (err) {
+  } catch (err) { 
     const error = new HttpError('Authentication failed!', 403);
     return next(error);
   }
