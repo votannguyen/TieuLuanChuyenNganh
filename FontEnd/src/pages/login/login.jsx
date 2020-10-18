@@ -1,9 +1,36 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-
-import "../login/login.css"
+import Cookies from "js-cookie";
+import LoginUser from "../../services/UserService";
+import "../login/login.css";
 class Login extends Component {
-    state = {}
+    state = {
+        message: " ",
+        isLogin: false,
+
+    }
+    emailRef = React.createRef();
+    passwordRef = React.createRef();
+    login = () =>{
+        const email = this.emailRef.current.value;
+        const password = this.passwordRef.current.value;
+        console.log(email, password)
+        LoginUser.login(email, password).then(res=>{
+            if(res.data.status === 200){
+                this.setState({message: "Đăng nhập thành công:"});
+                console.log(res.data.token);
+                //save cookie
+                Cookies.set('loginInfo', JSON.stringify(res.data), {expires: 1});
+                //redirect to dashboard
+                this.props.history.push('/')
+            }
+            if(res.data.message === "Email or Password is invalid"){
+                alert('Tài khoảng không tồn tại hoặc mật khẩu không đúng');
+            }
+            // this.setState({message : "Tài khoảng không tồn tại hoặc mật khẩu không đúng"})
+            // console.log(this.message);
+        })
+    }
     render() {
         return (
             <div className="loginbackground">
@@ -20,6 +47,7 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
+                
                 <section class="login_part section_padding ">
                     <div class="container">
                         <div class="row align-items-center formRightbackground radiusFormLogin">
@@ -37,13 +65,15 @@ class Login extends Component {
                                     <div class="login_part_form_iner">
                                         <h3>Chào mừng bạn trở lại ! <br />
                                             Vui lòng đăng nhập ngay bây giờ</h3>
-                                        <form class="row contact_form " action="#" method="post" novalidate="novalidate">
+                                        <div class="row contact_form ">
+                                            <div className="text-center text-danger">{this.state.message}</div>
+                                            <br/>
                                             <div class="col-md-12 form-group p_star">
-                                                <input type="text" class="form-control withTextBox" id="name" name="name"
-                                                    placeholder="Username" />
+                                                <input type="email" class="form-control withTextBox" id="name" name="name" ref={this.emailRef}
+                                                    placeholder="email" />
                                             </div>
                                             <div class="col-md-12 form-group p_star">
-                                                <input type="password" class="form-control withTextBox" id="password" name="password"
+                                                <input type="password" class="form-control withTextBox" id="password" name="password" ref={this.passwordRef}
                                                     placeholder="Password" />
                                             </div>
                                             <div class="col-md-12 form-group">
@@ -51,12 +81,12 @@ class Login extends Component {
                                                     <input type="checkbox" id="f-option" name="selector" />
                                                     <label for="f-option">Remember me</label>
                                                 </div>
-                                                <button type="submit" value="submit" class="btn_3">
+                                                <button type="submit" onClick={this.login} class="btn_3"> 
                                                     log in
                                                 </button>
                                                 <a class="lost_pass" href="#">forget password?</a>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

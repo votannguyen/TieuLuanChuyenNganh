@@ -1,3 +1,25 @@
 .img{
     max-width: 100% !important;
 }
+.btnUser{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid;
+    border-color: #379AF4;
+    margin-left: 25px;
+    margin-top: -5px;
+}
+.btnUser:hover{
+    cursor: pointer;
+}
+.btnChevron-down{
+    width: 20;
+    height: 20;
+    margin-left: -15px;
+}
+.colorBackGrou{
+    background-color: white;
+    width: 60px;
+    height: 60px;
+}
