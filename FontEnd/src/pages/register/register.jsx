@@ -1,8 +1,34 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
+import UserService from '../../services/UserService';
 import '../register/register.css'
 class Register extends Component {
-    state = {}
+    state = {
+        users: [],
+        user: {}
+    }
+    save = () => {
+        console.log('Thêm mới', this.state.user);
+        // console.log(this.data.errorCode);
+        UserService.register(this.state.user).then(res => {
+            // console.log(res.data.errorCode);
+            //this.props.history.push('/login')
+            // if (res.data.errorCode === 0) {
+            //     this.setState({ modalShow: false });
+            //     this.loadData();
+            // }
+            // else {
+            //     //show error
+            // }
+        });
+    }
+    InputOnChange = (event) => {
+        const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
+
+        const newUser = { ...this.state.user, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ user: newUser });
+        console.log(name, value);
+    }
     render() {
         return (
             <div className="backgroundRegister">
@@ -25,21 +51,25 @@ class Register extends Component {
                         <div class="row">
                             <div class="col-lg-6 offset-lg-3">
                                 <div class="register-form">
-                                    <form action="#">
+                                    <div>
                                         <div class="group-input">
-                                            <label for="username">Email address <i className="redStar">*</i></label>
-                                            <input type="email" id="username" placeholder="Input Email" className="backgroundColorInput"/>
+                                            <label for="username">Họ và tên<i className="redStar">*</i></label>
+                                            <input type="text" id="username" name="fullName" placeholder="Họ và tên" className="backgroundColorInput" onChange={this.InputOnChange} value={this.state.user.fullName || ''}/>
                                         </div>
                                         <div class="group-input">
-                                            <label for="pass">Password <i className="redStar">*</i></label>
-                                            <input type="password" id="pass" placeholder="Input Password" className="backgroundColorInput" />
+                                            <label for="username">Địa chỉ email <i className="redStar">*</i></label>
+                                            <input type="email" id="username" name="email" placeholder="Email" className="backgroundColorInput" onChange={this.InputOnChange} value={this.state.user.email || ''}/>
                                         </div>
                                         <div class="group-input">
-                                            <label for="con-pass">Confirm Password <i className="redStar">*</i></label>
-                                            <input type="password" id="con-pass" placeholder="Confirm Password" className="backgroundColorInput"/>
+                                            <label for="pass">Mật khẩu <i className="redStar">*</i></label>
+                                            <input type="password" id="pass" name="password" placeholder="Mật khẩu" className="backgroundColorInput" onChange={this.InputOnChange} value={this.state.user.password || ''}/>
                                         </div>
-                                        <button type="submit" class="btn_3 register-btn">REGISTER</button>
-                                    </form>
+                                        <div class="group-input">
+                                            <label for="con-pass">Xác nhận mật khẩu <i className="redStar">*</i></label>
+                                            <input type="password" id="con-pass" placeholder="Confirm Password" onChange={this.InputOnChange} className="backgroundColorInput" />
+                                        </div>
+                                        <button type="submit" class="btn_3 register-btn" onClick={this.save}>Đăng ký</button>
+                                    </div>
                                     <div class="switch-login">
                                         <Link className="nav-link" to="/login" class="or-login">Or Login</Link>
                                     </div>

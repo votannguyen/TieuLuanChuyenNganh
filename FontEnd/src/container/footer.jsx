@@ -10,26 +10,26 @@ class Footer extends Component {
                 <br/>
 
                 <footer>
-                    <div class="footer-area footer-padding2 " >
-                        <div class="container back">
-                            <div class="row d-flex justify-content-between">
-                                <div class="col-xl-3 col-lg-3 col-md-5 col-sm-6">
-                                    <div class="single-footer-caption mb-50">
-                                        <div class="single-footer-caption mb-30">
-                                            <div class="footer-logo">
+                    <div className="footer-area footer-padding2 " >
+                        <div className="container back">
+                            <div className="row d-flex justify-content-between">
+                                <div className="col-xl-3 col-lg-3 col-md-5 col-sm-6">
+                                    <div className="single-footer-caption mb-50">
+                                        <div className="single-footer-caption mb-30">
+                                            <div className="footer-logo">
                                                 <a href="index.html"><img src={require('../img/logo/logo2_footer.png')} /></a>
                                             </div>
-                                            <div class="footer-tittle">
-                                                <div class="footer-pera">
+                                            <div className="footer-tittle">
+                                                <div className="footer-pera">
                                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore.</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-2 col-lg-3 col-md-3 col-sm-5">
-                                    <div class="single-footer-caption mb-50">
-                                        <div class="footer-tittle">
+                                <div className="col-xl-2 col-lg-3 col-md-3 col-sm-5">
+                                    <div className="single-footer-caption mb-50">
+                                        <div className="footer-tittle">
                                             <h4>Link Nhanh</h4>
                                             <ul>
                                                 <li><a href="#">About</a></li>
@@ -40,9 +40,9 @@ class Footer extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-7">
-                                    <div class="single-footer-caption mb-50">
-                                        <div class="footer-tittle">
+                                <div className="col-xl-3 col-lg-3 col-md-4 col-sm-7">
+                                    <div className="single-footer-caption mb-50">
+                                        <div className="footer-tittle">
                                             <h4>Sản Phẩm Mới</h4>
                                             <ul>
                                                 <li><a href="#">Giày Nam</a></li>
@@ -53,9 +53,9 @@ class Footer extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-3 col-lg-3 col-md-5 col-sm-7">
-                                    <div class="single-footer-caption mb-50">
-                                        <div class="footer-tittle">
+                                <div className="col-xl-3 col-lg-3 col-md-5 col-sm-7">
+                                    <div className="single-footer-caption mb-50">
+                                        <div className="footer-tittle">
                                             <h4>Trợ Giúp</h4>
                                             <ul>
                                                 <li><Link to="/">Trạng thái đơn hàng</Link></li>
@@ -69,20 +69,20 @@ class Footer extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-xl-7 col-lg-7 col-md-7">
-                                    <div class="footer-copy-right">
+                            <div className="row">
+                                <div className="col-xl-7 col-lg-7 col-md-7">
+                                    <div className="footer-copy-right">
                                         <p>
-                                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="ti-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i className="ti-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
                                         </p>                </div>
                                 </div>
-                                <div class="col-xl-5 col-lg-5 col-md-5">
-                                    <div class="footer-copy-right f-right">
-                                        <div class="footer-social">
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-behance"></i></a>
-                                            <a href="#"><i class="fas fa-globe"></i></a>
+                                <div className="col-xl-5 col-lg-5 col-md-5">
+                                    <div className="footer-copy-right f-right">
+                                        <div className="footer-social">
+                                            <a href="#"><i className="fab fa-twitter"></i></a>
+                                            <a href="#"><i className="fab fa-facebook-f"></i></a>
+                                            <a href="#"><i className="fab fa-behance"></i></a>
+                                            <a href="#"><i className="fas fa-globe"></i></a>
                                         </div>
                                     </div>
                                 </div>
