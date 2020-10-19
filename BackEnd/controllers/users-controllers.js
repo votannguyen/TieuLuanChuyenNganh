@@ -2,7 +2,7 @@ const HttpError = require('../error-handle/http-error');  //dùng để giải q
 const models = require('../models'); //vì đang trong controllers nên phải ra ngoài thêm 1 chấm mới thấy đc models
 const User = models.User;
 
-const brcypt = require('bcrypt');
+const brcypt = require('bcryptjs');
 const { validationResult } = require('express-validator'); //lấy dc lỗi từ body validate
 
 const {JWT_SECRET, GMAIL_USER, GMAIL_PASS} = require('../config')
@@ -92,6 +92,7 @@ const register = async(req, res, next) =>{
         email,
         isAdmin: false,
         isConfirm: false,
+        isLock: false,
         password: hashedPassword
     };
     let Users;
@@ -137,7 +138,11 @@ const login = async(req,res,next) => {
         const error = new HttpError('Email or Password is invalid', 401);
         return next(error);
     }
-    
+    if(existingUser.isConfirm === false && existingUser.isConfirm === false) {
+        const error = new HttpError('Your account is not confirm or was locked', 401);
+        return next(error);
+    }
+
     let isValidPassword;
     try {
         isValidPassword = await brcypt.compare(password, existingUser.password);

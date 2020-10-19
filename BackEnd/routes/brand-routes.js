@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/', brandsControllers.getAllBrand );
 
-router.get('/:brandName', brandsControllers.getBrandById);
+router.get('/:brandName', brandsControllers.getBrandByName);
 
 router.post(
     '/',
@@ -19,7 +19,7 @@ router.post(
     brandsControllers.createBrand
  );
 
-router.delete('/:brandName', brandsControllers.deleteBrandById);
+router.delete('/:brandName', brandsControllers.deleteBrandByName);
 
 router.patch(
    '/:brandName/',

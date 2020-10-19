@@ -20,8 +20,8 @@ module.exports = {
       imagePath: {
         type: Sequelize.TEXT
       },
-      availability: {
-        type: Sequelize.BOOLEAN
+      state: {
+        type: Sequelize.TEXT
       },
       description: {
         type: Sequelize.TEXT
