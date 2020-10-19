@@ -23,3 +23,14 @@
     width: 60px;
     height: 60px;
 }
+.nameHeader{
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-right: 10px;
+    font-size: 16px;
+    color: #379AF4;
+}
+.btnLogout{
+    margin-left: 23px;
+    margin-top: 10px;
+}

@@ -62,4 +62,8 @@ app.use((error, req, res, next) => {        //Error handling
 
 
 //Start server
-app.listen(5000); 
+// app.listen(5000); 
+app.set('port', process.env.PORT || 5000);
+app.listen(app.get('port'), () => {
+    console.log(`Server is running at port ${app.get('port')}`);
+});

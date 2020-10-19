@@ -2,9 +2,11 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const url={
-    baseUrl: "http://localhost:5000/",
-    login: "user/login",
-    register: "user/signup",
+    baseUrl: "https://shop-shoe-backend.herokuapp.com/",
+    login: "api/user/login",
+    register: "api/user/signup",
+    userInfo: "api/user/myaccount",
+
 };
 const instance = axios.create({
     baseURL: url.baseUrl,

@@ -1,25 +1,26 @@
-import React, { Component } from 'react'
+import React, { Component , Redirect} from 'react'
 import { Link } from 'react-router-dom';
 import UserService from '../../services/UserService';
 import '../register/register.css'
 class Register extends Component {
     state = {
         users: [],
-        user: {}
+        user: {},
+        message: ""
     }
     save = () => {
         console.log('Thêm mới', this.state.user);
         // console.log(this.data.errorCode);
+        console.log(this.state.message)
         UserService.register(this.state.user).then(res => {
-            // console.log(res.data.errorCode);
-            //this.props.history.push('/login')
-            // if (res.data.errorCode === 0) {
-            //     this.setState({ modalShow: false });
-            //     this.loadData();
-            // }
-            // else {
-            //     //show error
-            // }
+            this.props.history.push('/login')
+
+        },function (error) {
+            // Do something with response error
+            if (error.response.status === 422) {
+                alert("Email đã tồn tại");
+            }
+            return Promise.reject(error.response);
         });
     }
     InputOnChange = (event) => {
@@ -50,8 +51,9 @@ class Register extends Component {
                     <div class="container shadowContainer backgrounsColorRegisterForm">
                         <div class="row">
                             <div class="col-lg-6 offset-lg-3">
-                                <div class="register-form">
-                                    <div>
+                            <div class="register-form">
+                                <form1>
+                                    <div className="">
                                         <div class="group-input">
                                             <label for="username">Họ và tên<i className="redStar">*</i></label>
                                             <input type="text" id="username" name="fullName" placeholder="Họ và tên" className="backgroundColorInput" onChange={this.InputOnChange} value={this.state.user.fullName || ''}/>
@@ -73,7 +75,8 @@ class Register extends Component {
                                     <div class="switch-login">
                                         <Link className="nav-link" to="/login" class="or-login">Or Login</Link>
                                     </div>
-                                </div>
+                                </form1>
+                            </div>
                             </div>
                         </div>
                     </div>

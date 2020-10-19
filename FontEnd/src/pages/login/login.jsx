@@ -16,14 +16,14 @@ class Login extends Component {
         const password = this.passwordRef.current.value;
         console.log(email, password)
         LoginUser.login(email, password).then(res=>{
-            if(res.data.status === 200){
+            
                 this.setState({message: "Đăng nhập thành công:"});
-                console.log(res.data.token);
+                console.log(res.data.errorCode);
                 //save cookie
                 Cookies.set('loginInfo', JSON.stringify(res.data), {expires: 1});
                 //redirect to dashboard
                 this.props.history.push('/')
-            }
+            
             if(res.data.message === "Email or Password is invalid"){
                 alert('Tài khoảng không tồn tại hoặc mật khẩu không đúng');
             }

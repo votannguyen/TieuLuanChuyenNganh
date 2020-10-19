@@ -1,15 +1,24 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import "../profile/profile.css";
-import {
-    Form,
-    FormCheck
-} from "react-bootstrap";
+
+import UserService from '../../services/UserService';
 class Profile extends Component {
     state = {
-        closeForm: false
+        closeForm: false,
+        users:{},
+        user: [],
 
     }
+    componentDidMount = ()=> {
+        this.loadData();
+      }
+    loadData = () => {
+        UserService.getUser().then((res) => {
+          this.setState({ users: res.data.users });
+          console.log(this.state.users)
+        });
+      }
     // closeFormResetPassword(){
     //     this.setState({closeForm: false});
     // }
@@ -21,9 +30,12 @@ class Profile extends Component {
             this.setState({ closeForm: false });
         }
     }
+    changeInfo = ()=>{
+        
+    }
     render() {
         return (
-            <div className="backGroundLayoutProfile">
+            <div className="backGroundLayoutProfile" onLoad={this.componentDidMount}>
                 <div class="slider-area ">
                     <div class="single-slider slider-height2 d-flex align-items-center data-background-profile">
                         <div class="container">
@@ -57,19 +69,19 @@ class Profile extends Component {
                                             <div class="form-group row">
                                                 <label for="staticEmail" class="col-sm-2 col-form-label">Họ tên</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" readonly class="form-control form-control-Profile inputTemp" id="staticName" value="Võ Tấn Nguyên" />
+                                                    <input type="text" readonly class="form-control form-control-Profile inputTemp" id="staticName" value={this.state.users.fullName} />
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label for="inputPassword" class="col-sm-2 col-form-label">Số điện thoại</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control form-control-Profile " id="inputPassword" placeholder="Password" value="0652145869" disabled />
+                                                    <input type="text" class="form-control form-control-Profile " id="inputPassword" placeholder="" value={this.state.users.phone}/>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control form-control-Profile " id="inputPassword" placeholder="Password" value="admin@gmail.com" disabled />
+                                                    <input type="text" class="form-control form-control-Profile " id="inputPassword" placeholder="" value={this.state.users.email} disabled />
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -91,6 +103,13 @@ class Profile extends Component {
                                                     <input type="date" class="form-control form-control-Profile" id="inputDatetime" />
                                                 </div>
                                             </div>
+                                            <div class="form-group row">
+                                                <div className="col-sm-2"></div>
+                                                <div class="col-sm-10">
+                                                <div className="btn btn-primary" onClick={this.changeInfo}>Lưu thông tin</div>
+                                                </div>
+                                            </div>
+                                            
                                             <div class="form-group row">
                                                 <label for="inputPassword" class="col-sm-2 col-form-label"></label>
                                                 <div class="col-sm-10">

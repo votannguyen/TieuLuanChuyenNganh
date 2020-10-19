@@ -2,30 +2,40 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import "./header.css"
 import Cookies from "js-cookie";
-import { useCookies, remove } from 'react-cookie';
+import UserService from '../services/UserService';
 class Header extends Component {
     state = {
-        fullname: ""
+        fullname: "",
+        user: [],
+        users: {},
+        id: "" ,
+        email: "",
+        token:""
+
     }
-    cookieUser = ()=>{ 
+    logout = ()=>{
+        console.log("aaaa");
+        Cookies.remove('loginInfo', {path: "/" });
+        this.componentDidMount();
+    }
+    componentDidMount = ()=> {
+        this.loadData();
+      }
+    loadData = () => {
         const loginInfoStr = Cookies.get('loginInfo');
         if(loginInfoStr){
             const loginInfos = JSON.parse(loginInfoStr);
-            this.setState({fullname : loginInfos.fullName})
+            this.setState({email : loginInfos.email})
+            this.setState({token : loginInfos.token})
         }
-    }
-    logout = ()=>{
-        // Cookies.set('loginInfo', 'value', { path: '/home' });
-        // Cookies.remove('loginInfo'); // fail!
-        // Cookies.remove('loginInfo', { path: '/home' });
-        // Cookies.remove('loginInfo');
-        console.log(this.state.fullname);
-        Cookies.remove('loginInfo', { path: '/', domain: 'localhost' });
-        this.setState({fullName:" "})
-    }
+        UserService.getUser().then((res) => {
+          this.setState({ users: res.data.users });
+          console.log(this.state.users)
+        });
+      }
     render() {
         return (
-            <div>
+            <div onLoad={this.loadData}>
                 <div id="preloader-active">
                     <div className="preloader d-flex align-items-center justify-content-center">
                         <div className="preloader-inner position-relative">
@@ -64,10 +74,17 @@ class Header extends Component {
                                             </div>
                                             <div className="header-info-right">
                                                 <ul>
+                                                    {Cookies.get("loginInfo")?
                                                     <li><Link to="/profile">Tài Khoản Của Tôi</Link></li>
+                                                    :null
+                                                    }
+                                                    {Cookies.get("loginInfo")?
                                                     <li><Link to="/wishlist">Sản Phẩm Yêu Thích</Link></li>
+                                                    :null
+                                                    }
                                                     <li><Link to="/cart">Giỏ Hàng</Link></li>
                                                     <li><Link to="/checkout">Thanh Toán</Link></li>
+
                                                 </ul>
                                             </div>
                                         </div>
@@ -129,11 +146,13 @@ class Header extends Component {
                                                         </div>
                                                     </div>
                                                 </li>
+                                                {Cookies.get("loginInfo")?
                                                 <li className=" d-none d-xl-block">
                                                     <div className="favorit-items">
                                                         <Link to="/wishlist"><i className="far fa-heart"></i></Link>
                                                     </div>
-                                                </li>
+                                                </li>:null}
+
                                                 <li>
                                                     <div className="shopping-card">
                                                         <Link to="/cart"><i className="fas fa-shopping-cart"></i></Link>
@@ -143,13 +162,12 @@ class Header extends Component {
                                                {Cookies.get("loginInfo")?
                                                <div>
                                                 <img className="btnUser" onClick={this.cookieUser} src={require('../img/Shoe/avatar.jpg')} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-                                                <div className="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={this.cookieUser}><i class="fas fa-chevron-down btnChevron-down btn"></i></div>
+                                                <div className="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-chevron-down btnChevron-down btn"></i></div>
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                            
-                                                            <p class="">Tên: {this.state.fullname}</p>
-                                                            <a class="dropdown-item" href="#">Đơn hàng của tôi</a>
-                                                            <a class="dropdown-item" href="#">Tài khoản của tôi</a>
-                                                            <i class="btn dropdown-item" onclick={this.logout}>Đăng xuất</i>
+                                                            <p class="nameHeader">Tên: {this.state.users.fullName}</p>
+                                                            <Link class="dropdown-item" to="/profile">Đơn hàng của tôi</Link>
+                                                            <Link class="dropdown-item" to="/profile">Tài khoản của tôi</Link>
+                                                            <Link class="btn btn-danger btnLogout" to="/"  onClick={this.logout}>Đăng xuất</Link>
                                                         </div>
                                                 </div>:<li className="d-none d-lg-block"> <Link className="nav-link btn btn1 header-btn" to='/login'>Đăng nhập</Link></li>
                                                 }
