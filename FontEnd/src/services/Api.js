@@ -1,8 +1,9 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+
 const url={
-    baseUrl: "https://shop-shoe-backend.herokuapp.com/",
+    baseUrl: "http://localhost:5000",
     login: "api/user/login",
     register: "api/user/signup",
     userInfo: "api/user/myaccount",
@@ -19,7 +20,7 @@ instance.interceptors.request.use((request)=>{
     const loginInfoStr = Cookies.get('loginInfo');
     if(loginInfoStr){
         const loginInfos = JSON.parse(loginInfoStr);
-        request.headers.Authorization = `Bearer ${loginInfos.token}`;
+        request.headers.Authorization = `Bearer ${loginInfos}`;
         return request;
     }
     return request;

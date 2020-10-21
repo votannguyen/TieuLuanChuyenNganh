@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^7.2.1",
     "antd": "^4.6.4",
     "axios": "^0.20.0",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^4.5.2",
     "bootstrap-input-spinner": "^1.16.3",
     "js-cookie": "^2.2.1",
@@ -21,7 +22,7 @@
     "react-image-magnify": "^2.7.4",
     "react-inner-image-zoom": "^1.1.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
+    "react-scripts": "^3.4.4",
     "redux": "^4.0.5"
   },
   "scripts": {

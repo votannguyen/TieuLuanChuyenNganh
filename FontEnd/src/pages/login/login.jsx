@@ -11,20 +11,22 @@ class Login extends Component {
     }
     emailRef = React.createRef();
     passwordRef = React.createRef();
-    login = () =>{
+    login = () => {
         const email = this.emailRef.current.value;
         const password = this.passwordRef.current.value;
         console.log(email, password)
-        LoginUser.login(email, password).then(res=>{
-            
-                this.setState({message: "Đăng nhập thành công:"});
-                console.log(res.data.errorCode);
-                //save cookie
-                Cookies.set('loginInfo', JSON.stringify(res.data), {expires: 1});
-                //redirect to dashboard
-                this.props.history.push('/')
-            
-            if(res.data.message === "Email or Password is invalid"){
+        LoginUser.login(email, password).then(res => {
+
+            this.setState({ message: "Đăng nhập thành công:" });
+            alert("Bạn đã đăng nhập thành công");
+            console.log(res.data.errorCode);
+            //save cookie
+            // Cookies.set('loginInfo', brcypt.hashSync(JSON.stringify(res.data),9), { expires: 1 });
+            Cookies.set('loginInfo', JSON.stringify(res.data.token), { expires: 1/24 });
+            //redirect to dashboard
+            this.props.history.push({ pathname: '/' })
+
+            if (res.data.message === "Email or Password is invalid") {
                 alert('Tài khoảng không tồn tại hoặc mật khẩu không đúng');
             }
             // this.setState({message : "Tài khoảng không tồn tại hoặc mật khẩu không đúng"})
@@ -47,7 +49,6 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
-                
                 <section class="login_part section_padding ">
                     <div class="container">
                         <div class="row align-items-center formRightbackground radiusFormLogin">
@@ -67,7 +68,7 @@ class Login extends Component {
                                             Vui lòng đăng nhập ngay bây giờ</h3>
                                         <div class="row contact_form ">
                                             <div className="text-center text-danger">{this.state.message}</div>
-                                            <br/>
+                                            <br />
                                             <div class="col-md-12 form-group p_star">
                                                 <input type="email" class="form-control withTextBox" id="name" name="name" ref={this.emailRef}
                                                     placeholder="email" />
@@ -81,7 +82,7 @@ class Login extends Component {
                                                     <input type="checkbox" id="f-option" name="selector" />
                                                     <label for="f-option">Remember me</label>
                                                 </div>
-                                                <button type="submit" onClick={this.login} class="btn_3"> 
+                                                <button type="submit" onClick={this.login} class="btn_3">
                                                     log in
                                                 </button>
                                                 <a class="lost_pass" href="#">forget password?</a>

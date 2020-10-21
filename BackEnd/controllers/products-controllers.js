@@ -33,12 +33,7 @@ const getAllProduct = async (req, res, next) => {
             {
                 include: [{
                     model: models.Brand,
-                }],
-                include: [{
-                    model: models.Group,
-                }],
-                include: [{
-                    model: models.Category,
+                    attributes: ['id', 'name'],
                 }]
             }
         );
@@ -66,12 +61,7 @@ const getProductById = async (req, res, next) => {
             },
             include: [{
                 model: models.Brand,
-            }],
-            include: [{
-                model: models.Group,
-            }],
-            include: [{
-                model: models.Category,
+                attributes: ['id', 'name'],
             }]
         });
     }
@@ -96,13 +86,12 @@ const createProduct = async (req, res, next) => {
         price: req.body.price,
         imagePath: req.file.path,
         availability: req.body.availability,
+        summary: req.body.summary,
         amount: req.body.amount,
         description: req.body.description,
         color: req.body.color,
         alias: getAlias(req.body.name),
-        brandId: req.body.brandId,
-        categoryId: req.body.categoryId,
-        groupId: req.body.groupId
+        brandId: req.body.brandId
       };
     let products
     products = await Product.create(createdProduct);

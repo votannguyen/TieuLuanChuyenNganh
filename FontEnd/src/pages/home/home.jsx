@@ -4,7 +4,7 @@ import "../home/home.css";
 class Home extends Component {
     state = {}
     render() {
-        
+
         return (
             <main>
                 <div className="slider-area ">

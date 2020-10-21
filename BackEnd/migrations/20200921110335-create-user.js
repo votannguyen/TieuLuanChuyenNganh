@@ -26,22 +26,10 @@ module.exports = {
       avatarPath: {
         type: Sequelize.TEXT
       },
-      gender: {
-        type: Sequelize.TEXT
-      },
-      birthday: {
-        type: Sequelize.DATE
-      },
-      score: {
-        type: Sequelize.INTEGER
-      },
       isAdmin: {
         type: Sequelize.BOOLEAN
       },
       isConfirm: {
-        type: Sequelize.BOOLEAN
-      },
-      isLock: {
         type: Sequelize.BOOLEAN
       },
       createdAt: {

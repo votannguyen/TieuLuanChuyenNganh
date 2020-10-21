@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.Order, {foreignKey:'userId'});
-      User.hasMany(models.WishList, {foreignKey: 'userId'});
     }
   };
   User.init({ 
@@ -20,12 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     phone: DataTypes.STRING,
     address: DataTypes.STRING,
     avatarPath: DataTypes.TEXT,
-    gender: DataTypes.TEXT,
-    birthday: DataTypes.DATE,
-    score: DataTypes.INTEGER,
     isAdmin: DataTypes.BOOLEAN,
     isConfirm: DataTypes.BOOLEAN,
-    isLock: DataTypes.BOOLEAN,
     password: DataTypes.STRING
   }, {
     sequelize,

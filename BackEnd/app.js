@@ -4,7 +4,7 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser'); //trả về một function hoạt động như một middleware
-const cors = require('cors');
+
 const brandRoutes  = require('./routes/brand-routes');  // đăng ký (midleware)
 const userRoutes  = require('./routes/user-routes');
 const categoryRoutes = require('./routes/category-routes');
@@ -12,11 +12,10 @@ const productRoutes = require('./routes/product-routes');
 const HttpError = require('./error-handle/http-error');
 const app = express();
 
-
+ 
 // parse application/json
 app.use(bodyParser.json());
 
-app.use(cors());
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 //Handling CORS Error
@@ -62,8 +61,8 @@ app.use((error, req, res, next) => {        //Error handling
 
 
 //Start server
-// app.listen(5000); 
 app.set('port', process.env.PORT || 5000);
 app.listen(app.get('port'), () => {
     console.log(`Server is running at port ${app.get('port')}`);
 });
+//app.listen(5000); 
