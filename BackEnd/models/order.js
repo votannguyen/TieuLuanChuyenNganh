@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     orderCode: DataTypes.STRING,
     promotion: DataTypes.INTEGER,
     address: DataTypes.STRING,
-    total: DataTypes.DECIMAL
+    total: DataTypes.DECIMAL,
+    state: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Order',

@@ -178,7 +178,7 @@ class Profile extends Component {
                                             </div>
                                         </div>
                                         <hr className="paddingHr"/>
-                                        <div className="row paddingRow">
+                                        <div className="row paddingRow paddingRow">
                                             <div className="col-md-2">
                                                 <Link className=" fontTextOder LinkColor" to="/invoicedetail">794258369</Link>
                                             </div>

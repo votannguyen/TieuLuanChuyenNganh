@@ -91,6 +91,7 @@ h3{
 }
 .paddingHr{
     margin-top: 0px;
+    margin-bottom: 0px;
 }
 .fontTextOder{
     font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -99,4 +100,11 @@ h3{
 }
 .LinkColor{
     color: #007bff;
+}
+.paddingRow{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.paddingRow:hover{
+    background-color: #ecf5ff;
 }

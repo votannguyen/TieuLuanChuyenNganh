@@ -7,6 +7,7 @@ class Login extends Component {
     state = {
         message: " ",
         isLogin: false,
+        isError: false,
 
     }
     emailRef = React.createRef();
@@ -15,23 +16,38 @@ class Login extends Component {
         const email = this.emailRef.current.value;
         const password = this.passwordRef.current.value;
         console.log(email, password)
+        var seft = this;
         LoginUser.login(email, password).then(res => {
-
-            this.setState({ message: "Đăng nhập thành công:" });
-            alert("Bạn đã đăng nhập thành công");
-            console.log(res.data.errorCode);
+            // this.setState({ message: "Đăng nhập thành công:" });
+            // alert("Bạn đã đăng nhập thành công");
+            // console.log(res.data.errorCode);
             //save cookie
             // Cookies.set('loginInfo', brcypt.hashSync(JSON.stringify(res.data),9), { expires: 1 });
-            Cookies.set('loginInfo', JSON.stringify(res.data.token), { expires: 1/24 });
+            Cookies.set('loginInfo', JSON.stringify(res.data.token), { expires: 1 / 24 });
             //redirect to dashboard
             this.props.history.push({ pathname: '/' })
 
-            if (res.data.message === "Email or Password is invalid") {
-                alert('Tài khoảng không tồn tại hoặc mật khẩu không đúng');
-            }
+            // if (res.data.message === "Email or Password is invalid") {
+            //     alert('Tài khoảng không tồn tại hoặc mật khẩu không đúng');
+            // }
             // this.setState({message : "Tài khoảng không tồn tại hoặc mật khẩu không đúng"})
             // console.log(this.message);
+        }, function (error) {
+            // Do something with response error
+            if (error.response.status === 401) {
+                seft.isErrorTrue();
+                document.getElementById("errModal").click();
+                
+            }
         })
+    }
+    isErrorFalse = ()=>{
+        this.setState({isError : false});
+        
+    }
+    isErrorTrue = ()=>{
+        this.setState({isError : true});
+        
     }
     render() {
         return (
@@ -82,7 +98,7 @@ class Login extends Component {
                                                     <input type="checkbox" id="f-option" name="selector" />
                                                     <label for="f-option">Remember me</label>
                                                 </div>
-                                                <button type="submit" onClick={this.login} class="btn_3">
+                                                <button type="submit" onClick={this.login} id="login" className="btn_3">
                                                     log in
                                                 </button>
                                                 <a class="lost_pass" href="#">forget password?</a>
@@ -94,6 +110,26 @@ class Login extends Component {
                         </div>
                     </div>
                 </section>
+                <button type="button" class="btn" id="errModal" data-toggle="modal" data-target="#exampleModal">
+                </button>
+                {this.state.isError?
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal- backGroundIconFailded">
+                                <div className="iconFailed"><i class="fas fa-exclamation-circle fa-8x"></i></div>
+                            </div>
+                            <div class="modal-body">
+                                <p className="pSorry">Xin lỗi</p>
+                                <p className="pDetailSorry">Email đăng nhập hoặc mật khẩu không đúng!</p>
+                                <p className="pDetailSorry">Vui lòng đăng nhập lại</p>
+                                <button type="button" class="btn btnReturn" data-dismiss="modal" onClick={this.isErrorFalse}>Thử lại</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>:null
+                }
             </div>
         );
     }

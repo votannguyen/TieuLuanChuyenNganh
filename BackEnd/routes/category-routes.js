@@ -7,7 +7,7 @@ const categoriesControllers = require('../controllers/categories-controllers');
 
 const router = express.Router();
 
-//router.get('/', passport.authenticate('jwt', {session: false}) ,categoriesControllers.getAllCategory );
+router.get('/',categoriesControllers.getAllCategory );
 
 router.get('/:alias', categoriesControllers.getCategoryById);
 

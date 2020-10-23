@@ -2,29 +2,22 @@
   "development": {
     "username": "postgres",
     "password": "300699",
-    "database": "shoedb1",
+    "database": "shoedb",
     "host": "localhost",
     "dialect": "postgres"
   },
   "test": {
-    "username": "postgres",
-    "password": "300699",
-    "database": "shoedb1",
-    "host": "localhost",
-    "dialect": "postgres"
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
   },
   "production": {
-    "username": "tifxjtmyhjrxsg",
-    "password": "b8d2a485a67b8ec2d705498a403d1bc07bed62695e330703eb1430cd914a9b70",
-    "database": "d1cat5soqrvvm6",
-    "host": "ec2-18-210-90-1.compute-1.amazonaws.com",
-    "dialect": "postgres",
-    "dialectOptions": {
-      "ssl": {
-        "require": true,
-        "rejectUnauthorized": false
-        
-      }
-    }
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
   }
 }

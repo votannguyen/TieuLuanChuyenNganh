@@ -42,7 +42,7 @@ const createBrand = async (req, res, next) => {
      
 };
 
-const getBrandById = async (req, res, next) => {
+const getBrandByName = async (req, res, next) => {
     const name = req.params.brandName;
     let brands;
     try{
@@ -65,7 +65,7 @@ const getBrandById = async (req, res, next) => {
 
 };
 
-const deleteBrandById = async (req, res, next) => {
+const deleteBrandByName = async (req, res, next) => {
     const name = req.params.brandName;
     let brands;
     try{
@@ -108,4 +108,4 @@ const updateBrand = async (req, res, next) => {
     
 }
 
-module.exports = { getAllBrand, getBrandById, createBrand, updateBrand, deleteBrandById};
+module.exports = { getAllBrand, getBrandByName, createBrand, updateBrand, deleteBrandByName};

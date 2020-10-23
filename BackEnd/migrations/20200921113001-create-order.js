@@ -20,6 +20,9 @@ module.exports = {
       total: {
         type: Sequelize.DECIMAL
       },
+      state: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

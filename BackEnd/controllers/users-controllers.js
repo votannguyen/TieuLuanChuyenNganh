@@ -92,6 +92,7 @@ const register = async(req, res, next) =>{
         email,
         isAdmin: false,
         isConfirm: false,
+        isLock: false,
         password: hashedPassword
     };
     let Users;
@@ -137,7 +138,11 @@ const login = async(req,res,next) => {
         const error = new HttpError('Email or Password is invalid', 401);
         return next(error);
     }
-    
+    if(existingUser.isConfirm === false && existingUser.isConfirm === false) {
+        const error = new HttpError('Your account is not confirm or was locked', 401);
+        return next(error);
+    }
+
     let isValidPassword;
     try {
         isValidPassword = await brcypt.compare(password, existingUser.password);
@@ -213,4 +218,4 @@ const getConfirmation = async(req, res, next) => {
     res.status(200).json({message: 'Success'});
 }
 
-module.exports = {getUser, getMyUser, register, login, getConfirmation};
+module.exports = {getUser, getMyUser,  register, login, getConfirmation};
