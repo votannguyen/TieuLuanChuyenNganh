@@ -138,7 +138,7 @@ const login = async(req,res,next) => {
         const error = new HttpError('Email or Password is invalid', 401);
         return next(error);
     }
-    if(existingUser.isConfirm === false && existingUser.isConfirm === false) {
+    if(existingUser.isConfirm === false && existingUser.isLock === false) {
         const error = new HttpError('Your account is not confirm or was locked', 401);
         return next(error);
     }
@@ -218,4 +218,51 @@ const getConfirmation = async(req, res, next) => {
     res.status(200).json({message: 'Success'});
 }
 
-module.exports = {getUser, getMyUser,  register, login, getConfirmation};
+const updateUser = async(req, res, next) => {
+    let users;
+    let userCurrent =  req.userData.email;
+    try{
+        users = await User.findOne({
+            where: { email: userCurrent}
+        });
+    } catch (err) {
+        const error = new HttpError('You are not log in. Pls login', 500);
+        return next(error);
+    }
+
+    if(!users)
+    {
+        const error =  new HttpError('Could not find any users', 404);
+        return next(error);
+    }
+
+    const userInfo = {
+        fullName: req.body.fullName,
+        phone: req.body.phone,
+        address: req.body.address,
+        avatarPath: req.body.avatarPath,
+        gender: req.body.gender,
+        birthday: req.body.birthday,
+    }
+
+    let userUpdate;
+    try{
+        userUpdate = await User.update(userInfo, {
+            where: { email: userCurrent}
+        });
+    } catch (err)
+    {
+        console.log(err);
+        const error = new HttpError('Update Fail', 500);
+        return next(error);
+    }
+
+    if(!userUpdate)
+    {
+        const error =  new HttpError('Could not find any users', 404);
+        return next(error);
+    }
+    res.status(200).json({userUpdate});
+}
+
+module.exports = {getUser, getMyUser,  register, login, getConfirmation, updateUser};

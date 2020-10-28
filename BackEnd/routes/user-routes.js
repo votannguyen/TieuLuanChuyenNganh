@@ -14,7 +14,7 @@ router.post('/signup',
 ], 
 usersControllers.register);
 
-router.post('/login', usersControllers.login);
+router.post('/login', usersControllers.login);  // Cần thêm check
 
 
 router.get('/',usersControllers.getUser);
@@ -26,6 +26,7 @@ router.use(checkAuth);
 
 router.get('/myaccount', usersControllers.getMyUser);
 
+router.patch('/myaccount',usersControllers.updateUser);
 
 
 module.exports = router;
