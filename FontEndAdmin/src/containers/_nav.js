@@ -31,9 +31,15 @@ export default [
   },
   {
     _tag: 'CSidebarNavItem',
-    name: 'Products',
+    name: 'Sản Phẩm',
     to: '/shop/product',
     icon: "cil-basket",
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Thương hiệu',
+    to: '/shop/brand',
+    icon: "cil-tags",
   },
   {
     _tag: 'CSidebarNavTitle',

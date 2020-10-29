@@ -26,7 +26,7 @@ const getBadge = status => {
     default: return 'primary'
   }
 }
-const fields = ['name', 'registered', 'role', 'status']
+const fields = ['Tên','Tiêu đề','Mô tả', 'Thương hiệu', 'Danh mục', 'Nhóm', 'Kích thước', 'Số lượng', 'Màu', 'Giá']
 class Products extends Component {
   state = {
     showModal: false,
@@ -51,11 +51,11 @@ class Products extends Component {
   render() {
     return (
       <div>
-        <div className="row">
-          <div className="col-md-10"></div>
-          <div className="col-md-2">
-            <button type="button" class="btn btnAddProduct" onClick={this.setShowModal}><p class="fas fa-plus-circle textInBtnAddProduct">   Thêm sản phẩm</p></button>
-          </div>
+        {/* <div className="row">
+          <div className="col-sm-10"></div> */}
+          <div className="container">
+            <button type="button" class="btn btn-sm btnAddProduct" onClick={this.setShowModal}><p class="fas fa-plus-circle textInBtnAddProduct">   Thêm sản phẩm</p></button>
+        {/* </div> */}
         </div>
         <>
           <Modal
@@ -110,29 +110,29 @@ class Products extends Component {
                 <Form>
                 <Form.Label>Kích thước</Form.Label>
                   {['checkbox'].map((type) => (
-                    <div key={`inline-${type}`} className="mb-3">
-                      <Form.Check inline label="24" type={type} id={`inline-${type}-24`} />
-                      <Form.Check inline label="25" type={type} id={`inline-${type}-25`} />
-                      <Form.Check inline label="26" type={type} id={`inline-${type}-26`} />
-                      <Form.Check inline label="27" type={type} id={`inline-${type}-27`} />
-                      <Form.Check inline label="28" type={type} id={`inline-${type}-28`} />
-                      <Form.Check inline label="29" type={type} id={`inline-${type}-29`} />
-                      <Form.Check inline label="30" type={type} id={`inline-${type}-30`} />
-                      <Form.Check inline label="31" type={type} id={`inline-${type}-31`} />
-                      <Form.Check inline label="32" type={type} id={`inline-${type}-32`} />
-                      <Form.Check inline label="33" type={type} id={`inline-${type}-33`} />
-                      <Form.Check inline label="34" type={type} id={`inline-${type}-34`} />
-                      <Form.Check inline label="35" type={type} id={`inline-${type}-35`} />
-                      <Form.Check inline label="36" type={type} id={`inline-${type}-36`} />
-                      <Form.Check inline label="37" type={type} id={`inline-${type}-37`} />
-                      <Form.Check inline label="38" type={type} id={`inline-${type}-38`} />
-                      <Form.Check inline label="39" type={type} id={`inline-${type}-39`} />
-                      <Form.Check inline label="40" type={type} id={`inline-${type}-40`} />
-                      <Form.Check inline label="41" type={type} id={`inline-${type}-41`} />
-                      <Form.Check inline label="42" type={type} id={`inline-${type}-42`} />
-                      <Form.Check inline label="43" type={type} id={`inline-${type}-43`} />
-                      <Form.Check inline label="44" type={type} id={`inline-${type}-44`} />
-                      <Form.Check inline label="45" type={type} id={`inline-${type}-45`} />
+                    <div key={`inline-${type}`} className="mb-2">
+                      <Form.Check inline label="24" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-24`} />
+                      <Form.Check inline label="25" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-25`} />
+                      <Form.Check inline label="26" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-26`} />
+                      <Form.Check inline label="27" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-27`} />
+                      <Form.Check inline label="28" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-28`} />
+                      <Form.Check inline label="29" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-29`} />
+                      <Form.Check inline label="30" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-30`} />
+                      <Form.Check inline label="31" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-31`} />
+                      <Form.Check inline label="32" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-32`} />
+                      <Form.Check inline label="33" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-33`} />
+                      <Form.Check inline label="34" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-34`} />
+                      <Form.Check inline label="35" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-35`} />
+                      <Form.Check inline label="36" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-36`} />
+                      <Form.Check inline label="37" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-37`} />
+                      <Form.Check inline label="38" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-38`} />
+                      <Form.Check inline label="39" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-39`} />
+                      <Form.Check inline label="40" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-40`} />
+                      <Form.Check inline label="41" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-41`} />
+                      <Form.Check inline label="42" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-42`} />
+                      <Form.Check inline label="43" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-43`} />
+                      <Form.Check inline label="44" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-44`} />
+                      <Form.Check inline label="45" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-45`} />
                     </div>
                   ))}
                 </Form>
@@ -179,7 +179,7 @@ class Products extends Component {
             <CCol>
               <CCard>
                 <CCardHeader>
-                  Combined All Table
+                  <p className="fontSizeNameTable">Danh sách sản phẩm</p>
               </CCardHeader>
                 <CCardBody>
                   <CDataTable
@@ -188,7 +188,7 @@ class Products extends Component {
                     hover
                     striped
                     bordered
-                    size="sm"
+                    size="lg"
                     itemsPerPage={15}
                     pagination
                     scopedSlots={{

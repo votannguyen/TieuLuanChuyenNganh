@@ -34,7 +34,7 @@ class Login extends Component {
             // console.log(this.message);
         }, function (error) {
             // Do something with response error
-            if (error.response.status === 401) {
+            if (error.response.status === 404) {
                 seft.isErrorTrue();
                 document.getElementById("errModal").click();
                 

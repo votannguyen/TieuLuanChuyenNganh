@@ -1,26 +1,81 @@
-.btnAddProduct{
-    width: 200px;
+.btnAddProduct {
+  width: 200px;
+  height: 50px;
+  border-radius: 30px;
+  background-color: #4ab657;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  right: 0;
+  left: 103%;
+  position: relative;
+  border: none;
+  padding-top: 8px;
+}
+@media only screen and (max-width: 1024px) {
+  .btnAddProduct {
+    width: 170px;
     height: 50px;
-    border-radius: 20px;
-    background-color: #4AB657;
+    border-radius: 30px;
+    background-color: #4ab657;
     color: white;
-    font-size: 20px;
-    margin-bottom: 20px;
+    font-size: 18px;
+    margin-bottom: 15px;
     text-align: center;
     font-family: Roboto, Helvetica, Arial, sans-serif;
-    margin-left: 35px;
+    right: 0;
+    left: 77%;
+    position: relative;
     border: none;
     padding-top: 8px;
+  }
 }
-.textInBtnAddProduct{
-    padding-top: 5px;
-}
-.modalMaxWidth{
-    max-width: 800px;
-}
-.textCenterModalTitle{
+@media only screen and (max-width: 375px) {
+  .btnAddProduct {
+    width: 140px;
+    height: 40px;
+    border-radius: 30px;
+    background-color: #4ab657;
+    color: white;
+    font-size: 14px;
+    margin-bottom: 15px;
     text-align: center;
-    font-size: 20px;
-    padding-left: 25%;
-
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    right: 0;
+    left: 60%;
+    position: relative;
+    border: none;
+    padding-top: 8px;
+  }
+}
+.textInBtnAddProduct {
+  padding-top: 5px;
+}
+.modalMaxWidth {
+  max-width: 800px;
+}
+.textCenterModalTitle {
+  text-align: center;
+  font-size: 20px;
+  padding-left: 25%;
+}
+.fontSizeNameTable {
+  font-size: 30px;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.sizeCheckBox {
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  display: inline-flex;
+  align-items: center;
+}
+.paddingSize {
+  padding-left: 20px !important;
+  margin-right: 38px !important;
+  margin-bottom: 10px;
 }

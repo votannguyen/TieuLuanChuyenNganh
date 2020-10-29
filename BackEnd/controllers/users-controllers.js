@@ -129,13 +129,14 @@ const login = async(req,res,next) => {
         existingUser = await User.findOne({
             where: {email: email }
         });
+        console.log(existingUser);
     } catch (err) {
         const error = new HttpError('Login failed. Pls try again', 500);
         return next(error);
     }
     
     if(!existingUser) {
-        const error = new HttpError('Email or Password is invalid', 401);
+        const error = new HttpError('Email or Password is invalid', 404);
         return next(error);
     }
     if(existingUser.isConfirm === false && existingUser.isLock === false) {

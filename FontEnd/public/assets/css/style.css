@@ -3285,7 +3285,7 @@ input:focus {
   position: relative;
 }
 
-@media only screen and (min-width: 1200px) and (max-width: 3640px) {
+@media only screen and (min-width: 1920px) and (max-width: 3640px) {
   /* line 1138, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_common.scss */
   .container {
     max-width: 1170px;
@@ -3667,12 +3667,13 @@ input:focus {
 }
 
 /* line 190, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_headerMenu.scss */
-.header-bottom .header-right .favorit-items {
+.header-bottom .header-right {
   position: relative;
 }
 
 /* line 192, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_headerMenu.scss */
-.header-bottom .header-right .favorit-items::before {
+
+/* .header-bottom .header-right .favorit-items::before {
   position: absolute;
   content: "02";
   width: 25px;
@@ -3691,7 +3692,7 @@ input:focus {
   -o-transition: all 0.2s ease-out 0s;
   transition: all 0.2s ease-out 0s;
   box-shadow: 0 2px 5pxrgba 0,0,0,0.3;
-}
+} */
 
 /* line 208, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_headerMenu.scss */
 .header-bottom .header-right .favorit-items i {
@@ -3707,12 +3708,12 @@ input:focus {
 }
 
 /* line 222, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_headerMenu.scss */
-.header-bottom .header-right .shopping-card {
+.header-bottom .header-right  {
   position: relative;
 }
 
 /* line 224, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_headerMenu.scss */
-.header-bottom .header-right .shopping-card::before {
+/* .header-bottom .header-right .shopping-card::before {
   position: absolute;
   content: "02";
   width: 25px;
@@ -3731,7 +3732,7 @@ input:focus {
   -o-transition: all 0.2s ease-out 0s;
   transition: all 0.2s ease-out 0s;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
+} */
 
 /* line 240, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_headerMenu.scss */
 .header-bottom .header-right .shopping-card i {

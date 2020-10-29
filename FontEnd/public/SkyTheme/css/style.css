@@ -691,9 +691,9 @@ textarea {
   font: inherit;
   /* 2 */ }
 
-* {
+/* * {
   font-family: "Montserrat", sans-serif;
-  font-weight: 400; }
+  font-weight: 400; } */
 
 h1, h2, h3, h4, h5, h6 {
   position: relative;
@@ -982,12 +982,23 @@ body {
 
 .ps-list--checked li {
   margin-bottom: 20px; }
-  .ps-list--checked li a {
-    position: relative;
-    display: block;
-    padding-left: 30px;
-    font-size: 14px;
-    color: #313131; }
+  @media only screen and (max-width: 1920px){
+    .ps-list--checked li a {
+      position: relative;
+      display: block;
+      padding-left: 30px;
+      font-size: 14px;
+      color: #313131; }
+    }
+    @media only screen and (max-width: 1366px){
+      .ps-list--checked li a {
+        position: relative;
+        display: block;
+        padding-left: 30px;
+        font-size: 13px;
+        color: #313131; }
+      }
+
     .ps-list--checked li a:before {
       display: inline-block;
       position: absolute;
