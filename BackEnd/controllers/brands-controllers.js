@@ -33,7 +33,7 @@ const createBrand = async (req, res, next) => {
     }
     const createdBrand = {
         name: req.body.name,
-        imagePath: req.file.path,
+        // imagePath: req.file.path,
         summary: req.body.summary
       };
     let brands

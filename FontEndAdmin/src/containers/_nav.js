@@ -42,6 +42,12 @@ export default [
     icon: "cil-tags",
   },
   {
+    _tag: 'CSidebarNavItem',
+    name: 'Nhóm sản phẩm',
+    to: '/shop/category',
+    icon: "cil-spreadsheet",
+  },
+  {
     _tag: 'CSidebarNavTitle',
     _children: ['Components']
   },

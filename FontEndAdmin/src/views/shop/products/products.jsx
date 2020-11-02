@@ -3,6 +3,7 @@ import {
   Button,
   Modal,
   Form,
+  Table
 } from "react-bootstrap";
 import {
   CBadge,
@@ -16,7 +17,8 @@ import {
 import usersData from '../../users/UsersData'
 import './products.css';
 import ProductService from "../../../services/ProductService";
-
+import BrandService from "../../../services/BrandService";
+import CategoryService from "../../../services/CategoryService";
 const getBadge = status => {
   switch (status) {
     case 'Active': return 'success'
@@ -26,19 +28,49 @@ const getBadge = status => {
     default: return 'primary'
   }
 }
-const fields = ['Tên','Tiêu đề','Mô tả', 'Thương hiệu', 'Danh mục', 'Nhóm', 'Kích thước', 'Số lượng', 'Màu', 'Giá']
+const fields = ['name', 'amount', 'brandId', 'categoryId', 'description', 'price']
 class Products extends Component {
   state = {
     showModal: false,
-    products : [],
-    product : {},
+    products: [],
+    listProduct: [],
+    brand: [],
+    category: [],
   };
   componentDidMount() {
     this.loadData();
   }
   loadData = () => {
-    ProductService.list().then((res) => {
-        this.setState({ products: res.data.product });
+    ProductService.listProduct().then((res) => {
+      this.setState({ products: res.data.products });
+      this.setState({ listProduct: res.data.products });
+    });
+    console.log(this.state.products)
+    BrandService.listBrand().then((res) => {
+      this.setState({ brand: res.data.brands });
+    });
+    CategoryService.listCategory().then((res) => {
+      this.setState({ category: res.data.categories })
+    })
+
+  }
+  InputOnChange = (event) => {
+    const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
+
+    const newProduct = { ...this.state.products, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+    this.setState({ products: newProduct });
+    console.log(this.state.products)
+  }
+  save = () => {
+    console.log(this.state.products)
+    ProductService.createProduct(this.state.products).then(res => {
+      alert("Cập nhật thông tin thành công")
+      this.loadData();
+      this.setCloseModal();
+
+    }, function (error) {
+      alert("Lỗi")
+
     });
   }
   setShowModal = () => {
@@ -47,15 +79,41 @@ class Products extends Component {
   setCloseModal = () => {
     this.setState({ showModal: false });
   }
+  InputOnChangeCategory = (event) => {
+    const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
+    // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+    {
+      this.state.category.map((category) => {
+        if (category.name === value) {
+          const newProduct = { ...this.state.products, [name]: category.id }
+          this.setState({ products: newProduct });
+        }
+      })
+    }
+    console.log(this.state.products)
+  }
+  InputOnChangeBrand = (event) => {
+    const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
+    // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+    {
+      this.state.brand.map((brand) => {
+        if (brand.name === value) {
+          const newProduct = { ...this.state.products, [name]: brand.id }
+          this.setState({ products: newProduct });
+        }
+      })
+    }
+    console.log(this.state.products)
+  }
 
   render() {
     return (
-      <div>
+      <div onLoad={this.loadData}>
         {/* <div className="row">
           <div className="col-sm-10"></div> */}
-          <div className="container">
-            <button type="button" class="btn btn-sm btnAddProduct" onClick={this.setShowModal}><p class="fas fa-plus-circle textInBtnAddProduct">   Thêm sản phẩm</p></button>
-        {/* </div> */}
+        <div className="container">
+          <button type="button" class="btn btn-sm btnAddProduct" onClick={this.setShowModal}><p class="fas fa-plus-circle textInBtnAddProduct">   Thêm sản phẩm</p></button>
+          {/* </div> */}
         </div>
         <>
           <Modal
@@ -75,29 +133,31 @@ class Products extends Component {
               <Form>
                 <Form.Group controlId="formBasicName">
                   <Form.Label>Tên sản phẩm</Form.Label>
-                  <Form.Control type="text" name="nameProduct" placeholder="Tên sản phẩm" />
+                  <Form.Control type="text" name="name" placeholder="Tên sản phẩm" onChange={this.InputOnChange} />
                 </Form.Group>
                 <Form.Group controlId="ControlSelect">
                   <Form.Label>Thương hiệu</Form.Label>
-                  <Form.Control as="select">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                  <Form.Control as="select" name="brandId" onChange={this.InputOnChangeBrand}>
+                    <option>Choose....</option>
+                    {this.state.brand.map((brand, idx) => {
+                      return (
+                        <option>{brand.name}</option>
+                      )
+                    })}
                   </Form.Control>
                 </Form.Group>
                 <Form.Group controlId="ControlSelect">
                   <Form.Label>Danh mục</Form.Label>
-                  <Form.Control as="select">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                  <Form.Control as="select" name="categoryId" onChange={this.InputOnChangeCategory}>
+                    <option>Choose....</option>
+                    {this.state.category.map((category, idx) => {
+                      return (
+                        <option>{category.name}</option>
+                      )
+                    })}
                   </Form.Control>
                 </Form.Group>
-                <Form.Group controlId="ControlSelect">
+                {/* <Form.Group controlId="ControlSelect">
                   <Form.Label>Nhóm</Form.Label>
                   <Form.Control as="select">
                     <option>1</option>
@@ -106,8 +166,8 @@ class Products extends Component {
                     <option>4</option>
                     <option>5</option>
                   </Form.Control>
-                </Form.Group>
-                <Form>
+                </Form.Group> */}
+                {/* <Form>
                 <Form.Label>Kích thước</Form.Label>
                   {['checkbox'].map((type) => (
                     <div key={`inline-${type}`} className="mb-2">
@@ -135,10 +195,10 @@ class Products extends Component {
                       <Form.Check inline label="45" className="sizeCheckBox paddingSize" type={type} id={`inline-${type}-45`} />
                     </div>
                   ))}
-                </Form>
+                </Form> */}
                 <Form.Group controlId="formBasicQuantity">
                   <Form.Label>Số lượng</Form.Label>
-                  <Form.Control type="number" name="quantityProduct" placeholder="Số lượng" />
+                  <Form.Control type="number" name="amount" placeholder="Số lượng" onChange={this.InputOnChange} />
                 </Form.Group>
                 <Form.Group controlId="exampleForm.ControlTextarea1">
                   <Form.Label>Tiêu đề sản phẩm</Form.Label>
@@ -146,9 +206,9 @@ class Products extends Component {
                 </Form.Group>
                 <Form.Group controlId="exampleForm.ControlTextarea1">
                   <Form.Label>Mô tả sản phẩm</Form.Label>
-                  <Form.Control as="textarea" type="text" name="titleProduct" rows={6} />
+                  <Form.Control as="textarea" type="text" name="description" rows={6} onChange={this.InputOnChange} />
                 </Form.Group>
-                <Form>
+                {/* <Form>
                   <Form.Label>Màu sắc</Form.Label>
                   {['checkbox'].map((type) => (
                     <div key={`inline-${type}`} className="mb-3">
@@ -161,12 +221,12 @@ class Products extends Component {
                       <Form.Check inline label="Nâu" type={type} id={`inline-${type}-7`} />
                     </div>
                   ))}
-                </Form>
+                </Form> */}
                 <Form.Group controlId="formBasicQuantity">
                   <Form.Label>Giá tiền</Form.Label>
-                  <Form.Control type="number" name="priceProduct" placeholder="Giá tiền" />
+                  <Form.Control type="number" name="price" placeholder="Giá tiền" onChange={this.InputOnChange} />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" onClick={this.save}>
                   Thêm
                 </Button>
               </Form>
@@ -180,10 +240,39 @@ class Products extends Component {
               <CCard>
                 <CCardHeader>
                   <p className="fontSizeNameTable">Danh sách sản phẩm</p>
-              </CCardHeader>
+                </CCardHeader>
                 <CCardBody>
-                  <CDataTable
-                    items={usersData}
+                  <Table striped hover>
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Name Product</th>
+                        <th>Brand</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.listProduct.map((listProduct, idx) => {
+                      return (
+                        <tr>
+                        <td>{listProduct.id}</td>
+                        <td>{listProduct.name}</td>
+                        <td>{listProduct.Brand.name}</td>
+                        <td>{listProduct.Category.name}</td>
+                        <td>{listProduct.amount}</td>
+                        <td>{listProduct.description}</td>
+                        <td>{listProduct.price}</td>
+                      </tr>
+                      )
+                    })}
+                      
+                    </tbody>
+                  </Table>
+                  {/* <CDataTable
+                    items={this.state.listProduct}
                     fields={fields}
                     hover
                     striped
@@ -201,7 +290,7 @@ class Products extends Component {
                           </td>
                         )
                     }}
-                  />
+                  /> */}
                 </CCardBody>
               </CCard>
             </CCol>

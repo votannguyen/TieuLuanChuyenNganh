@@ -40,11 +40,12 @@ const User = React.lazy(() => import('./views/users/User'));
 
 const Products = React.lazy(() => import('./views/shop/products/products'));
 const Brand = React.lazy(() => import('./views/shop/brands/brands'));
-
+const Category = React.lazy(() => import('./views/shop/category/category'));
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/shop/product', name: 'Product', component: Products},
   { path: '/shop/brand', name: 'Brand', component: Brand},
+  { path: '/shop/category', name: 'Category', component: Category},
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },

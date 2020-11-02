@@ -7,13 +7,15 @@ const url={
     login: "api/user/login",
     register: "api/user/signup",
     userInfo: "api/user/myaccount",
+    updateUser: "api/user/myaccount",
 
 };
 const instance = axios.create({
     baseURL: url.baseUrl,
     headers: {
-        "Content-Type": "application/json", 
-        "Accept": "application/json"},
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
 });
 
 instance.interceptors.request.use((request)=>{
@@ -31,5 +33,6 @@ export default{
     get: instance.get,
     post: instance.post,
     put: instance.put,
-    delete: instance.delete
+    delete: instance.delete,
+    patch: instance.patch
 };

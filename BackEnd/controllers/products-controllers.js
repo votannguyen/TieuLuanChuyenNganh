@@ -32,14 +32,13 @@ const getAllProduct = async (req, res, next) => {
         products = await Product.findAll(
             {
                 include: [{
-                    model: models.Brand,
-                }],
-                include: [{
-                    model: models.Group,
-                }],
-                include: [{
-                    model: models.Category,
-                }]
+                    model: models.Brand
+                    
+                },
+                {
+                    model: models.Category
+                }
+                ]
             }
         );
         
@@ -92,17 +91,17 @@ const createProduct = async (req, res, next) => {
     }
     const createdProduct = {
         name: req.body.name,
-        productCode: req.body.productCode,
+        // productCode: req.body.productCode,
         price: req.body.price,
-        imagePath: req.file.path,
-        availability: req.body.availability,
+        // imagePath: req.file.path,
+        // availability: req.body.availability,
         amount: req.body.amount,
         description: req.body.description,
-        color: req.body.color,
+        // color: req.body.color,
         alias: getAlias(req.body.name),
         brandId: req.body.brandId,
         categoryId: req.body.categoryId,
-        groupId: req.body.groupId
+        // groupId: req.body.groupId
       };
     let products
     products = await Product.create(createdProduct);

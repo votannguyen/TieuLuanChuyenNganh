@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import "../profile/profile.css";
-
 import UserService from '../../services/UserService';
+import { Button, Form } from 'react-bootstrap';
 class Profile extends Component {
     state = {
         closeForm: false,
-        users:{},
+        users: {},
         user: [],
+        male: false,
+        female: true,
+        gender: '',
+        check: ''
 
     }
-    componentDidMount = ()=> {
+    componentDidMount = () => {
         this.loadData();
-      }
+    }
     loadData = () => {
         UserService.getUser().then((res) => {
-          this.setState({ users: res.data.users });
-          console.log(this.state.users)
+            this.setState({ user: res.data.users });
         });
-      }
+    }
     // closeFormResetPassword(){
     //     this.setState({closeForm: false});
     // }
@@ -30,9 +33,120 @@ class Profile extends Component {
             this.setState({ closeForm: false });
         }
     }
-    changeInfo = ()=>{
-        
+    InputOnChange = (event) => {
+        const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
+
+        const newUser = { ...this.state.user, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ user: newUser });
+        console.log(name, value);
+        console.log(this.state.user);
+
+        //Có thể viết là trung tên major được phép bỏ luôn biến ngoài sau ':'
+        // const major = {...this.state.major, [name]: value} // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        // this.setState({major});
+        // console.log(name, value);
     }
+    changeInfo = () => {
+        UserService.updateUser(this.state.user).then(res => {
+            alert("Cập nhật thông tin thành công")
+            this.loadData();
+
+        }, function (error) {
+
+        });
+    }
+    checkGenderFemale = (event) => {        //biến index để check là nam hay nữ
+        const newUser = { ...this.state.user, gender: '0' } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ user: newUser });
+        return (
+            <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                    <input className="form-check-input mt-2" name="gender" type="radio" id="inlineRadio1" value="option1" onClick={this.genderCheck} />
+                    <label class="form-check-label mt-2" for="inlineRadio1">Nam</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" checked/>
+                    <label class="form-check-label mt-2" for="inlineRadio2">Nữ</label>
+                </div>
+            </div>
+        )
+    }
+    checkGenderMale = (event) => {        //biến index để check là nam hay nữ
+        const newUser = { ...this.state.user, gender: '1' } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ user: newUser });
+        return (
+            <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                    <input className="form-check-input mt-2" name="gender" type="radio" id="inlineRadio1" value="option1" checked />
+                    <label class="form-check-label mt-2" for="inlineRadio1">Nam</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" onClick={this.genderCheck}/>
+                    <label class="form-check-label mt-2" for="inlineRadio2">Nữ</label>
+                </div>
+            </div>
+        )
+    }
+    genderCheck = () => {
+        if (this.state.user.gender === '1') {
+            return (
+                <div class="col-sm-10">
+                    <div class="form-check form-check-inline">
+                        <input className="form-check-input mt-2" name="gender" type="radio" id="inlineRadio1" value="option1" checked />
+                        <label class="form-check-label mt-2" for="inlineRadio1">Nam</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" onClick={this.checkGenderFemale}/>
+                        <label class="form-check-label mt-2" for="inlineRadio2">Nữ</label>
+                    </div>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div class="col-sm-10">
+                    <div class="form-check form-check-inline">
+                        <input className="form-check-input mt-2" name="gender" type="radio" id="inlineRadio1" value="option1" onClick={this.checkGenderMale} />
+                        <label class="form-check-label mt-2" for="inlineRadio1">Nam</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" checked/>
+                        <label class="form-check-label mt-2" for="inlineRadio2">Nữ</label>
+                    </div>
+                </div>
+            )
+        }
+    }
+    // onClickGenderMale=()=>{
+    //     return (
+    //         <div class="col-sm-10">
+    //             <div class="form-check form-check-inline">
+    //                 <input className="form-check-input mt-2" name="gender" type="radio" id="inlineRadio1" value="option1" checked />
+    //                 <label class="form-check-label mt-2" for="inlineRadio1">Nam</label>
+    //             </div>
+    //             <div class="form-check form-check-inline">
+    //                 <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" onClick={this.checkGenderFemale} />
+    //                 <label class="form-check-label mt-2" for="inlineRadio2">Nữ</label>
+    //             </div>
+    //         </div>
+    //     )
+
+    // }
+    // onClickGenderFemale=()=>{
+    //     return (
+    //         <div class="col-sm-10">
+    //             <div class="form-check form-check-inline">
+    //                 <input className="form-check-input mt-2" name="gender" type="radio" id="inlineRadio1" value="option1" onClick={this.checkGenderMale}  />
+    //                 <label class="form-check-label mt-2" for="inlineRadio1">Nam</label>
+    //             </div>
+    //             <div class="form-check form-check-inline">
+    //                 <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" onClick={this.checkGenderFemale} checked/>
+    //                 <label class="form-check-label mt-2" for="inlineRadio2">Nữ</label>
+    //             </div>
+    //         </div>
+    //     )
+
+    // }
     render() {
         return (
             <div className="backGroundLayoutProfile" onLoad={this.componentDidMount}>
@@ -64,64 +178,72 @@ class Profile extends Component {
                             <div className="container backGroundCol containerTopANdBottomRight">
                                 <div class="tab-content" id="v-pills-tabContent">
                                     <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                    <h3>Thông tin tài khoản</h3>
-                                        <form>
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-sm-2 col-form-label">Họ tên</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" readonly class="form-control form-control-Profile inputTemp" id="staticName" value={this.state.users.fullName} />
-                                                </div>
+                                        <h3>Thông tin tài khoản</h3>
+
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-sm-2 col-form-label">Họ tên</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="fullName" readonly class="form-control form-control-Profile inputTemp" id="staticName" onChange={this.InputOnChange} value={this.state.user.fullName || ''} />
                                             </div>
-                                            <div class="form-group row">
-                                                <label for="inputPassword" class="col-sm-2 col-form-label">Số điện thoại</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" class="form-control form-control-Profile " id="inputPassword" placeholder="" value={this.state.users.phone}/>
-                                                </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputPassword" class="col-sm-2 col-form-label">Số điện thoại</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="phone" class="form-control form-control-Profile " id="inputPassword" placeholder="Số điện thoại" onChange={this.InputOnChange} value={this.state.user.phone || ''} />
                                             </div>
-                                            <div class="form-group row">
-                                                <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" class="form-control form-control-Profile " id="inputPassword" placeholder="" value={this.state.users.email} disabled />
-                                                </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control form-control-Profile " id="inputPassword" placeholder="" onChange={this.InputOnChange} value={this.state.user.email || ''} disabled />
                                             </div>
-                                            <div class="form-group row">
-                                                <label for="inputPassword" class="col-sm-2 col-form-label">Giới tính</label>
-                                                <div class="col-sm-10">
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input mt-2" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
-                                                        <label class="form-check-label mt-2" for="inlineRadio1">Nam</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input mt-2" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
-                                                        <label class="form-check-label mt-2" for="inlineRadio2">Nữ</label>
-                                                    </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputPassword" class="col-sm-2 col-form-label">Giới tính</label>
+                                            <div class="col-sm-10">
+                                                {/* <div class="form-check form-check-inline">
+                                                    <input className="form-check-input mt-2" name="gender" type="radio" id="inlineRadio1" value="option1" onClick={this.checkGenderMale} />
+                                                    <label class="form-check-label mt-2" for="inlineRadio1">Nam</label>
                                                 </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" onClick={this.checkGenderFemale} />
+                                                    <label class="form-check-label mt-2" for="inlineRadio2">Nữ</label>
+                                                </div> */}
+                                                {this.genderCheck()}
                                             </div>
-                                            <div class="form-group row">
-                                                <label for="inputPassword" class="col-sm-2 col-form-label">Ngày sinh</label>
-                                                <div class="col-sm-10">
-                                                    <input type="date" class="form-control form-control-Profile" id="inputDatetime" />
-                                                </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputPassword" class="col-sm-2 col-form-label">Ngày sinh</label>
+                                            <div class="col-sm-10">
+                                                <Form.Control type="date" name="birthday" className="form-control form-control-Profile" onChange={this.InputOnChange} value={this.state.user.birthday || ''} />
+                                                {/* <input type="date" name="birthday" class="form-control form-control-Profile" id="inputDatetime" onChange={this.InputOnChange} value={this.state.user.birthday || ''} /> */}
                                             </div>
-                                            <div class="form-group row">
-                                                <div className="col-sm-2"></div>
-                                                <div class="col-sm-10">
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputPassword" class="col-sm-2 col-form-label">Địa chỉ</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control form-control-Profile" name="address" id="inputAddress" placeholder="" onChange={this.InputOnChange} value={this.state.user.address || ''} />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div className="col-sm-2"></div>
+                                            <div class="col-sm-10">
                                                 <div className="btn btn-primary" onClick={this.changeInfo}>Lưu thông tin</div>
-                                                </div>
                                             </div>
-                                            
-                                            <div class="form-group row">
-                                                <label for="inputPassword" class="col-sm-2 col-form-label"></label>
-                                                <div class="col-sm-10">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="defaultCheck1" onClick={() => this.showFormResetPassword(this.state.closeForm)} />
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Đổi mật khẩu
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="inputPassword" class="col-sm-2 col-form-label"></label>
+                                            <div class="col-sm-10">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="defaultCheck1" onClick={() => this.showFormResetPassword(this.state.closeForm)} />
+                                                    <label class="form-check-label" for="defaultCheck1">
+                                                        Đổi mật khẩu
                                                         </label>
-                                                    </div>
                                                 </div>
                                             </div>
-                                        </form>
+                                        </div>
+
                                         {
                                             this.state.closeForm ?
                                                 <form className="resetPassword" id="resetPassword">
@@ -177,7 +299,7 @@ class Profile extends Component {
                                                 <p className="pPaddingRight">hàng</p>
                                             </div>
                                         </div>
-                                        <hr className="paddingHr"/>
+                                        <hr className="paddingHr" />
                                         <div className="row paddingRow paddingRow">
                                             <div className="col-md-2">
                                                 <Link className=" fontTextOder LinkColor" to="/invoicedetail">794258369</Link>
@@ -196,10 +318,10 @@ class Profile extends Component {
                                                 <p className="pPaddingRight fontTextOder">công</p>
                                             </div>
                                         </div>
-                                        <hr className="paddingHr"/>
+                                        <hr className="paddingHr" />
                                     </div>
 
-                                        
+
                                     <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
                                 </div>
                             </div>

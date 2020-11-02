@@ -5,9 +5,12 @@ const login = (email, password) => {
     return Api.post(Api.url.login, data);
 }
 const register = data => Api.post(Api.url.register, data);
-const getUser = () => Api.get(`${Api.url.userInfo}`);
+const getUser = () => Api.get(Api.url.userInfo);
+const updateUser = data => Api.patch(Api.url.updateUser, data);
+
 export default{
     login : login,
     register: register,
-    getUser: getUser
+    getUser: getUser,
+    updateUser: updateUser
 };

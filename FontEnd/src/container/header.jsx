@@ -186,7 +186,7 @@ class Header extends Component {
                                                 <nav>
                                                     <ul id="navigation">
                                                         <li><Link to="/productList">TẤT CẢ SẢN PHẨM</Link></li>
-                                                        <li ><a href="#">NAM</a>
+                                                        <li ><Link href="#">NAM</Link>
                                                             {/* <ul className="submenu">
                                                                 <li><a href="product_list.html"> Product list</a></li>
                                                                 <li><a href="single-product.html"> Product Details</a></li>

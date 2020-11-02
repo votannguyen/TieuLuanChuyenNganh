@@ -18,7 +18,7 @@ import {
 import usersData from '../../users/UsersData';
 import "../products/products.css";
 import "../brands/brand.css";
-import BrandService from "../../../services/BrandService";
+import CategoryService from "../../../services/CategoryService";
 
 const getBadge = status => {
     switch (status) {
@@ -33,33 +33,36 @@ const fields = ['id','name', 'summary', 'imagePath']
 class Products extends Component {
     state = {
         showModal: false,
-        brands:{},
-        brand: [],
-        listShowBrands:[],
+        categories:{},
+        category: [],
+        listShowCategory:[],
     };
     componentDidMount() {
         this.loadData();
         
     }
     loadData = () => {
-        BrandService.listBrand().then((res) => {
-            this.setState({ brand: res.data.brands });
-            this.setState({ listShowBrands: res.data.brands });
-            console.log(this.state.brand)
+        CategoryService.listCategory().then((res) => {
+            this.setState({ category: res.data.categories });
+            this.setState({ listShowCategory: res.data.categories });
+            console.log(this.state.listShowCategory);
+
         });
     }
     InputOnChange = (event) => {
         const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
 
-        const newBrand = { ...this.state.brand, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
-        this.setState({ brand: newBrand });
+        const newCategory = { ...this.state.category, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ category: newCategory });
+        console.log(this.state.category);
     }
     save=()=>{
-        BrandService.createBrand(this.state.brand).then(res => {
+        CategoryService.createCategory(this.state.category).then(res => {
             alert("Cập nhật thông tin thành công")
             this.loadData();
 
         }, function (error) {
+            alert("Lỗi")
 
         });
     }
@@ -83,7 +86,7 @@ class Products extends Component {
                 {/* <div className="row">
           <div className="col-sm-10"></div> */}
                 <div className="container">
-                    <button type="button" class="btn btn-sm btnAddProduct" onClick={this.setShowModal}><p class="fas fa-plus-circle textInBtnAddProduct">   Thêm thương hiệu</p></button>
+                    <button type="button" class="btn btn-sm btnAddProduct" onClick={this.setShowModal}><p class="fas fa-plus-circle textInBtnAddProduct">   Thêm Category</p></button>
                     {/* </div> */}
                 </div>
                 <>
@@ -97,14 +100,14 @@ class Products extends Component {
                     >
                         <Modal.Header closeButton>
                             <Modal.Title id="example-custom-modal-styling-title " dialogClassName="textCenterModalTitle">
-                                Thêm thông tin thương hiệu
+                                Thêm thông tin Category
                         </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Form>
                                 <Form.Group controlId="formBasicName">
-                                    <Form.Label>Tên thương hiệu</Form.Label>
-                                    <Form.Control type="text" name="nameProduct" placeholder="Tên sản phẩm" name="name" onChange={this.InputOnChange}/>
+                                    <Form.Label>Tên Category</Form.Label>
+                                    <Form.Control type="text" name="nameProduct" placeholder="Tên danh mục" name="name" onChange={this.InputOnChange}/>
                                 </Form.Group>
                                 <Form.Group controlId="exampleForm.ControlTextarea1">
                                     <Form.Label>Mô tả</Form.Label>
@@ -122,11 +125,11 @@ class Products extends Component {
                         <CCol>
                             <CCard>
                                 <CCardHeader>
-                                    <p className="fontSizeNameTable">Danh sách thương hiệu</p>
+                                    <p className="fontSizeNameTable">Danh sách category</p>
                                 </CCardHeader>
                                 <CCardBody>
                                     <CDataTable
-                                        items={this.state.listShowBrands}
+                                        items={this.state.listShowCategory}
                                         fields={fields}
                                         hover
                                         striped

@@ -140,7 +140,7 @@ class ProductDetail extends Component {
                         <div className="col-lg-6 paddingLeftContainerRight">
                             <h3>VANS CLASSIC SK8-HI MOSS GREEN - CHÍNH HÃNG</h3>
                             <p>5<i class="fas fa-star yellowStar"></i> <Link className="LinkHoverReview">(Xem x nhận xét)</Link></p>
-                            <p><i class="fas fa-trophy yellowAward"></i> Đứng thứ X trong <Link className="LinkHoverReview">Top 30 đôi giày bán chạy nhất shop</Link></p>
+                            {/* <p><i class="fas fa-trophy yellowAward"></i> Đứng thứ X trong <Link className="LinkHoverReview">Top 30 đôi giày bán chạy nhất shop</Link></p> */}
                             <div className="row">
                                 <div className="col-lg-4 positionR">
                                     <p className="">Thương hiệu: <Link className="LinkHoverReview ">Vans</Link></p>

@@ -34,7 +34,7 @@
   margin-left: 23px;
   margin-top: 10px;
 }
-@media only screen and (min-width: 1920px) {
+@media only screen and (min-width: 1600px) {
   .form-box {
     width: 100% !important;
   }
@@ -97,7 +97,7 @@
     margin-right: -100px;
   }
 }
-@media only screen and (min-width: 1280px) and (max-width: 1366px) {
+@media only screen and (min-width: 1024px) and (max-width: 1599px) {
   .form-box{
     width: 100% !important;
   }
@@ -169,7 +169,13 @@
     margin-top: 2px;
   }
 }
-@media only screen and (max-width: 376px) and (max-width: 414px) {
+@media only screen and (max-width: 414px) {
+  .logo {
+    display: none;
+  }
+  .none-mobile {
+    display: none;
+  }
   .favorit-items {
     margin-left: 50px;
     width: 50px;

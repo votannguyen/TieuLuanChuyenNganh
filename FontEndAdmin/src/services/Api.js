@@ -7,6 +7,7 @@ const url={
     product: "api/product/",
     brand: "api/brand/",
     category: "api/category",
+
 };
 const instance = axios.create({
     baseURL: url.baseUrl,
