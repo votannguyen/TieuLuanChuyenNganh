@@ -31,6 +31,12 @@ export default [
   },
   {
     _tag: 'CSidebarNavItem',
+    name: 'Người dùng',
+    to: '/shop/user',
+    icon: "cil-user",
+  },
+  {
+    _tag: 'CSidebarNavItem',
     name: 'Sản Phẩm',
     to: '/shop/product',
     icon: "cil-basket",

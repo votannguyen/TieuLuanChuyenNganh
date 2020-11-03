@@ -6,7 +6,8 @@ const url={
     baseUrl: "http://localhost:5000",
     product: "api/product/",
     brand: "api/brand/",
-    category: "api/category",
+    category: "api/category/",
+    user: "api/user/",
 
 };
 const instance = axios.create({

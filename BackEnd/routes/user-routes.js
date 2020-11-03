@@ -21,7 +21,6 @@ router.get('/',usersControllers.getUser);
 
 router.get('/confirmation/:token', usersControllers.getConfirmation);
 
-
 router.use(checkAuth);
 
 router.get('/myaccount', usersControllers.getMyUser);

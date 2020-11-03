@@ -1,0 +1,28 @@
+.info{
+    color: #379AF4;
+    padding-left: 25px;
+    font-size: 22px;
+    margin-top: -5px;
+}
+.info:hover{
+    cursor: pointer;
+}
+.delete{
+    color: red;
+    padding-left: 25px;
+    font-size: 22px;
+    margin-top: -5px;
+}
+.delete:hover{
+    cursor: pointer;
+}
+.tableFieldName{
+    color: #2F8CFB;
+    font-weight: 600;
+}
+.female{
+    color: #D9480F;
+}
+.male{
+    color: #15AABF
+}

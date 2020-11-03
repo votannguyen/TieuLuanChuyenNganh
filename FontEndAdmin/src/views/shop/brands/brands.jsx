@@ -132,7 +132,7 @@ class Products extends Component {
                                         striped
                                         bordered
                                         size="lg"
-                                        itemsPerPage={15}
+                                        itemsPerPage={3}
                                         pagination
                                         scopedSlots={{
                                             'status':

@@ -36,22 +36,23 @@ class Products extends Component {
     listProduct: [],
     brand: [],
     category: [],
+    listFilter: []
   };
   componentDidMount() {
     this.loadData();
   }
   loadData = () => {
     ProductService.listProduct().then((res) => {
-      this.setState({ products: res.data.products });
+      this.setState({ products: res.data.products.sort((a, b)=> a.id - b.id) });
       this.setState({ listProduct: res.data.products });
     });
-    console.log(this.state.products)
     BrandService.listBrand().then((res) => {
       this.setState({ brand: res.data.brands });
     });
     CategoryService.listCategory().then((res) => {
       this.setState({ category: res.data.categories })
     })
+
 
   }
   InputOnChange = (event) => {
@@ -78,6 +79,7 @@ class Products extends Component {
   }
   setCloseModal = () => {
     this.setState({ showModal: false });
+    
   }
   InputOnChangeCategory = (event) => {
     const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
@@ -108,7 +110,7 @@ class Products extends Component {
 
   render() {
     return (
-      <div onLoad={this.loadData}>
+      <div>
         {/* <div className="row">
           <div className="col-sm-10"></div> */}
         <div className="container">
