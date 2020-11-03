@@ -33,7 +33,6 @@ const createGroup = async (req, res, next) => {
     }
     const createdGroup = {
         name: req.body.name,
-        imagePath: req.file.path,
         summary: req.body.summary
       };
     let Groups
@@ -97,7 +96,6 @@ const updateGroup = async (req, res, next) => {
     }
     const updatedGroup = {
         name: req.body.name,
-        imagePath: req.file.path,
         summary: req.body.summary
       };
     let Groups

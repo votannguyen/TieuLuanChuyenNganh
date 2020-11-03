@@ -52,7 +52,7 @@ const createCategory = async (req, res, next) => {
     }
     const createdCategory = {
         name: req.body.name,
-        // imagePath: req.file.path,
+        imagePath: req.file.path,
         summary: req.body.summary,
         alias: getAlias(req.body.name)
       };

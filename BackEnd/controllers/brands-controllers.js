@@ -33,7 +33,7 @@ const createBrand = async (req, res, next) => {
     }
     const createdBrand = {
         name: req.body.name,
-        // imagePath: req.file.path,
+        imagePath: req.file.path,
         summary: req.body.summary
       };
     let brands
@@ -100,7 +100,7 @@ const updateBrand = async (req, res, next) => {
         imagePath: req.file.path,
         summary: req.body.summary
       };
-    let brands
+    let brands;
     brands = await Brand.update(updatedBrand, {
         where: {name: brandName}
     });

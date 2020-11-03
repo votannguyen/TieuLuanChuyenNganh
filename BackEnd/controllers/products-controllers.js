@@ -3,6 +3,7 @@ const models = require('../models'); //vì đang trong controllers nên phải r
 const Category = models.Category;
 const Brand = models.Brand;
 const Product = models.Product;
+const Group = models.Group;
 const { validationResult } = require('express-validator'); //lấy dc lỗi từ body validate
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op; 
@@ -31,14 +32,17 @@ const getAllProduct = async (req, res, next) => {
     try {
         products = await Product.findAll(
             {
-                include: [{
-                    model: models.Brand
-                    
-                },
-                {
-                    model: models.Category
-                }
-                ]
+                include: [
+                    {
+                        model: Brand
+                    },
+                    {
+                        model: Category
+                    },
+                    {
+                        model: Group
+                    }
+                ],
             }
         );
         
@@ -63,15 +67,17 @@ const getProductById = async (req, res, next) => {
             where: {
                 id: productId
             },
-            include: [{
-                model: models.Brand,
-            }],
-            include: [{
-                model: models.Group,
-            }],
-            include: [{
-                model: models.Category,
-            }]
+            include: [
+                {
+                    model: Brand
+                },
+                {
+                    model: Category
+                },
+                {
+                    model: Group
+                }
+            ],
         });
     }
     catch (err) {
@@ -91,17 +97,17 @@ const createProduct = async (req, res, next) => {
     }
     const createdProduct = {
         name: req.body.name,
-        // productCode: req.body.productCode,
+        productCode: req.body.productCode,
         price: req.body.price,
-        // imagePath: req.file.path,
-        // availability: req.body.availability,
+        imagePath: req.file.path,
+        availability: req.body.availability,
         amount: req.body.amount,
         description: req.body.description,
-        // color: req.body.color,
+        color: req.body.color,
         alias: getAlias(req.body.name),
         brandId: req.body.brandId,
         categoryId: req.body.categoryId,
-        // groupId: req.body.groupId
+        groupId: req.body.groupId
       };
     let products
     products = await Product.create(createdProduct);

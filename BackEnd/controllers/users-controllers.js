@@ -8,30 +8,21 @@ const { validationResult } = require('express-validator'); //lấy dc lỗi từ
 const {JWT_SECRET, GMAIL_USER, GMAIL_PASS} = require('../config')
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const {getToken} = require('../middleware/check-auth');
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op; 
 
 const transporter = nodemailer.createTransport({
-    service: 'Gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
       user: GMAIL_USER,
       pass: GMAIL_PASS
     },
   });
 
-const getToken = (user) => {
-    return jwt.sign (
-        {
-          email: user.email,
-          isAdmin: user.isAdmin,
-        },
-        JWT_SECRET,
-        {
-            expiresIn: '1h',
-        }
-    );
-};
 
 const getUser = async (req, res, next) => {
     let users;
@@ -49,6 +40,24 @@ const getUser = async (req, res, next) => {
     }
     res.status(200).json({users});
 };
+
+const getUserById = async (req, res, next) => {
+    let users;
+    const id = req.params.uid
+    try{
+        users = await User.findByPk(id);
+    } catch (err) {
+        const error = new HttpError('Something went wrong, coud not find any users', 500);
+        return next(error);
+    }
+
+    if(!users)
+    {
+        const error =  new HttpError('Could not find any users', 404);
+        return next(error);
+    }
+    res.status(200).json({users});
+}
 
 const register = async(req, res, next) =>{
     const errors = validationResult(req);
@@ -123,6 +132,7 @@ const register = async(req, res, next) =>{
 
 const login = async(req,res,next) => {
     const {email, password} = req.body;
+    console.log(email, password);
     let existingUser;
 
     try{
@@ -136,10 +146,10 @@ const login = async(req,res,next) => {
     }
     
     if(!existingUser) {
-        const error = new HttpError('Email or Password is invalid', 404);
+        const error = new HttpError('Email or Password is invalid', 401);
         return next(error);
     }
-    if(existingUser.isConfirm === false && existingUser.isLock === false) {
+    if(existingUser.isConfirm === false || existingUser.isLock === true ) {
         const error = new HttpError('Your account is not confirm or was locked', 401);
         return next(error);
     }
@@ -219,7 +229,7 @@ const getConfirmation = async(req, res, next) => {
     res.status(200).json({message: 'Success'});
 }
 
-const updateUser = async(req, res, next) => {
+const updateMyUser = async(req, res, next) => {
     let users;
     let userCurrent =  req.userData.email;
     try{
@@ -251,6 +261,8 @@ const updateUser = async(req, res, next) => {
         userUpdate = await User.update(userInfo, {
             where: { email: userCurrent}
         });
+        console.log(userInfo);
+        console.log(userUpdate);
     } catch (err)
     {
         console.log(err);
@@ -266,4 +278,30 @@ const updateUser = async(req, res, next) => {
     res.status(200).json({userUpdate});
 }
 
-module.exports = {getUser, getMyUser,  register, login, getConfirmation, updateUser};
+const lockUser = async(req, res, next) => {
+    const id = req.params.uid;
+    console.log(id);
+    const userLock = {
+        isLock: true
+    } 
+
+    let users;
+    try{
+        users = await User.update(userLock,{
+            where: { id: id } 
+        });
+        console.log(users);
+    }
+    catch (err) {
+        const error = new HttpError('Something went wrong, can not lock', 500);
+        return next(error);
+    }
+    if(!users)
+    {
+        const error =  new HttpError('Could not lock this user', 404);
+        return next(error);
+    }
+    res.status(200).json({message: 'Update success'});
+}
+
+module.exports = {getUser, getMyUser,  register, login, getConfirmation, updateMyUser, getUserById, lockUser};
