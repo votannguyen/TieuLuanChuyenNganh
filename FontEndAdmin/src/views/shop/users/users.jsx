@@ -32,16 +32,18 @@ const fields = ['name', 'amount', 'brandId', 'categoryId', 'description', 'price
 class Products extends Component {
   state = {
     showModal: false,
-    user : [],
-    listUser : []
-    
+    user: [],
+    listUser: [],
+    showModalBlock: false,
+
+
   };
   componentDidMount() {
     this.loadData();
   }
   loadData = () => {
     UserService.listUser().then((res) => {
-      this.setState({ listUser: res.data.users.sort((a,b)=>a.id - b.id)});
+      this.setState({ listUser: res.data.users.sort((a, b) => a.id - b.id) });
     });
   }
   InputOnChange = (event) => {
@@ -95,20 +97,29 @@ class Products extends Component {
     }
     console.log(this.state.products)
   }
-  processGender = (value)=>{
-    if(value === '1'){
-      return(
+  processGender = (value) => {
+    if (value === '1') {
+      return (
         <i class="fas fa-male male fa-2x"></i>
       )
     }
-    else{
-      return(
+    else {
+      return (
         <i class="fas fa-female female fa-2x"></i>
       )
     }
   }
+  blockUser = () => {
+    this.setState({ showModalBlock: true });
+    console.log(this.state.showModalBlock)
+  }
+  setCloseModalBlock = () => {
+    this.setState({ showModalBlock: false });
+  }
+  saveBlockUer = () =>{
+    
+  }
   render() {
-
     return (
       <div>
         <>
@@ -126,8 +137,145 @@ class Products extends Component {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              
+              <div className="row">
+                <div className="col-xl-5">
+                  <div className="row">
+                    <div className="col-xl-4">
+                      <img className="imgSizeUser" src={require('../../../img/user/avatar.jpg')} />
+                    </div>
+                    <div className="col-xl-8">
+                      <div className="nameUserOnModal">Võ Tấn Nguyên</div>
+                      <div className="scoreUserAccumulation">Điểm thưởng: 100</div>
+                      <div className="scoreUserAccumulation">
+                        <div className="row">
+                        <div className="col-5">Trạng thái:</div>
+                        <CBadge color={getBadge('Active')}>
+                          {'Active'}
+                        </CBadge>
+                        </div>
+                      </div>
+                      <div className="scoreUserAccumulation">Ngày tham gia: 03-11-2020</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="hrS"></div>
+                <div className="col-xl-6">
+                  <div className="row">
+                    <div className="col-lg-4">
+                      <div className="infoUserOnModal">Số điện thoại:</div>
+                      <div className="infoUserOnModal">Email:</div>
+                      <div className="infoUserOnModal">Ngày sinh:</div>
+                      <div className="infoUserOnModal">Địa chỉ:</div>
+                      <div className="infoUserOnModal">Giới tính:</div>
+                    </div>
+                    <div className="col-lg-8">
+                      <div className="infoUserOnModal colorInfo">0962536589</div>
+                      <div className="infoUserOnModal colorInfo">votannguyen3006@gmail.com</div>
+                      <div className="infoUserOnModal">09-06-1999</div>
+                      <div className="infoUserOnModal">Q9, TP.HCM</div>
+                      <div className="infoUserOnModal">Nam</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div className="container">
+                <>
+                  <CRow>
+                    <CCol>
+                      <CCard>
+                        <CCardHeader>
+                          <p className="fontSizeNameTable">Danh sách đơn hàng</p>
+                        </CCardHeader>
+                        <CCardBody>
+                          <Table striped hover>
+                            <thead>
+                              <tr>
+                                <th>#</th>
+                                <th>Họ Tên</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
+                                <th>Địa chỉ</th>
+                                <th>Giới tính</th>
+                                <th>Ngày sinh</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
+
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {this.state.listUser.map((listUser, idx) => {
+                                return (
+                                  <tr>
+                                    <td>{idx + 1}</td>
+                                    <td className="tableFieldName">{listUser.fullName}</td>
+                                    <td>{listUser.email}</td>
+                                    <td>{listUser.phone}</td>
+                                    <td>{listUser.address}</td>
+                                    <td>{this.processGender(listUser.gender)}</td>
+                                    <td>{listUser.birthday}</td>
+                                    <td>
+                                      <CBadge color={getBadge('Active')}>
+                                        {'Active'}
+                                      </CBadge>
+                                    </td>
+                                    <td>
+                                      <div className="row">
+                                        <div className="col-3 info">
+                                          <i class="fas fa-info-circle" onClick={this.setShowModal}></i>
+                                        </div>
+                                        <div className="col-3 delete">
+                                          <i class="fas fa-user-minus"></i>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                )
+                              })}
+                            </tbody>
+                          </Table>
+                        </CCardBody>
+                      </CCard>
+                    </CCol>
+                  </CRow>
+                </>
+              </div>
             </Modal.Body>
+          </Modal>
+        </>
+        {/* Modal block user */}
+        <>
+          <Modal
+            show={this.state.showModalBlock}
+            onHide={this.setCloseModalBlock}
+            keyboard={false}
+            backdrop="static"
+            dialogClassName="modalMaxWidthDelete"
+            aria-labelledby="example-custom-modal-styling-title"
+          >
+            <Modal.Header closeButton className="backModalDele">
+              <Modal.Title id="example-custom-modal-styling-title">
+                <div className="textCenterModalTitleUser"><i class="fas fa-3x fa-exclamation-triangle noteIconModal"></i></div>
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="textCaution">Bạn có chắc chắn muốn khóa tài khoản này?</div>
+              <div className="container containerSubModalDel row">
+                <div className="col-lg-6">
+                  <div className="btn btnModalDelAccept" onClick={this.saveBlockUer}>Đồng ý</div>
+                </div>
+                <div className="col-lg-6">
+                  <div className="btn btnModalDelCancel" onClick={this.setCloseModalBlock}>Hủy</div>
+                </div>
+              </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <div>
+
+
+              </div>
+              
+            </Modal.Footer>
           </Modal>
         </>
 
@@ -136,7 +284,7 @@ class Products extends Component {
             <CCol>
               <CCard>
                 <CCardHeader>
-                  <p className="fontSizeNameTable">Danh sách sản phẩm</p>
+                  <p className="fontSizeNameTable">Danh sách người dùng</p>
                 </CCardHeader>
                 <CCardBody>
                   <Table striped hover>
@@ -158,7 +306,7 @@ class Products extends Component {
                       {this.state.listUser.map((listUser, idx) => {
                         return (
                           <tr>
-                            <td>{idx+1}</td>
+                            <td>{idx + 1}</td>
                             <td className="tableFieldName">{listUser.fullName}</td>
                             <td>{listUser.email}</td>
                             <td>{listUser.phone}</td>
@@ -173,10 +321,10 @@ class Products extends Component {
                             <td>
                               <div className="row">
                                 <div className="col-3 info">
-                                  <i class="fas fa-info-circle"></i>
+                                  <i class="fas fa-info-circle" onClick={this.setShowModal}></i>
                                 </div>
                                 <div className="col-3 delete">
-                                  <i class="fas fa-user-minus"></i>
+                                  <i class="fas fa-user-minus" onClick={this.blockUser}></i>
                                 </div>
                               </div>
                             </td>
@@ -185,7 +333,7 @@ class Products extends Component {
                       })}
                     </tbody>
                   </Table>
-                  
+
                 </CCardBody>
               </CCard>
             </CCol>

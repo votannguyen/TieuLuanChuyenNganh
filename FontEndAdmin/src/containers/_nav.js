@@ -37,6 +37,12 @@ export default [
   },
   {
     _tag: 'CSidebarNavItem',
+    name: 'Đơn hàng',
+    to: '/shop/order',
+    icon: "cil-notes",
+  },
+  {
+    _tag: 'CSidebarNavItem',
     name: 'Sản Phẩm',
     to: '/shop/product',
     icon: "cil-basket",
