@@ -6,11 +6,19 @@ import * as serviceWorker from './serviceWorker';
 // import 'bootstrap/dist/css/bootstrap.css'
 // import 'bootstrap/dist/js/bootstrap.bundle'
 import { BrowserRouter } from 'react-router-dom';
+import { createStore } from 'redux';
+import appReducers from './redux/reducers/index';
+import { Provider } from 'react-redux';
 
-
+const store = createStore(
+  appReducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 ReactDOM.render(
   <BrowserRouter>
-  <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </BrowserRouter>,
   document.getElementById('root')
 );

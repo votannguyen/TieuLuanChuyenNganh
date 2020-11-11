@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import '../productDetail/productDetail.css';
 import ReactImageMagnify from 'react-image-magnify';
+import { queryAllByTestId } from '@testing-library/react';
+import queryString from 'query-string';
 
 class ProductDetail extends Component {
     state = {
@@ -36,8 +38,16 @@ class ProductDetail extends Component {
         }
 
     }
-    render() {
+    componentDidMount() {
 
+    }
+    render() {
+        var { product } = this.props
+        const formatter = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+            minimumFractionDigits: 0
+        })
         return (
             <div className="backGroundLayoutProDetail">
                 <div class="slider-area ">
@@ -115,10 +125,10 @@ class ProductDetail extends Component {
                                                 smallImage: {
                                                     // alt: 'Wristwatch by Ted Baker London',
                                                     isFluidWidth: true,
-                                                    src: require('../../img/Shoe/vans.png'),
+                                                    src: product.image,
                                                 },
                                                 largeImage: {
-                                                    src: require('../../img/Shoe/vans.png'),
+                                                    src: product.image,
                                                     width: 1000,
                                                     height: 1000,
                                                     enlargedImageClassName: 'backGroundZoomImg'
@@ -138,24 +148,24 @@ class ProductDetail extends Component {
                         </div>
                         <hr className="vertical-lineHR" />
                         <div className="col-lg-6 paddingLeftContainerRight">
-                            <h3>VANS CLASSIC SK8-HI MOSS GREEN - CHÍNH HÃNG</h3>
+                            <h3>{product.name}</h3>
                             <p>5<i class="fas fa-star yellowStar"></i> <Link className="LinkHoverReview">(Xem x nhận xét)</Link></p>
                             {/* <p><i class="fas fa-trophy yellowAward"></i> Đứng thứ X trong <Link className="LinkHoverReview">Top 30 đôi giày bán chạy nhất shop</Link></p> */}
                             <div className="row">
                                 <div className="col-lg-4 positionR">
-                                    <p className="">Thương hiệu: <Link className="LinkHoverReview ">Vans</Link></p>
+                                        <p className="">Thương hiệu: <Link className="LinkHoverReview ">{product.brand}</Link></p>
                                 </div>
                                 <div className="col-lg-4 positionR">
-                                    <p className="pColorMaSP">Mã SP: 0659844464</p>
+                                        <p className="pColorMaSP">Mã SP: {product.code}</p>
                                 </div>
                             </div>
                             <hr className="paddingDivHR" />
                             <div className="container colorBackContainerShip">
                                 <p className="pColorShip"><i class="fas fa-truck iconShip"></i>Miễn phí ship tối đa 50k cho đơn hàng trên 1.000.000 vnđ</p>
                             </div>
-                            <p className="pPriceProduct">1.665.000 ₫</p>
-                            <p className="pSave">Tiết kiệm: 10% (185.000₫)</p>
-                            <p className="pSave">Giá thị trường: 1.850.000 ₫ </p>
+                            <p className="pPriceProduct">{formatter.format(product.price)}</p>
+                            <p className="pSave">Tiết kiệm: 10% ({formatter.format(product.price*0.9)})</p>
+                            <p className="pSave">Giá thị trường: {formatter.format(product.price - (product.price*0.9))} </p>
                             <hr className="paddingDivHR" />
                             <p>Màu sắc:
                                 <div className="containerChildColor pInline">Màu xanh rêu</div>
@@ -168,7 +178,7 @@ class ProductDetail extends Component {
                                 <div className="sizeShoe pInline">43</div>
                                 <div className="sizeShoe pInline">44</div>
                             </p>
-                            <p>Còn hàng: <span className="spanQuantity">37</span> sản phẩm</p>
+                                        <p>Còn hàng: <span className="spanQuantity">{product.inventory}</span> sản phẩm</p>
                             <hr className="paddingDivHR" />
                             <div className="container containerBuyWish">
                                 <div className="row">
@@ -179,7 +189,6 @@ class ProductDetail extends Component {
                                             <input type="text" className="form-control pInline textBoxSize" id="quantityProduct" value={this.state.quantity} disabled />
                                             <div className="plusButton pInline plusText" onClick={this.plusQuantity}><i class="fas fa-plus"></i></div>
                                         </p>
-
                                     </div>
                                     <div className="col-lg-8">
                                         <div className="btn btn-danger buyButton">

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "../checkout/checkout.css";
 import { Link } from 'react-router-dom';
+import CheckoutItem from './checkoutItem';
 
 
 class Checkout extends Component {
@@ -33,6 +34,12 @@ class Checkout extends Component {
         this.setState({ closeFormWallet: false });
     }
     render() {
+        var { checkoutItem, cart } = this.props;
+        const formatter = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+            minimumFractionDigits: 0
+        })
         return (
             <div className="backgroundCheckout">
                 <br />
@@ -42,7 +49,7 @@ class Checkout extends Component {
                             <h3>Địa chỉ thanh toán</h3>
                         </div>
                         <div className="col-lg-5">
-                            <h3>Sản phẩm<span className="colorSpan">(7 sản phẩm)</span></h3>
+                            <h3>Sản phẩm<span className="colorSpan">({this.resultProductInCart(cart)} sản phẩm)</span></h3>
                         </div>
                     </div>
                 </div>
@@ -245,62 +252,32 @@ class Checkout extends Component {
                             </form>
                         </div>
                         <div className="col-lg-5  ">
+                        
                             <div className="container backgroundContainerCheckout fixed">
+                            
                                 <div class="card cardShadowTotal">
                                     <div class="card-body">
                                         <h3 class="textCenterTotal textPaddingTotal">Tổng thanh toán</h3>
-                                        <h3 class="textCenterTotal textPaddingTotal">10.000.000đ</h3>
+                                        <h3 class="textCenterTotal textPaddingTotal">{formatter.format(this.totalCheckout(cart))}</h3>
                                     </div>
                                 </div>
                                 <div class="card borderCardPriceParent paddingCardTotalBottom">
-                                    <div class="card borderCardPriceChild ">
-                                        <div class="card-body ">
-                                            <div class="row">
-                                                <div className="col-8">
-                                                    <span>
-                                                        Giày Thể Thao Cao Cấp Nữ Biti’s Hunter X - Summer 2K19 ADVENTURE COLLECTION - Orange DSWH01100CAM (Cam)
-                                                </span>
-                                                </div>
-                                                <div className="col-4 alignmentRightPrice">
-                                                    <span className="redHightlightPriceCardTotal">
-                                                        300.000.000đ
-                                                </span>
-                                                </div>
-                                            </div>
+                                    {checkoutItem}
+                                </div>
+                                <div class="card borderCardPriceParent paddingCardTotalBottom">
+                                    <div className="row">
+                                        <div className="col-7 ">
+                                            <div className="finalTotal">Tạm tính</div>
+                                            <div className="finalTotal">Giảm giá {this.tagNearNameDiscount(this.temporaryPrice(cart),this.discountPrice(cart))}%</div>
+                                            <div className="finalTotal">Phí vận chuyển</div>
                                         </div>
-                                    </div>
-                                    <h4><hr /></h4>
-                                    <div class="card borderCardPriceChild ">
-                                        <div class="card-body ">
-                                            <div class="row">
-                                                <div className="col-8">
-                                                    <span>
-                                                        Giày Thể Thao Cao Cấp Nữ Biti’s Hunter X - Summer 2K19 ADVENTURE COLLECTION - Orange DSWH01100CAM (Cam)
-                                                </span>
-                                                </div>
-                                                <div className="col-4 alignmentRightPrice">
-                                                    <span className="redHightlightPriceCardTotal">
-                                                        300.000.000đ
-                                                </span>
-                                                </div>
-                                            </div>
+                                        <div className="col-1">
+                                            <div className="boderVertical"></div>
                                         </div>
-                                    </div>
-                                    <h4><hr /></h4>
-                                    <div class="card borderCardPriceChild ">
-                                        <div class="card-body ">
-                                            <div class="row">
-                                                <div className="col-8">
-                                                    <span>
-                                                        Giày Thể Thao Cao Cấp Nữ Biti’s Hunter X - Summer 2K19 ADVENTURE COLLECTION - Orange DSWH01100CAM (Cam)
-                                                </span>
-                                                </div>
-                                                <div className="col-4 alignmentRightPrice">
-                                                    <span className="redHightlightPriceCardTotal">
-                                                        300.000.000đ
-                                                </span>
-                                                </div>
-                                            </div>
+                                        <div className="col-4">
+                                            <div className="finalTotal">{formatter.format(this.temporaryPrice(cart))}</div>
+                                            <div className="finalTotal">{formatter.format(this.discountPrice(cart))}</div>
+                                            <div className="finalTotal">{formatter.format(0)}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -308,13 +285,60 @@ class Checkout extends Component {
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <br />
                 <br />
             </div>
-
         );
+        
+    }
+    totalCheckout = (cart) =>{
+        var resultTotal = 0;
+        var resultDiscount = 0;
+        if(cart.length > 0){
+            for(var i = 0 ; i < cart.length ; i++){
+                resultTotal += cart[i].total
+                resultDiscount += cart[i].totalDiscount
+            }
+        }
+        return resultTotal - resultDiscount;
+    }
+    resultProductInCart = cart=>{
+        var result=0;
+        if(cart.length > 0){
+            for(var i = 0 ; i < cart.length;i++){
+                result = result + cart[i].quantity;
+            }
+        }
+        return result;
+    }
+    temporaryPrice = cart =>{
+        var result = 0
+        if(cart.length > 0){
+            for(var i = 0 ; i < cart.length ; i++){
+                result += cart[i].total
+            }
+        }
+        return result;
+    }
+    discountPrice = cart =>{
+        var result = 0
+        if(cart.length > 0){
+            for(var i = 0 ; i < cart.length ; i++){
+                result += cart[i].totalDiscount
+            }
+        }
+        return result
+    }
+    tagNearNameDiscount = (temporary,discountPrice)=>{
+        var result
+        if(discountPrice ===0){
+            result = ''
+        }
+        else{
+            result = (discountPrice*100)/temporary
+        }
+        return result
     }
 }
 

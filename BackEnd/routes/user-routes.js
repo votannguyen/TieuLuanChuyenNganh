@@ -15,19 +15,19 @@ router.post('/signup',
 usersControllers.register);
 
 router.post('/login', usersControllers.login);  // Cần thêm check
+router.get('/myaccount', isAuth, usersControllers.getMyUser);
 
+router.patch('/myaccount', isAuth ,usersControllers.updateMyUser);
+router.get('/confirmation/:token', usersControllers.getConfirmation);
 
 router.get('/', isAuth, isAdmin ,usersControllers.getUser);
 
 router.get('/:uid', isAuth, isAdmin, usersControllers.getUserById);
 
-router.get('/confirmation/:token', usersControllers.getConfirmation);
 
-router.patch('/lock/:uid', isAuth, isAdmin, usersControllers.lockUser)
 
-router.get('/myaccount', isAuth, usersControllers.getMyUser);
+router.patch('/lock/:uid', isAuth, isAdmin, usersControllers.lockUser);
 
-router.patch('/myaccount', isAuth ,usersControllers.updateMyUser);
 
 
 module.exports = router;

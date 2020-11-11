@@ -117,10 +117,17 @@
 }
 .defaultDelete:hover{
     text-decoration: underline !important;
+    cursor: pointer;
 }
 .boderCard{
     border: none !important;
 }
 .rightButton{
     padding-right: 0px;
+}
+.nameTagFailDiscount{
+    color: rgb(255, 50, 50);
+}
+.nameTagSuccessDiscount{
+    color: #00b1ff;
 }

@@ -27,8 +27,9 @@
     /* height: 100px !important; */
     /* padding-top: -50px !important;
     line-height: 100px !important; */
-    height: 10rem;
-    vertical-align: top !important;
+    height: 50px;
+    line-height: 25px;
+
 }
 .form-control{
     background-color: white !important;
@@ -149,4 +150,13 @@
     font-family: 'Calibri';
     margin-bottom: 0px;
     text-align: right;
+}
+.boderVertical{
+    border: 1px solid rgb(148, 148, 148);
+    width: 1px;
+    height: 100px;
+}
+.finalTotal{
+    padding-bottom: 10px;
+
 }
