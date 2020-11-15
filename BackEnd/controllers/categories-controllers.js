@@ -50,16 +50,36 @@ const createCategory = async (req, res, next) => {
         const error =  new HttpError('Invalid Input! Pls check your data', 400);
         return next(error);
     }
-    const createdCategory = {
-        name: req.body.name,
-        imagePath: req.file.path,
-        summary: req.body.summary,
-        alias: getAlias(req.body.name)
-      };
-    let categories
-    categories = await Category.create(createdCategory);
-    res.status(200).json({categories});
-     
+    let image;
+    if(typeof (req.file) !== "undefined")
+    {
+        image = req.file.path;
+        
+    }
+    else image = null;
+    if(image === null)
+    {
+        const createdCategory = {
+            name: req.body.name,
+            summary: req.body.summary,
+            alias: getAlias(req.body.name)
+          };
+        let categories
+        categories = await Category.create(createdCategory);
+        res.status(200).json({categories});
+    }
+    else 
+    {
+        const createdCategory = {
+            name: req.body.name,
+            imagePath: image,
+            summary: req.body.summary,
+            alias: getAlias(req.body.name)
+          };
+        let categories
+        categories = await Category.create(createdCategory);
+        res.status(200).json({categories});
+    }
 };
 
 const getCategoryById = async (req, res, next) => {
@@ -116,17 +136,46 @@ const updateCategory = async (req, res, next) => {
         const error =  new HttpError('Invalid Input! Pls check your data', 400);
         return next(error);
     }
-    const updatedCategory = {
-        name: req.body.name,
-        imagePath: req.file.path,
-        summary: req.body.summary,
-        alias: getAlias(req.body.name)
-      };
-    let categories
-    categories = await Category.update(updatedCategory, {
-        where: {alias: alias}
-    });
-    res.status(200).json({categories: updatedCategory});
+
+    let image;
+    console.log(req.file);
+    if(typeof (req.file) !== "undefined")
+    {
+        image = req.file.path;
+        
+    }
+    else image = null;
+
+    if(image === null)
+    {
+        const updatedCategory = {
+            name: req.body.name,
+            summary: req.body.summary,
+            alias: getAlias(req.body.name)
+          };
+          console.log(req.file);
+        let categories
+        categories = await Category.update(updatedCategory, {
+            where: {alias: alias}
+        });
+        res.status(200).json({categories: updatedCategory});
+    }
+    else 
+    {
+        const updatedCategory = {
+            name: req.body.name,
+            imagePath: image,
+            summary: req.body.summary,
+            alias: getAlias(req.body.name)
+          };
+          console.log(req.file);
+        let categories
+        categories = await Category.update(updatedCategory, {
+            where: {alias: alias}
+        });
+        res.status(200).json({categories: updatedCategory});
+    }
+    
     
 }
 

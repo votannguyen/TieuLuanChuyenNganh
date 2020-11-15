@@ -1,8 +1,8 @@
 const HttpError = require('../error-handle/http-error');  //dùng để giải quyết error
 const models = require('../models'); //vì đang trong controllers nên phải ra ngoài thêm 1 chấm mới thấy đc models
-const Category = models.Category;
-const Brand = models.Brand;
+
 const Product = models.Product;
+const ProductSize = models.ProductSize;
 const Group = models.Group;
 const { validationResult } = require('express-validator'); //lấy dc lỗi từ body validate
 const Sequelize = require('sequelize');
@@ -100,7 +100,7 @@ const createProduct = async (req, res, next) => {
         productCode: req.body.productCode,
         price: req.body.price,
         imagePath: req.file.path,
-        availability: req.body.availability,
+        state: "Available",
         amount: req.body.amount,
         description: req.body.description,
         color: req.body.color,
@@ -109,8 +109,34 @@ const createProduct = async (req, res, next) => {
         categoryId: req.body.categoryId,
         groupId: req.body.groupId
       };
-    let products
+    let products;
     products = await Product.create(createdProduct);
     res.status(200).json({products});
 }
-module.exports = {getAllProduct, getProductById, createProduct};
+
+const createProductSize = async (req, res, next) => {
+    let products;
+    try{
+        products = await Product.findOne({
+        where: {id: req.body.productId}
+    });
+    } catch (err) {
+        const error = new HttpError('Could not find any Product', 404);
+        return next(error);
+    }
+
+    if(products.amount - req.body.productCount < 0)
+    {
+        const error = new HttpError('The product is out of sources', 400);
+        return next(error);
+    }
+    const createdProductSize = {
+        productCount: req.body.productCount,
+        productId: req.body.productId,
+        sizeId: req.body.sizeId
+    }
+    let productSize;
+    productSize = await ProductSize.create(createdProductSize);
+    res.status(200).json({createdProductSize});
+}
+module.exports = {getAllProduct, getProductById, createProduct, createProductSize};

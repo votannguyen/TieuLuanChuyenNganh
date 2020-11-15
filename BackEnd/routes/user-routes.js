@@ -14,19 +14,25 @@ router.post('/signup',
 ], 
 usersControllers.register);
 
-router.post('/login', usersControllers.login);  // Cần thêm check
-router.get('/myaccount', isAuth, usersControllers.getMyUser);
-
-router.patch('/myaccount', isAuth ,usersControllers.updateMyUser);
+router.post('/login', usersControllers.login);  
 router.get('/confirmation/:token', usersControllers.getConfirmation);
 
-router.get('/', isAuth, isAdmin ,usersControllers.getUser);
+router.use(isAuth);
 
-router.get('/:uid', isAuth, isAdmin, usersControllers.getUserById);
+router.get('/myaccount', usersControllers.getMyUser);
+router.patch('/myaccount',usersControllers.updateMyUser);
+
+router.use(isAdmin);
+
+router.get('/',usersControllers.getUser);
+router.get('/:uid', usersControllers.getUserById);
+router.patch('/lock/:uid', usersControllers.lockUser);
 
 
 
-router.patch('/lock/:uid', isAuth, isAdmin, usersControllers.lockUser);
+
+
+
 
 
 

@@ -18,6 +18,6 @@ router.post(
     ],
     productsControllers.createProduct
  );
-
+router.post('/createProductSize', productsControllers.createProductSize);
 
 module.exports = router;

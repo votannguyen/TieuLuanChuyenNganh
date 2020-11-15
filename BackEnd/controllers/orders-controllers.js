@@ -4,44 +4,75 @@ const Category = models.Category;
 const Brand = models.Brand;
 const Product = models.Product;
 const Group = models.Group;
+const User = models.User;
+const Order =  models.Order;
+const OrderDetail = models.orderDetail;
 const { validationResult } = require('express-validator'); //lấy dc lỗi từ body validate
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op; 
 
 
-
-
-const addOrderAndDetail = async(req, res, next) => {
+const addOrder = async(req, res, next) => {
     let users;
     let userCurrent =  req.userData.email;
+    console.log(userCurrent);
     try{
         users = await User.findOne({
             where: { email: userCurrent}
         });
+        console.log(users);
     } catch (err) {
         const error = new HttpError('You are not log in. Pls login', 500);
         return next(error);
     }
-
+    
     if(!users)
     {
         const error =  new HttpError('Could not find any users', 404);
         return next(error);
     }
-
-    const order = {
-        orderCode: req.body.name,
-        productCode: req.body.productCode,
-        price: req.body.price,
-        imagePath: req.file.path,
-        availability: req.body.availability,
-        amount: req.body.amount,
-        description: req.body.description,
-        color: req.body.color,
-        alias: getAlias(req.body.name),
-        brandId: req.body.brandId,
-        categoryId: req.body.categoryId,
-        groupId: req.body.groupId
+    console.log(users.id)
+    const orderCreated = {
+        orderCode: req.body.orderCode,
+        promotion: req.body.productCode,
+        address: req.body.address,
+        total: req.body.total,
+        state: "Chờ xử lý",
+        userId: users.id,
     }
+    let createOrder;
+    try{
+        createOrder = await Order.create(orderCreated);
+    } catch (err) {
+        const error = new HttpError('There is some error', 500);
+        return next(error);
+    }
+
+    if(!createOrder)
+    {
+        const error =  new HttpError('Could not find any Order', 404);
+        return next(error);
+    }
+
+    res.status(200).json({orderCreated})
+
+}   
+
+const addOrderDetail = async(req, res, next) => {
+    let orderItem;
+    const orderDetails = {
+        orderId : req.body.orderId,
+        amount : req.body.amount,
+        price: req.body.price,
+        orderId : req.body.orderId,
+        productId : req.body.productId
+    }
+    try{
+        orderItem = await OrderDetail.create(orderDetails)
+    } catch(err) {
+        const error = new HttpError('There is some error', 500);
+        return next(error);
+    }
+    res.status(200).json({orderDetails});
 }
-module.exports = {addOrder};
+module.exports = {addOrder, addOrderDetail};

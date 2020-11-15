@@ -25,10 +25,6 @@ router.delete('/:alias', categoriesControllers.deleteCategoryById);
 router.patch(
    '/:alias',
    fileUpload.single('imagePath'),
-   [
-      check('name').not().isEmpty(),
-      check('summary').not().isEmpty()
-   ],
    categoriesControllers.updateCategory
 );
 

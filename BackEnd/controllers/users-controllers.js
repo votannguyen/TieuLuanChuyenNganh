@@ -186,10 +186,8 @@ const login = async(req,res,next) => {
 const getMyUser = async (req, res, next) => {
     let users;
     try{
-        console.log(req.userData);
         users = await User.findOne({
             where: { email: req.userData.email}
-            
         });
     } catch (err) {
         const error = new HttpError('You are not log in. Pls login', 500);
