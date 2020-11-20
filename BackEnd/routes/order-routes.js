@@ -3,6 +3,7 @@ const { check } = require('express-validator');
 const fileUpload = require('../middleware/file-upload');
 const ordersControllers = require('../controllers/orders-controllers');
 const {isAdmin, isAuth} = require('../middleware/check-auth');
+const { route } = require('./brand-routes');
 
 const router = express.Router();
 
@@ -21,11 +22,11 @@ router.post(
  
 router.post(
     '/addOrderDetail',
-    [
-        check('amount').not().isEmpty(),
-        check('price').not().isEmpty(),
-    ],
     ordersControllers.addOrderDetail
 )
+
+router.use(isAdmin);
+
+router.patch('/updateOrder/:orderId',ordersControllers.updateOrderById)
 
 module.exports = router;

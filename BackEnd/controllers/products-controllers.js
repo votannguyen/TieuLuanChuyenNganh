@@ -1,31 +1,18 @@
 const HttpError = require('../error-handle/http-error');  //dùng để giải quyết error
 const models = require('../models'); //vì đang trong controllers nên phải ra ngoài thêm 1 chấm mới thấy đc models
-
+const {getAlias,decodeAlias} = require('../middleware/utilities')
 const Product = models.Product;
 const ProductSize = models.ProductSize;
+const ProductImage = models.ProductImage;
 const Group = models.Group;
+const Brand = models.Brand;
+const Category = models.Category;
 const { validationResult } = require('express-validator'); //lấy dc lỗi từ body validate
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op; 
 
 
-const getAlias = (str) => {
-    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
-    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
-    str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
-    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
-    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
-    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
-    str = str.replace(/đ/g, "d");
-    str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
-    str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
-    str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
-    str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
-    str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
-    str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
-    str = str.replace(/Đ/g, "D");
-    return str.toLowerCase().replace(/ /g, "-");
-}
+
 
 const getAllProduct = async (req, res, next) => {
     let products;
@@ -34,29 +21,41 @@ const getAllProduct = async (req, res, next) => {
             {
                 include: [
                     {
-                        model: Brand
+                        model: Brand,
+                        
+                        
                     },
                     {
-                        model: Category
+                        model: Category,
+                        include:[{
+                            model: Group
+                        }]
                     },
-                    {
-                        model: Group
-                    }
                 ],
             }
         );
-        
+        console.log(products)
     } catch (err) {
         const error = new HttpError('Something went wrong, coud not find any product', 500);
-        return next(error);;
+        let errReturn;
+        errReturn = {
+            fail: "SYSFF",
+            error,
+        };
+        return next(errReturn);
     }
 
     if(!products)
     {
         const error =  new HttpError('Could not find any category', 404);
-        return next(error);
+        let errReturn;
+        errReturn = {
+            fail: "USERNR",
+            error,
+        };
+        return next(errReturn);
     }
-    res.status(200).json({products});
+    res.status(200).json({success: "SYSS01",products});
 }
 
 const getProductById = async (req, res, next) => {
@@ -70,21 +69,80 @@ const getProductById = async (req, res, next) => {
             include: [
                 {
                     model: Brand
+                   
                 },
                 {
-                    model: Category
+                    model: Category,
+                    include: [{
+                        model: Group
+                    }]
                 },
-                {
-                    model: Group
-                }
             ],
         });
     }
     catch (err) {
         const error = new HttpError('Something went wrong, coud not find any product', 500);
-        return next(error);
+        let errReturn;
+        errReturn = {
+            fail: "SYSF01",
+            error,
+        };
+        return next(errReturn);
     }
-    res.status(200).json({product});
+    if (!product) {
+        const error = new HttpError("Could not find any product", 204);
+        let errReturn;
+        errReturn = {
+            fail: "USERF01",
+            error,
+        };
+        return next(errReturn);
+    }
+    res.status(200).json({success: "SYSS01",product});
+}
+
+const getProductByAlias = async (req, res, next) => {
+    const productAlias = req.params.productAlias;
+    let product;
+    try {
+        product = await Product.findOne({
+            where: {
+                alias:  productAlias
+            },
+            include: [
+                {
+                    model: Brand
+                   
+                },
+                {
+                    model: Category,
+                    include: [{
+                        model: Group
+                    }]
+                },
+            ],
+        });
+    }
+    catch (err) {
+        const error = new HttpError('Something went wrong, coud not find any product', 500);
+        let errReturn;
+        errReturn = {
+            fail: "SYSF01",
+            error,
+        };
+        return next(errReturn);
+    }
+    console.log(product)
+    if (!product) {
+        const error = new HttpError("Could not find any product", 204);
+        let errReturn;
+        errReturn = {
+            fail: "USERF01",
+            error,
+        };
+        return next(errReturn);
+    }
+    res.status(200).json({success: "SYSS01",product});
 }
 
 const createProduct = async (req, res, next) => {
@@ -95,37 +153,120 @@ const createProduct = async (req, res, next) => {
         const error =  new HttpError('Invalid Input! Pls check your data', 400);
         return next(error);
     }
-    const createdProduct = {
-        name: req.body.name,
-        productCode: req.body.productCode,
-        price: req.body.price,
-        imagePath: req.file.path,
-        state: "Available",
-        amount: req.body.amount,
-        description: req.body.description,
-        color: req.body.color,
-        alias: getAlias(req.body.name),
-        brandId: req.body.brandId,
-        categoryId: req.body.categoryId,
-        groupId: req.body.groupId
-      };
-    let products;
-    products = await Product.create(createdProduct);
-    res.status(200).json({products});
+    let image;
+    if(typeof (req.file) !== "undefined")
+    {
+        image = req.file.path;
+        
+    }
+    else image = null;
+    if(image === null)
+    {
+        const createdProduct = {
+            name: req.body.name,
+            productCode: req.body.productCode,
+            price: req.body.price,
+            status: 1,
+            amount: req.body.amount,
+            description: req.body.description,
+            color: req.body.color,
+            brandId: req.body.brandId,
+            categoryId: req.body.categoryId
+          };
+        let products;
+        products = await Product.create(createdProduct);
+        res.status(200).json({ success: "SYSS02",products});
+    }
+    else{
+        const createdProduct = {
+            name: req.body.name,
+            productCode: req.body.productCode,
+            price: req.body.price,
+            status: 1,
+            amount: req.body.amount,
+            description: req.body.description,
+            color: req.body.color,
+            alias: getAlias(req.body.name),
+            brandId: req.body.brandId,
+            categoryId: req.body.categoryId
+          };
+        let products;
+        products = await Product.create(createdProduct);
+        res.status(200).json({ success: "SYSS02",products});
+    }
+    
 }
+
+const updateProductById = async (req, res, next) => {
+    const productId = req.params.productId;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors);
+        const error = new HttpError("Invalid Input! Pls check your data", 400);
+        let errReturn;
+        errReturn = {
+            fail: "SYSF03",
+            error,
+        };
+        return next(errReturn);
+    }
+    //Kiểm tra có chèn ảnh ko
+    let image;
+    if (typeof req.file !== "undefined") {
+        image = req.file.path;
+    } else image = null;
+
+    if (image === null) {
+        const updatedProduct = {
+            name: req.body.name,
+            productCode: req.body.productCode,
+            price: req.body.price,
+            status: req.body.status,
+            amount: req.body.amount,
+            description: req.body.description,
+            color: req.body.color,
+            alias: getAlias(req.body.name),
+            brandId: req.body.brandId,
+            categoryId: req.body.categoryId
+        };
+        let products;
+        products = await Product.update(updatedProduct, {
+            where: { id: productId },
+        });
+        res.status(200).json({ success: "SYSS04" ,products: updatedProduct });
+    } else {
+        const updatedProduct = {
+            name: req.body.name,
+            productCode: req.body.productCode,
+            price: req.body.price,
+            status: req.body.status,
+            amount: req.body.amount,
+            description: req.body.description,
+            color: req.body.color,
+            alias: getAlias(req.body.name),
+            brandId: req.body.brandId,
+            categoryId: req.body.categoryId
+        };
+        let products;
+        products = await Product.update(updatedProduct, {
+            where: { id: productId },
+        });
+        res.status(200).json({ success: "SYSS04" ,products: updatedProduct });
+    }
+};
+
 
 const createProductSize = async (req, res, next) => {
     let products;
     try{
-        products = await Product.findOne({
-        where: {id: req.body.productId}
-    });
+        products = await Product.findByPk(req.body.productId);
     } catch (err) {
         const error = new HttpError('Could not find any Product', 404);
         return next(error);
     }
-
-    if(products.amount - req.body.productCount < 0)
+    let productReduce;
+    productReduce = products.amount - req.body.productCount;
+    if( productReduce < 0)
     {
         const error = new HttpError('The product is out of sources', 400);
         return next(error);
@@ -137,6 +278,39 @@ const createProductSize = async (req, res, next) => {
     }
     let productSize;
     productSize = await ProductSize.create(createdProductSize);
+
+    const productAmountReduce = {
+        amount : productReduce
+    };
+    let productUpdate;
+    productUpdate = await Product.update(productAmountReduce,{
+        where: {id: req.body.productId}
+    });
     res.status(200).json({createdProductSize});
 }
-module.exports = {getAllProduct, getProductById, createProduct, createProductSize};
+
+const createProductImage = async (req, res, next) => {
+    const createdProductImage = {
+        productId: req.body.productId,
+        imagePath: req.file.path
+    }
+    let productImage;
+    productImage = await ProductImage.create(createdProductImage);
+    console.log(productImage)
+    
+    res.status(200).json({createdProductImage});
+}
+
+const updateProductImage = async (req, res, next) => {
+    const productImageId = req.params.productImageId;
+    const updatedImage = {
+        imagePath: req.file.path
+      };
+    let productImage
+    productImage = await ProductImage.update(updatedImage, {
+        where: {id: productImageId}
+    });
+    res.status(200).json({success: "SYSS04",ProductImage: updatedImage});
+}
+
+module.exports = {getAllProduct, getProductById, createProduct, createProductSize, updateProductById, getProductByAlias, createProductImage, updateProductImage};

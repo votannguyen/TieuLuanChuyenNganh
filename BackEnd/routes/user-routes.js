@@ -20,7 +20,10 @@ router.get('/confirmation/:token', usersControllers.getConfirmation);
 router.use(isAuth);
 
 router.get('/myaccount', usersControllers.getMyUser);
-router.patch('/myaccount',usersControllers.updateMyUser);
+router.patch(
+'/myaccount',
+fileUpload.single('avatarPath'),
+usersControllers.updateMyUser);
 
 router.use(isAdmin);
 

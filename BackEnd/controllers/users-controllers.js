@@ -102,6 +102,7 @@ const register = async(req, res, next) =>{
         isAdmin: false,
         isConfirm: false,
         isLock: false,
+        score: 0,
         password: hashedPassword
     };
     let Users;
@@ -232,6 +233,7 @@ const getConfirmation = async(req, res, next) => {
 const updateMyUser = async(req, res, next) => {
     let users;
     let userCurrent =  req.userData.email;
+    console.log(req.body.birthday)
     try{
         users = await User.findOne({
             where: { email: userCurrent}
@@ -247,35 +249,77 @@ const updateMyUser = async(req, res, next) => {
         return next(error);
     }
 
-    const userInfo = {
-        fullName: req.body.fullName,
-        phone: req.body.phone,
-        address: req.body.address,
-        avatarPath: req.body.avatarPath,
-        gender: req.body.gender,
-        birthday: req.body.birthday,
-    }
-
-    let userUpdate;
-    try{
-        userUpdate = await User.update(userInfo, {
-            where: { email: userCurrent}
-        });
-        console.log(userInfo);
-        console.log(userUpdate);
-    } catch (err)
+    let image;
+    if(typeof (req.file) !== "undefined")
     {
-        console.log(err);
-        const error = new HttpError('Update Fail', 500);
-        return next(error);
+        image = req.file.path;
+        
     }
-
-    if(!userUpdate)
+    else image = null;
+    if(image === null)
+    {
+        const userInfo = {
+            fullName: req.body.fullName,
+            phone: req.body.phone,
+            address: req.body.address,
+            gender: req.body.gender,
+            birthday: req.body.birthday
+        }
+    
+        let userUpdate;
+        try{
+            userUpdate = await User.update(userInfo, {
+                where: { email: userCurrent}
+            });
+            console.log(userInfo);
+            console.log(userUpdate);
+        } catch (err)
+        {
+            console.log(err);
+            const error = new HttpError('Update Fail', 500);
+            return next(error);
+        }
+        if(!userUpdate)
+        {
+        const error =  new HttpError('Could not find any users', 404);
+        return next(error);
+        }
+        res.status(200).json({userUpdate});
+    }
+    else 
+    {
+        const userInfo = {
+            fullName: req.body.fullName,
+            phone: req.body.phone,
+            address: req.body.address,
+            avatarPath: image,
+            gender: req.body.gender,
+            birthday: req.body.birthday,
+        }
+    
+        let userUpdate;
+        try{
+            userUpdate = await User.update(userInfo, {
+                where: { email: userCurrent}
+            });
+            console.log(userInfo);
+            console.log(userUpdate);
+        } catch (err)
+        {
+            console.log(err);
+            const error = new HttpError('Update Fail', 500);
+            return next(error);
+        }
+        if(!userUpdate)
     {
         const error =  new HttpError('Could not find any users', 404);
         return next(error);
     }
-    res.status(200).json({userUpdate});
+        res.status(200).json({userUpdate});
+    }
+    
+
+    
 }
 
 const lockUser = async(req, res, next) => {

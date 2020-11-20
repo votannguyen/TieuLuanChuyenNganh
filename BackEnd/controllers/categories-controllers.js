@@ -1,44 +1,50 @@
 const HttpError = require('../error-handle/http-error');  //dùng để giải quyết error
 const models = require('../models'); //vì đang trong controllers nên phải ra ngoài thêm 1 chấm mới thấy đc models
 const Category = models.Category;
-
+const Group = models.Group;
+const { getAlias, decodeAlias } = require("../middleware/utilities");
 const { validationResult } = require('express-validator'); //lấy dc lỗi từ body validate
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op; 
 
-const getAlias = (str) => {
-    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
-    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
-    str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
-    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
-    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
-    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
-    str = str.replace(/đ/g, "d");
-    str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
-    str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
-    str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
-    str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
-    str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
-    str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
-    str = str.replace(/Đ/g, "D");
-    return str.toLowerCase().replace(/ /g, "-");
-}
 
 const getAllCategory = async (req, res, next) => {
     let categories;
     try{
-        categories = await Category.findAll();
+        categories = await Category.findAll(
+            {
+                include: [
+                    {
+                        model: models.Group
+                    }
+                ] 
+            }
+        );
+        
     } catch (err) {
         const error = new HttpError('Something went wrong, coud not find any category', 500);
-        return next(error);
+        let errReturn;
+        errReturn = {
+            fail: "SYSFF",
+            error,
+        };
+        return next(errReturn);
     }
-
+    console.log(categories)
     if(!categories)
     {
         const error =  new HttpError('Could not find any category', 404);
-        return next(error);
+        let errReturn;
+        errReturn = {
+            fail: "USERNR",
+            error,
+        };
+        return next(errReturn);
     }
-    res.status(200).json({categories});
+    res.status(200).json({
+        success: "SYSS01",
+        categories,
+    });
 
 };
 
@@ -48,7 +54,12 @@ const createCategory = async (req, res, next) => {
     {
         console.log(errors);
         const error =  new HttpError('Invalid Input! Pls check your data', 400);
-        return next(error);
+        let errReturn;
+        errReturn = {
+            fail: "SYSF02",
+            error,
+        };
+        return next(errReturn);
     }
     let image;
     if(typeof (req.file) !== "undefined")
@@ -62,11 +73,15 @@ const createCategory = async (req, res, next) => {
         const createdCategory = {
             name: req.body.name,
             summary: req.body.summary,
+            groupId: req.body.groupId,
             alias: getAlias(req.body.name)
           };
         let categories
         categories = await Category.create(createdCategory);
-        res.status(200).json({categories});
+        res.status(201).json({
+            success: "SYSS02",
+            categories,
+        });
     }
     else 
     {
@@ -74,15 +89,19 @@ const createCategory = async (req, res, next) => {
             name: req.body.name,
             imagePath: image,
             summary: req.body.summary,
+            groupId: req.body.groupId,
             alias: getAlias(req.body.name)
           };
         let categories
         categories = await Category.create(createdCategory);
-        res.status(200).json({categories});
+        res.status(201).json({
+            success: "SYSS02",
+            categories,
+        });
     }
 };
 
-const getCategoryById = async (req, res, next) => {
+const getCategoryByAlias = async (req, res, next) => {
     const alias = req.params.alias;
     let categories;
     try{
@@ -93,52 +112,110 @@ const getCategoryById = async (req, res, next) => {
         });
     } catch (err) {
         const error = new HttpError('Something went wrong, coud not find any category', 500);
-        return next(error);
+        let errReturn;
+        errReturn = {
+            fail: "SYSF01",
+            error,
+        };
+        return next(errReturn);
     }
 
     if(!categories)
     {
         const error =  new HttpError('Could not find any category', 404);
-        return next(error);
+        let errReturn;
+        errReturn = {
+            fail: "USERF01",
+            error,
+        };
+        return next(errReturn);
     }
-    res.status(200).json({categories});
+    res.status(200).json({
+        success: "SYSS01",
+        categories,
+    });
+
+};
+
+const getCategoryById = async (req, res, next) => {
+    const cateId = req.params.cateId;
+    let categories;
+    try{
+        categories = await Category.findByPk(cateId);
+        
+    } catch (err) {
+        const error = new HttpError('Something went wrong, coud not find any category', 500);
+        let errReturn;
+        errReturn = {
+            fail: "SYSF01",
+            error,
+        };
+        return next(errReturn);
+    }
+    console.log(categories)
+    if(!categories)
+    {
+        const error =  new HttpError('Could not find any category', 404);
+        let errReturn;
+        errReturn = {
+            fail: "USERF01",
+            error,
+        };
+    }
+    res.status(200).json({
+        success: "SYSS01",
+        categories,
+    });
 
 };
 
 const deleteCategoryById = async (req, res, next) => {
-    const alias = req.params.alias;
+    const cateId = req.params.cateId;
     let categories;
     try{
         categories = await Category.destroy(
-            {where: {alias: alias} 
+            {where: {id: cateId} 
         });
     }
     catch (err) {
         const error = new HttpError('Something went wrong, can not delete', 500);
-        return next(error);
+        let errReturn;
+        errReturn = {
+            fail: "SYSF04",
+            error,
+        };
+        return next(errReturn);
     }
     if(!categories)
     {
         const error =  new HttpError('Could not find any category', 404);
-        return next(error);
+        let errReturn;
+        errReturn = {
+            fail: "USERF01",
+            error,
+        };
+        return next(errReturn);
     }
-    res.status(200).json({message: 'Deleted category:'});
+    res.status(200).json({success: "SYSS03",message: 'Deleted category:'});
     
 }
 
-const updateCategory = async (req, res, next) => {
-    const alias = req.params.alias;
+const updateCategoryById = async (req, res, next) => {
+    const cateId = req.params.cateId;
     const errors = validationResult(req);
-    
     if(!errors.isEmpty())
     {
         console.log(errors);
         const error =  new HttpError('Invalid Input! Pls check your data', 400);
-        return next(error);
+        let errReturn;
+        errReturn = {
+            fail: "SYSF03",
+            error,
+        };
+        return next(errReturn);
     }
 
     let image;
-    console.log(req.file);
     if(typeof (req.file) !== "undefined")
     {
         image = req.file.path;
@@ -151,14 +228,14 @@ const updateCategory = async (req, res, next) => {
         const updatedCategory = {
             name: req.body.name,
             summary: req.body.summary,
+            groupId: req.body.groupId,
             alias: getAlias(req.body.name)
           };
-          console.log(req.file);
         let categories
         categories = await Category.update(updatedCategory, {
-            where: {alias: alias}
+            where: {id: cateId}
         });
-        res.status(200).json({categories: updatedCategory});
+        res.status(200).json({success: "SYSS04",categories: updatedCategory});
     }
     else 
     {
@@ -173,10 +250,10 @@ const updateCategory = async (req, res, next) => {
         categories = await Category.update(updatedCategory, {
             where: {alias: alias}
         });
-        res.status(200).json({categories: updatedCategory});
+        res.status(200).json({success: "SYSS04",categories: updatedCategory});
     }
     
     
 }
 
-module.exports = { getAllCategory, getCategoryById, createCategory, deleteCategoryById, updateCategory};
+module.exports = { getAllCategory, getCategoryById, getCategoryByAlias, createCategory, deleteCategoryById, updateCategoryById};

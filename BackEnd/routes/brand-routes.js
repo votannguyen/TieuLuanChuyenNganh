@@ -1,14 +1,13 @@
 const express = require('express');
 const { check } = require('express-validator');
 const fileUpload = require('../middleware/file-upload');
-
 const brandsControllers = require('../controllers/brands-controllers');
-
 const router = express.Router();
 
-router.get('/', brandsControllers.getAllBrand );
 
-router.get('/:brandName', brandsControllers.getBrandByName);
+router.get('/', brandsControllers.getAllBrand );
+router.get('/getAlias/:alias', brandsControllers.getBrandByAlias);
+
 
 router.post(
     '/',
@@ -18,17 +17,16 @@ router.post(
     ],
     brandsControllers.createBrand
  );
-
-router.delete('/:brandName', brandsControllers.deleteBrandByName);
-
+router.get('/:brandId', brandsControllers.getBrandById);
+router.delete('/:brandId', brandsControllers.deleteBrandById);
 router.patch(
-   '/:brandName/',
+   '/:brandId/',
    fileUpload.single('imagePath'),
    [
       check('name').not().isEmpty(),
       check('summary').not().isEmpty()
    ],
-   brandsControllers.updateBrand
+   brandsControllers.updateBrandById
 );
 
 module.exports = router;
