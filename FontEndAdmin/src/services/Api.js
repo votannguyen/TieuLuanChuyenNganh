@@ -8,6 +8,8 @@ const url={
     brand: "api/brand/",
     category: "api/category/",
     user: "api/user/",
+    login: "api/user/login/",
+    group: "/api/group",
 
 };
 const instance = axios.create({

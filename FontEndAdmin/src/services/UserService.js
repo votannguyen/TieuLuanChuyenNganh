@@ -9,8 +9,13 @@ import Api from "./Api";
 // const get = (id) => Api.get(`${Api.url.majors}/${id}`);
 const listUser = () => Api.get(Api.url.user);
 const updateUser = data =>Api.patch(Api.url.user);
+const login = (email, password) => {
+    var data = {email, password}
+    return Api.post(Api.url.login, data);
+}
 // const getProduct = () => Api.get(`${Api.url.product}/${id}`)
 export default{
     listUser : listUser,
     updateUser : updateUser,
+    login : login,
 };

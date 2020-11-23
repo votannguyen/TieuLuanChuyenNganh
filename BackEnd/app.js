@@ -9,6 +9,7 @@ const brandRoutes = require('./routes/brand-routes');  // đăng ký (midleware)
 const userRoutes = require('./routes/user-routes');
 const categoryRoutes = require('./routes/category-routes');
 const productRoutes = require('./routes/product-routes');
+const groupRoutes = require('./routes/group-routes');
 const HttpError = require('./error-handle/http-error');
 const { get } = require('http');
 
@@ -50,6 +51,7 @@ app.use('/api/product', productRoutes);
 app.use('/api/brand', brandRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/group', groupRoutes);
 
 app.get('/sync', (req, res) => {
     let models = require('./models');

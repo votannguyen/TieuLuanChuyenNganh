@@ -33,7 +33,17 @@ class Header extends Component {
             console.log(this.state.users)
         });
     }
+    resultProductInCart = cart => {         //tính sosos lượng sản phẩm trong cart
+        var result = 0;
+        if (cart.length > 0) {
+            for (var i = 0; i < cart.length; i++) {
+                result = result + cart[i].quantity;
+            }
+        }
+        return result;
+    }
     render() {
+        var { cart } = this.props;
         return (
             <div onLoad={this.loadData}>
                 <div id="preloader-active">
@@ -105,8 +115,8 @@ class Header extends Component {
                                                         <img className="btnUser" src={require('../img/Shoe/avatar.jpg')}></img>{this.state.users.fullName}
                                                     </a>
                                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                        <Link class="dropdown-item" href="/">Đơn hàng của tôi</Link>
-                                                        <Link class="dropdown-item" href="/profile">Tài khoản của tôi</Link>
+                                                        <Link class="dropdown-item" to="/">Đơn hàng của tôi</Link>
+                                                        <Link class="dropdown-item" to="/profile">Tài khoản của tôi</Link>
                                                         <div class="dropdown-divider"></div>
                                                         <Link class="btn btn-danger btnLogout" to="/" onClick={this.logout}>Đăng xuất</Link>
                                                     </div>
@@ -229,16 +239,16 @@ class Header extends Component {
                                                     </div>
                                                 </li>
                                                 {Cookies.get("loginInfo") ?
-                                                <div className="marginQuantity">
-                                                    <div className="row">
-                                                        <div className="col-6">
-                                                            <div className="quantityFavorit">02</div> 
+                                                    <div className="marginQuantity">
+                                                        <div className="row">
+                                                            <div className="col-6">
+                                                                <div className="quantityFavorit">02</div>
+                                                            </div>
+                                                            <div className="col-6">
+                                                        <div className="quantityCart">{this.resultProductInCart(cart)}</div>
+                                                            </div>
                                                         </div>
-                                                        <div className="col-6">
-                                                            <div className="quantityCart">02</div>
-                                                        </div>
-                                                    </div>
-                                                </div>:
+                                                    </div> :
                                                     <div className="quantityCartNotLogin">02</div>
                                                 }
 

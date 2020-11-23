@@ -49,3 +49,15 @@ export const actOnLoadProductIsSelect = (product, index) =>{
 
     }
 }
+export const actOnAddProductToWishList = (product) => {
+    return{
+        type: Types.ADD_TO_WISH_LIST,
+        product
+    }
+}
+export const actOnDeleteProductInWishList = (product) => {
+    return{
+        type: Types.ADD_TO_WISH_LIST,
+        product
+    }
+}

@@ -8,7 +8,6 @@ const Cards = React.lazy(() => import('./views/base/cards/Cards'));
 const Carousels = React.lazy(() => import('./views/base/carousels/Carousels'));
 const Collapses = React.lazy(() => import('./views/base/collapses/Collapses'));
 const BasicForms = React.lazy(() => import('./views/base/forms/BasicForms'));
-
 const Jumbotrons = React.lazy(() => import('./views/base/jumbotrons/Jumbotrons'));
 const ListGroups = React.lazy(() => import('./views/base/list-groups/ListGroups'));
 const Navbars = React.lazy(() => import('./views/base/navbars/Navbars'));
@@ -17,7 +16,6 @@ const Paginations = React.lazy(() => import('./views/base/paginations/Pagnations
 const Popovers = React.lazy(() => import('./views/base/popovers/Popovers'));
 const ProgressBar = React.lazy(() => import('./views/base/progress-bar/ProgressBar'));
 const Switches = React.lazy(() => import('./views/base/switches/Switches'));
-
 const Tabs = React.lazy(() => import('./views/base/tabs/Tabs'));
 const Tooltips = React.lazy(() => import('./views/base/tooltips/Tooltips'));
 const BrandButtons = React.lazy(() => import('./views/buttons/brand-buttons/BrandButtons'));
@@ -37,14 +35,17 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
-
 const Products = React.lazy(() => import('./views/shop/products/products'));
 const Brand = React.lazy(() => import('./views/shop/brands/brands'));
 const Category = React.lazy(() => import('./views/shop/category/category'));
 const UserManagement = React.lazy(()=> import('./views/shop/users/users'));
+const Group = React.lazy(() => import('./views/shop/group/group') );
+
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/shop/user', name: 'User', component: UserManagement},
+  { path: '/shop/group', name: 'Group', component: Group},
   { path: '/shop/product', name: 'Product', component: Products},
   { path: '/shop/brand', name: 'Brand', component: Brand},
   { path: '/shop/category', name: 'Category', component: Category},
@@ -88,5 +89,4 @@ const routes = [
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User }
 ];
-
 export default routes;

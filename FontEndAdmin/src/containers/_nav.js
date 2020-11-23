@@ -56,6 +56,12 @@ export default [
   {
     _tag: 'CSidebarNavItem',
     name: 'Nhóm sản phẩm',
+    to: '/shop/group',
+    icon: "cil-list-rich",
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Danh mục sản phẩm',
     to: '/shop/category',
     icon: "cil-spreadsheet",
   },

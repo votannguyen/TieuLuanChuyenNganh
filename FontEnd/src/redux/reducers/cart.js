@@ -16,7 +16,7 @@ const cart = (state = initialState, action) => {
                     state[index].quantity = 20;
                 }
                 else {
-                    state[index].quantity += 1;
+                    state[index].quantity += quantity;
                     state[index].total = state[index].quantity * state[index].product.price
                     for (var index = 0; index < state.length; index++) {
                         state[index].totalDiscount = 0;

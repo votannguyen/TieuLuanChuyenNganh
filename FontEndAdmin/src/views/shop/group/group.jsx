@@ -18,8 +18,7 @@ import {
 import usersData from '../../users/UsersData';
 import "../products/products.css";
 import "../brands/brand.css";
-import CategoryService from "../../../services/CategoryService";
-
+import GroupService from "../../../services/GroupService";
 const getBadge = status => {
     switch (status) {
         case 'Active': return 'success'
@@ -34,36 +33,35 @@ class Products extends Component {
     state = {
         showModal: false,
         categories:{},
-        category: [],
-        listShowCategory:[],
+        group: [],
+        listShowGroup:[],
     };
     componentDidMount() {
         this.loadData();
         
     }
     loadData = () => {
-        CategoryService.listCategory().then((res) => {
-            this.setState({ category: res.data.categories });
-            this.setState({ listShowCategory: res.data.categories });
-            console.log(this.state.listShowCategory);
+        GroupService.listGroup().then((res) => {
+            this.setState({ group: res.data.Groups });
+            this.setState({ listShowGroup: res.data.Groups });
+            console.log(this.state.listShowGroup);
 
         });
     }
     InputOnChange = (event) => {
         const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
 
-        const newCategory = { ...this.state.category, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
-        this.setState({ category: newCategory });
-        console.log(this.state.category);
+        const newGroup = { ...this.state.group, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ group: newGroup });
+        console.log(this.state.group);
     }
     save=()=>{
-        CategoryService.createCategory(this.state.category).then(res => {
+        GroupService.createGroup(this.state.group).then(res => {
             alert("Cập nhật thông tin thành công")
             this.loadData();
 
         }, function (error) {
             alert("Lỗi")
-
         });
     }
     setShowModal = () => {
@@ -82,11 +80,13 @@ class Products extends Component {
             </div>
         );
         return (
-            <div onLoad={this.loadData}>
+            <div>
                 {/* <div className="row">
           <div className="col-sm-10"></div> */}
                 <div className="container">
-                    <button type="button" class="btn btn-sm btnAddProduct" onClick={this.setShowModal}><p class="fas fa-plus-circle textInBtnAddProduct">   Thêm Category</p></button>
+                    <button type="button" class="btn btn-sm btnAddProduct" onClick={this.setShowModal}>
+                        <p class="fas fa-plus-circle textInBtnAddProduct">   Thêm Group</p>
+                    </button>
                     {/* </div> */}
                 </div>
                 <>
@@ -106,7 +106,7 @@ class Products extends Component {
                         <Modal.Body>
                             <Form>
                                 <Form.Group controlId="formBasicName">
-                                    <Form.Label>Tên Category</Form.Label>
+                                    <Form.Label>Tên Group</Form.Label>
                                     <Form.Control type="text" name="nameProduct" placeholder="Tên danh mục" name="name" onChange={this.InputOnChange}/>
                                 </Form.Group>
                                 <Form.Group controlId="exampleForm.ControlTextarea1">
@@ -125,11 +125,11 @@ class Products extends Component {
                         <CCol>
                             <CCard>
                                 <CCardHeader>
-                                    <p className="fontSizeNameTable">Danh sách Category</p>
+                                    <p className="fontSizeNameTable">Danh sách Group</p>
                                 </CCardHeader>
                                 <CCardBody>
                                     <CDataTable
-                                        items={this.state.listShowCategory}
+                                        items={this.state.listShowGroup}
                                         fields={fields}
                                         hover
                                         striped

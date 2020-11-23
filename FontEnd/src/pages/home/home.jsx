@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import "../home/home.css";
 class Home extends Component {
     state = {}
+    componentDidUpdate(){
+        window.scrollTo(0, 0)
+    }
     render() {
-
+        
         return (
             <main>
                 <div className="slider-area ">

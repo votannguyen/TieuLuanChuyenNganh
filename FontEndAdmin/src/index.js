@@ -3,6 +3,7 @@ import 'react-app-polyfill/stable';
 import './polyfill'
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import App from './App';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -11,15 +12,23 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 import { icons } from './assets/icons'
 
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux'
 import store from './store'
+// import { createStore } from 'redux';
+// import appReducers from './redux/reducers/index';
 
+// const store = createStore(
+//   appReducers,
+//   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+// );
 React.icons = icons
-
 ReactDOM.render(
-  <Provider store={store}>
-    <App/>
-  </Provider>, 
+  <BrowserRouter>
+    <Provider store={store}>
+      <App/>
+    </Provider>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

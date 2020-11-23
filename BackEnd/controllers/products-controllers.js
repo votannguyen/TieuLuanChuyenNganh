@@ -4,9 +4,13 @@ const models = require('../models'); //vì đang trong controllers nên phải r
 const Product = models.Product;
 const ProductSize = models.ProductSize;
 const Group = models.Group;
+const Category = models.Category;
+const Brand = models.Brand;
 const { validationResult } = require('express-validator'); //lấy dc lỗi từ body validate
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op; 
+
+
 
 
 const getAlias = (str) => {
@@ -95,23 +99,51 @@ const createProduct = async (req, res, next) => {
         const error =  new HttpError('Invalid Input! Pls check your data', 400);
         return next(error);
     }
-    const createdProduct = {
-        name: req.body.name,
-        productCode: req.body.productCode,
-        price: req.body.price,
-        imagePath: req.file.path,
-        state: "Available",
-        amount: req.body.amount,
-        description: req.body.description,
-        color: req.body.color,
-        alias: getAlias(req.body.name),
-        brandId: req.body.brandId,
-        categoryId: req.body.categoryId,
-        groupId: req.body.groupId
-      };
-    let products;
-    products = await Product.create(createdProduct);
-    res.status(200).json({products});
+    let image;
+    if(typeof (req.file) !== "undefined")
+    {
+        image = req.file.path;
+        
+    }
+    else image = null;
+    if(image === null)
+    {
+        const createdProduct = {
+            name: req.body.name,
+            productCode: req.body.productCode,
+            price: req.body.price,
+            state: "Available",
+            amount: req.body.amount,
+            description: req.body.description,
+            color: req.body.color,
+            alias: getAlias(req.body.name),
+            brandId: req.body.brandId,
+            categoryId: req.body.categoryId,
+            groupId: req.body.groupId
+          };
+        let products;
+        products = await Product.create(createdProduct);
+        res.status(200).json({products});
+    }
+    else{
+        const createdProduct = {
+            name: req.body.name,
+            productCode: req.body.productCode,
+            price: req.body.price,
+            imagePath: req.file.path,
+            state: "Available",
+            amount: req.body.amount,
+            description: req.body.description,
+            color: req.body.color,
+            alias: getAlias(req.body.name),
+            brandId: req.body.brandId,
+            categoryId: req.body.categoryId,
+            groupId: req.body.groupId
+          };
+        let products;
+        products = await Product.create(createdProduct);
+        res.status(200).json({products});
+    }
 }
 
 const createProductSize = async (req, res, next) => {

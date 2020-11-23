@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Link, Match, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import '../productList/productList.css';
 import './product.css';
-import * as Message from '../../redux/constants/Message';
 class Product extends Component {
   state = {}
   addToCart = (product) =>{

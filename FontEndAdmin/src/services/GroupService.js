@@ -7,10 +7,10 @@ import Api from "./Api";
 // const register = data => Api.post(Api.url.register, data);
 // const getUser = () => Api.get(`${Api.url.userInfo}`);
 // const get = (id) => Api.get(`${Api.url.majors}/${id}`);
-const createBrand = data => Api.post(Api.url.brand, data)
-const listBrand = () => Api.get(Api.url.brand);
+const createGroup = data => Api.post(Api.url.group, data)
+const listGroup = () => Api.get(Api.url.group);
 // const getProduct = () => Api.get(`${Api.url.product}/${id}`)
 export default{
-    createBrand : createBrand,
-    listBrand : listBrand,
+    createGroup : createGroup,
+    listGroup : listGroup,
 };

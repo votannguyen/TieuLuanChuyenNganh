@@ -13,7 +13,7 @@ class ProductDetail extends Component {
         hideContainer: true
     };
     plusQuantity = () => {
-        if (this.state.quantity < 10) {
+        if (this.state.quantity < 20) {
             this.setState({ quantity: this.state.quantity + 1 });
         }
         else {
@@ -141,31 +141,45 @@ class ProductDetail extends Component {
                                             {/* <div id={this.state.resultID} class="img-zoom-result"></div> */}
                                         </div>
                                         <p className="textCenter" data-toggle="modal"><i class="fas fa-search-plus zoomDefine"></i>Rê chuột để phóng to</p>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <hr className="vertical-lineHR" />
                         <div className="col-lg-6 paddingLeftContainerRight">
-                            <h3>{product.name}</h3>
-                            <p>5<i class="fas fa-star yellowStar"></i> <Link className="LinkHoverReview">(Xem x nhận xét)</Link></p>
-                            {/* <p><i class="fas fa-trophy yellowAward"></i> Đứng thứ X trong <Link className="LinkHoverReview">Top 30 đôi giày bán chạy nhất shop</Link></p> */}
+                            <div className="ratingProductPacing">
+                                <i class="fas fa-trophy yellowAward"></i>
+                                Đứng thứ X trong
+                                <Link className="LinkHoverReview">
+                                    Top 30 đôi giày bán chạy nhất shop
+                                </Link>
+                            </div>
+                            <div className="nameProductPacing">{product.name}</div>
+                            <div className="linePacing">
+                                <i class="fas fa-star yellowStar"></i>
+                                <i class="fas fa-star yellowStar"></i>
+                                <i class="fas fa-star yellowStar"></i>
+                                <i class="fas fa-star yellowStar"></i>
+                                <i class="fas fa-star-half yellowStar"></i>
+                                <Link className="LinkHoverReview">
+                                    (Xem x nhận xét)
+                                </Link>
+                            </div>
                             <div className="row">
                                 <div className="col-lg-4 positionR">
-                                        <p className="">Thương hiệu: <Link className="LinkHoverReview ">{product.brand}</Link></p>
+                                    <p className="">Thương hiệu: <Link className="LinkHoverReview ">{product.brand}</Link></p>
                                 </div>
                                 <div className="col-lg-4 positionR">
-                                        <p className="pColorMaSP">Mã SP: {product.code}</p>
+                                    <p className="pColorMaSP">Mã SP: {product.code}</p>
                                 </div>
                             </div>
                             <hr className="paddingDivHR" />
                             <div className="container colorBackContainerShip">
-                                <p className="pColorShip"><i class="fas fa-truck iconShip"></i>Miễn phí ship tối đa 50k cho đơn hàng trên 1.000.000 vnđ</p>
+                                <p className="pColorShip"><i class="fas fa-truck iconShip"></i>Miễn phí ship cho đơn hàng trên 1.000.000 vnđ</p>
                             </div>
                             <p className="pPriceProduct">{formatter.format(product.price)}</p>
-                            <p className="pSave">Tiết kiệm: 10% ({formatter.format(product.price*0.9)})</p>
-                            <p className="pSave">Giá thị trường: {formatter.format(product.price - (product.price*0.9))} </p>
+                            <p className="pSave">Tiết kiệm: 10% ({formatter.format(product.price * 0.1)})</p>
+                            <p className="pSave">Giá thị trường: {formatter.format(product.price + (product.price * 0.1))} </p>
                             <hr className="paddingDivHR" />
                             <p>Màu sắc:
                                 <div className="containerChildColor pInline">Màu xanh rêu</div>
@@ -178,7 +192,7 @@ class ProductDetail extends Component {
                                 <div className="sizeShoe pInline">43</div>
                                 <div className="sizeShoe pInline">44</div>
                             </p>
-                                        <p>Còn hàng: <span className="spanQuantity">{product.inventory}</span> sản phẩm</p>
+                            <p>Còn hàng: <span className="spanQuantity">{product.inventory}</span> sản phẩm</p>
                             <hr className="paddingDivHR" />
                             <div className="container containerBuyWish">
                                 <div className="row">
@@ -191,7 +205,7 @@ class ProductDetail extends Component {
                                         </p>
                                     </div>
                                     <div className="col-lg-8">
-                                        <div className="btn btn-danger buyButton">
+                                        <div className="btn btn-danger buyButton" onClick={() => this.addToCart(product, this.state.quantity)}>
                                             <i class="fas fa-cart-plus paddingRightCart"></i>
                                         Chọn mua
                                     </div>
@@ -215,6 +229,10 @@ class ProductDetail extends Component {
                 </div>
             </div>
         );
+    }
+    addToCart = (product, quantity) => {
+        var { addToCart } = this.props;
+        addToCart(product, quantity)
     }
 }
 

@@ -9,8 +9,10 @@ import Api from "./Api";
 // const get = (id) => Api.get(`${Api.url.majors}/${id}`);
 const createProduct = data => Api.post(Api.url.product, data)
 const listProduct = () => Api.get(Api.url.product);
+const getProduct = id => Api.get(`${Api.url.product}/${id}`)
 // const getProduct = () => Api.get(`${Api.url.product}/${id}`)
 export default{
     createProduct : createProduct,
     listProduct : listProduct,
+    getProduct: getProduct
 };

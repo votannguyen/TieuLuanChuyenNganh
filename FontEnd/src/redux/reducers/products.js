@@ -1,4 +1,5 @@
 import * as Types from '../constants/ActionType';
+
 var initialState = [
     {
         id : 1,
@@ -97,6 +98,7 @@ var initialState = [
         group: 'Thời trang'
     }
 ];
+
 
 const products = (state = initialState, action) => {
     var { product, id} = action
