@@ -11,13 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Category.hasMany(models.Product, {foreignKey:'categoryId'});
+      Category.belongsTo(models.Group, {foreignKey: 'groupId'});
     }
   };
   Category.init({
     name: DataTypes.STRING,
     summary: DataTypes.TEXT,
-    imagePath: DataTypes.TEXT,
-    alias: DataTypes.TEXT
+    imagePath: DataTypes.STRING,
+    alias: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Category',

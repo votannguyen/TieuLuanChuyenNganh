@@ -33,7 +33,6 @@ const createSize = async (req, res, next) => {
     }
     const createdSize = {
         name: req.body.name,
-        summary: req.body.summary
       };
     let sizes
     sizes = await Size.create(createdSize);
@@ -74,7 +73,6 @@ const updateSize = async (req, res, next) => {
     }
     const updatedSize = {
         name: req.body.name,
-        summary: req.body.summary
       };
     let sizes;
     sizes = await Size.update(updatedSize, {
