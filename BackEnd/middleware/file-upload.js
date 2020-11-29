@@ -4,8 +4,8 @@ const {v1: uuid} = require('uuid');
 
 const MINE_TYPE_MAP = {
     'image/png': 'png',
-    'image/jpeg': 'jpeg',
-    'image/jpg': 'jpg'
+    'image/jpeg': 'png',
+    'image/jpg': 'png'
 }
 
 const fileUpload = multer({

@@ -23,6 +23,31 @@ const getAllSize = async (req, res, next) => {
 
 };
 
+
+const getAllSizeByType = async (req, res, next) => {
+    const sizeTypeName = req.params.sizeTypeName;
+    console.log(sizeTypeName)
+    let listSize;
+    try{
+        listSize = await Size.findAll({
+            where: {
+                sizeType: sizeTypeName
+            }
+        })
+    }
+    catch(err)
+    {
+        const error = new HttpError('Something went wrong, coud not find any Size', 500);
+        return next(error);
+    }
+    if(!listSize)
+    {
+        const error =  new HttpError('Could not find any Size', 404);
+        return next(error);
+    }
+    res.status(200).json({listSize});
+}
+
 const createSize = async (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty())
@@ -32,7 +57,8 @@ const createSize = async (req, res, next) => {
         return next(error);
     }
     const createdSize = {
-        name: req.body.name,
+        sizeName: req.body.name,
+        sizeType: req.body.sizeType
       };
     let sizes
     sizes = await Size.create(createdSize);
@@ -63,7 +89,7 @@ const deleteSizeById = async (req, res, next) => {
 }
 
 const updateSize = async (req, res, next) => {
-    const sizeId = req.params.sizId;
+    const sizeId = req.params.sizeId;
     const errors = validationResult(req);
     if(!errors.isEmpty())
     {
@@ -72,7 +98,8 @@ const updateSize = async (req, res, next) => {
         return next(error);
     }
     const updatedSize = {
-        name: req.body.name,
+        sizeName: req.body.sizeName,
+        sizeType: req.body.sizeType
       };
     let sizes;
     sizes = await Size.update(updatedSize, {
@@ -82,4 +109,4 @@ const updateSize = async (req, res, next) => {
     
 }
 
-module.exports = { getAllSize, createSize, deleteSizeById, updateSize};
+module.exports = { getAllSize, createSize, deleteSizeById, updateSize, getAllSizeByType};

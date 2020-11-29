@@ -6,6 +6,7 @@ const sizesControllers = require('../controllers/sizes-controller');
 const router = express.Router();
 
 router.get('/', sizesControllers.getAllSize);
+router.get('/getSizeByType/:sizeTypeName',sizesControllers.getAllSizeByType)
 
 router.post(
     '/',

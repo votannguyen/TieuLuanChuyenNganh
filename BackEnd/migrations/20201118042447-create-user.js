@@ -8,6 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      googleId: {
+        type: Sequelize.STRING
+      },
       fullName: {
         type: Sequelize.STRING
       },
@@ -43,6 +46,9 @@ module.exports = {
       },
       isLock: {
         type: Sequelize.BOOLEAN
+      },
+      authType: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

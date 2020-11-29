@@ -1,6 +1,8 @@
 const express = require('express');
 const { check } = require('express-validator');
 const fileUpload = require('../middleware/file-upload');
+const passport = require('passport');
+const passportConfig = require('../middleware/passport');
 const usersControllers = require('../controllers/users-controllers');
 const {isAdmin, isAuth} = require('../middleware/check-auth');
 
@@ -14,6 +16,16 @@ router.post('/signup',
 ], 
 usersControllers.register);
 
+router.get(
+    '/auth/google',
+    passport.authenticate('google', { scope: ["profile", "email"] })
+)
+
+router.get(
+    '/auth/google/callback',
+    passport.authenticate('google', {session: false}),
+    usersControllers.loginGoogle
+)
 router.post('/login', usersControllers.login);  
 router.get('/confirmation/:token', usersControllers.getConfirmation);
 

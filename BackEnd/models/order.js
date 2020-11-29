@@ -22,7 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     address: DataTypes.STRING,
     status: DataTypes.INTEGER,
     totalPrice: DataTypes.DECIMAL,
-    promotionCode: DataTypes.STRING
+    promotionCode: DataTypes.STRING,
+    payment: DataTypes.INTEGER,
+    dateOfReturn: DataTypes.DATEONLY
   }, {
     sequelize,
     modelName: 'Order',

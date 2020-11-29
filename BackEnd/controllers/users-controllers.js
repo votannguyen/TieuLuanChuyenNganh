@@ -184,6 +184,62 @@ const login = async(req,res,next) => {
 
 }
 
+const loginGoogle = async(req, res, next) => {
+    let existingUser;
+    existingUser = await User.findOne({
+        where: {email: userProfile._json.email}
+    });
+    if(!existingUser)
+    {
+        const createdUser = {
+            googleId: userProfile._json.sub,
+            fullName:userProfile._json.name,
+            email: userProfile._json.email,
+            authType: 2,
+            isAdmin: false,
+            isConfirm: true,
+            isLock: false,
+            score: 0
+        };
+        let Users;
+        try {
+            Users = await User.create(createdUser);
+        } catch(err) {
+            const error = new HttpError('Signing up failed, please try again later.',500);
+            return next(error)
+        }
+        let token;
+        try {
+            token = getToken(createdUser);
+        } catch (err) {
+            const error = new HttpError('Login failed, please try again later.', 500);
+            return next(error)
+        }
+        res.status(200).json({
+            createdUser,
+            token: token
+        })
+    }
+    else{
+        if(existingUser.isConfirm === false || existingUser.isLock === true ) {
+            const error = new HttpError('Your account is not confirm or was locked', 401);
+            return next(error);
+        }
+
+        let token;
+        try {
+            token = getToken(existingUser);
+        } catch (err) {
+            const error = new HttpError('Login failed, please try again later.', 500);
+            return next(error)
+        }
+        res.status(200).json({
+            existingUser,
+            token: token
+        })
+    }
+}
+
 const getMyUser = async (req, res, next) => {
     let users;
     try{
@@ -348,4 +404,4 @@ const lockUser = async(req, res, next) => {
     res.status(200).json({message: 'Update success'});
 }
 
-module.exports = {getUser, getMyUser,  register, login, getConfirmation, updateMyUser, getUserById, lockUser};
+module.exports = {getUser, getMyUser,  register, login, getConfirmation, updateMyUser, getUserById, lockUser, loginGoogle};

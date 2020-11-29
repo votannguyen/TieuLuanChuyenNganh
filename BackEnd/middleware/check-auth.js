@@ -17,17 +17,15 @@ const getToken = (user) => {
 
 const isAuth = (req, res, next) => {
   if (req.method === 'OPTIONS') {
-    return next();
+    return next();  
   }
   try {
     const token = req.headers.authorization.split(' ')[1]; // Authorization: 'Bearer TOKEN'
-    console.log(token);
     if (!token) {
       const error =  new HttpError('invalid token', 401);
       return next(error);
     }
     const decodedToken = jwt.verify(token, JWT_SECRET);
-    console.log(decodedToken);
     req.userData = {
       email: decodedToken.email,
       isAdmin: decodedToken.isAdmin

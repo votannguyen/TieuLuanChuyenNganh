@@ -26,6 +26,12 @@ module.exports = {
       totalPrice: {
         type: Sequelize.DECIMAL
       },
+      payment: {
+        type: Sequelize.INTEGER
+      },
+      dateOfReturn: {
+        type: Sequelize.DATEONLY
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

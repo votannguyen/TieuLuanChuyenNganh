@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   OrderDetail.init({
     unitAmount: DataTypes.INTEGER,
-    unitPrice: DataTypes.DECIMAL
+    unitPrice: DataTypes.DECIMAL,
+    isReturn: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'OrderDetail',
