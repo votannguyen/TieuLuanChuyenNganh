@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Size.init({
-    name: DataTypes.STRING
+    sizeName: DataTypes.STRING,
+    sizeType: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Size',

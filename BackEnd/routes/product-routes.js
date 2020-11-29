@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/',productsControllers.getAllProduct);
 router.get('/:productId', productsControllers.getProductById);
 router.get('/getAlias/:productAlias', productsControllers.getProductByAlias);
-
+router.get('/getImageByProductId/:productId',productsControllers.getProductImageByProductId);
 router.post(
     '/',
     [   
@@ -18,6 +18,7 @@ router.post(
     productsControllers.createProduct
  );
 router.post('/createProductSize', productsControllers.createProductSize);
+
 router.post(
    '/createProductImage',
    fileUpload.single('imagePath'),

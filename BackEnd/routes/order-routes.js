@@ -3,7 +3,6 @@ const { check } = require('express-validator');
 const fileUpload = require('../middleware/file-upload');
 const ordersControllers = require('../controllers/orders-controllers');
 const {isAdmin, isAuth} = require('../middleware/check-auth');
-const { route } = require('./brand-routes');
 
 const router = express.Router();
 
@@ -24,9 +23,12 @@ router.post(
     '/addOrderDetail',
     ordersControllers.addOrderDetail
 )
+router.patch('/returnOrderDetail/:detailId',ordersControllers.returnDetail)
 
 router.use(isAdmin);
 
 router.patch('/updateOrder/:orderId',ordersControllers.updateOrderById)
+
+
 
 module.exports = router;

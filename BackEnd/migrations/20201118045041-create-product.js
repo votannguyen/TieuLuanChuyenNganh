@@ -1,4 +1,7 @@
 'use strict';
+
+const { sequelize } = require("../models");
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Products', {
@@ -33,6 +36,12 @@ module.exports = {
       },
       color: {
         type: Sequelize.TEXT
+      },
+      imagePath: {
+        type: Sequelize.STRING
+      },
+      promotion:{
+        type: Sequelize.DECIMAL
       },
       createdAt: {
         allowNull: false,

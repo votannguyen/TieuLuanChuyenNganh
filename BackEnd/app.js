@@ -5,6 +5,8 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser'); 
 const cors = require('cors');
+const passport = require('passport');
+const passportConfig = require('./middleware/passport');
 
 const brandRoutes  = require('./routes/brand-routes'); 
 const userRoutes  = require('./routes/user-routes');
@@ -17,6 +19,7 @@ const promotionRoutes = require('./routes/promotion-routes');
 const HttpError = require('./error-handle/http-error');
 
 const app = express();
+app.use(passport.initialize());
 
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 app.use(bodyParser.json());

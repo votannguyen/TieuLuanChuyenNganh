@@ -12,8 +12,6 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op; 
 
 
-
-
 const getAllProduct = async (req, res, next) => {
     let products;
     try {
@@ -99,6 +97,37 @@ const getProductById = async (req, res, next) => {
         return next(errReturn);
     }
     res.status(200).json({success: "SYSS01",product});
+}
+
+const getProductImageByProductId = async (req,res,next) => {
+    const productId = req.params.productId;
+    let productImage;
+    try {
+        productImage = await ProductImage.findAll({
+            where: {
+                productId: productId
+            }
+        })
+    } catch (err)
+    {
+        const error = new HttpError('Something went wrong, coud not find any image', 500);
+        let errReturn;
+        errReturn = {
+            fail: "SYSF01",
+            error,
+        };
+        return next(errReturn);
+    }
+    if (!productImage) {
+        const error = new HttpError("Could not find any image", 204);
+        let errReturn;
+        errReturn = {
+            fail: "USERF01",
+            error,
+        };
+        return next(errReturn);
+    }
+    res.status(200).json({success: "SYSS01",productImage});
 }
 
 const getProductByAlias = async (req, res, next) => {
@@ -313,4 +342,4 @@ const updateProductImage = async (req, res, next) => {
     res.status(200).json({success: "SYSS04",ProductImage: updatedImage});
 }
 
-module.exports = {getAllProduct, getProductById, createProduct, createProductSize, updateProductById, getProductByAlias, createProductImage, updateProductImage};
+module.exports = {getAllProduct, getProductById, createProduct, createProductSize, updateProductById, getProductByAlias, createProductImage, updateProductImage, getProductImageByProductId};

@@ -120,7 +120,7 @@ const addOrderDetail = async(req, res, next) => {
         unitAmount : req.body.unitAmount,
         unitPrice: req.body.unitPrice,
         productId : req.body.productId
-    }
+    };
     console.log(orderDetails)
     try{
         orderItem = await OrderDetail.create(orderDetails)
@@ -131,4 +131,39 @@ const addOrderDetail = async(req, res, next) => {
     }
     res.status(200).json({orderItem});
 }
-module.exports = {addOrder, addOrderDetail, updateOrderById};
+
+const returnDetail = async(req, res, next) => {
+    const detailId = req.params.detailId;
+    const orderDetailReturn = {
+        isReturn: true
+    };
+    let orderDetails
+    try{
+        orderDetails = await OrderDetail.update(orderDetailReturn,{
+            where: { id: detailId}
+        });
+        let orderDetailReturned;
+        orderDetailReturned = await OrderDetail.findByPk(detailId);
+
+        let orderReturn;
+        orderReturn = await Order.findByPk(orderDetailReturned.orderId);
+
+        let orderPriceUpdate 
+        orderPriceUpdate = orderReturn.totalPrice - (orderDetailReturned.unitPrice*orderDetailReturned.unitAmount)
+        
+        const totalPriceUpdate = {
+            totalPrice: orderPriceUpdate
+        }
+
+        let orderUpdate;
+        orderUpdate = Order.update(totalPriceUpdate, {
+            where: {id: orderDetailReturned.orderId}
+        })
+
+    } catch(err) {
+        const error = new HttpError('There is system error. Pls try again', 500);
+        return next(error);
+    }
+    res.status(200).json({success: 001});
+}
+module.exports = {addOrder, addOrderDetail, updateOrderById, returnDetail};
