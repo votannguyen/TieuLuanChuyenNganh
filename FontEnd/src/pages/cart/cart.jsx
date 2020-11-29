@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import "../cart/cart.css";
+import PromotionService from '../../services/PromotionService';
 class Cart extends Component {
     state = {};
+    componentDidMount(){
+        this.loadDiscount();
+    }
+    loadDiscount = ()=>{
+        PromotionService.listPromotion().then((res) => {
+            this.props.onLoadPromotionInState(res.data.promotions);
+        });
+    }
     onLoad = (cart)=>{
         var { onLoadThisPage } = this.props
         onLoadThisPage(cart);

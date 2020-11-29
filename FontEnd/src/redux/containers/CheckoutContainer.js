@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Checkout from '../../pages/checkout/checkout';
 import CheckoutItem from '../../pages/checkout/checkoutItem';
+import * as Message from '../constants/Message';
 class CheckoutContainer extends Component {
     state = {  }
     render() { 

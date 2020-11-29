@@ -32,9 +32,6 @@ const addOrder = async(req, res, next) => {
         const error =  new HttpError('Could not find any users', 404);
         return next(error);
     }
-
-   
-
     if(req.body.promotionCode != undefined)
     {
         let promotion;

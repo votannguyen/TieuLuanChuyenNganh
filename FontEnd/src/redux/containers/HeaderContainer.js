@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../../container/header';
-
+import { actLogoutByUser } from '../actions/ActionLogin';
 class HeaderContainer extends Component {
     state = {  }
     render() { 
-        var { cart } = this.props
+        var { cart, user, onUserLogout } = this.props
         return ( 
             <Header
+                user = {user}
                 cart = {cart}
+                onUserLogout = {onUserLogout}
             />
         );
     }
@@ -30,7 +32,15 @@ HeaderContainer.propTypes = {
 }
 const mapStateToProps = state => {
     return {
-        cart: state.cart
+        cart: state.cart,
+        user: state.user
     }
 }
-export default connect(mapStateToProps,null)(HeaderContainer);
+const mapDispartToProps = (dispatch, props) => {
+    return {
+        onUserLogout: ()=>{
+            dispatch(actLogoutByUser());
+        }
+    }
+}
+export default connect(mapStateToProps,mapDispartToProps)(HeaderContainer);

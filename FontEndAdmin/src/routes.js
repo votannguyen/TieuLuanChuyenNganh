@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 const Toaster = React.lazy(() => import('./views/notifications/toaster/Toaster'));
 const Tables = React.lazy(() => import('./views/base/tables/Tables'));
 
@@ -35,20 +36,22 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
-const Products = React.lazy(() => import('./views/shop/products/products'));
 const Brand = React.lazy(() => import('./views/shop/brands/brands'));
 const Category = React.lazy(() => import('./views/shop/category/category'));
 const UserManagement = React.lazy(()=> import('./views/shop/users/users'));
 const Group = React.lazy(() => import('./views/shop/group/group') );
-
-
+const Promotion = React.lazy(() => import('./views/shop/promotion/promotion') );
+const Product = React.lazy(() => import('./views/shop/products/products') );
+const Order = React.lazy(() => import('./views/shop/order/order') );
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/shop/user', name: 'User', component: UserManagement},
   { path: '/shop/group', name: 'Group', component: Group},
-  { path: '/shop/product', name: 'Product', component: Products},
+  { path: '/shop/product', name: 'Product', component: Product},
   { path: '/shop/brand', name: 'Brand', component: Brand},
   { path: '/shop/category', name: 'Category', component: Category},
+  { path: '/shop/promotion', name: 'Brand', component: Promotion},
+  { path: '/shop/order', name: 'Brand', component: Order},
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },

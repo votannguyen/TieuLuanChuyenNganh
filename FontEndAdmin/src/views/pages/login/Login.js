@@ -27,24 +27,29 @@ class Login extends Component {
     
     const email = this.emailRef.current.value;
     const password = this.passwordRef.current.value;
-    console.log(email, password)
     var seft = this;
     LoginUser.login(email, password).then(res => {
       if(res.data.isAdmin === true){
-        Cookies.set('loginInfo', JSON.stringify(res.data.token), { expires: 1 / 24 });
-        this.props.history.push({ pathname: '/' })
+        Cookies.set('loginInfoAdmin', JSON.stringify(res.data.token), { expires: 1 / 24 });
+        LoginUser.getUser().then((res) => {
+          var userInfo = res.data.users;
+          console.log(userInfo)
+          this.props.onUserLogin(userInfo);
+        });
+        
       }
       else {
         alert('Bạn không phải admin vui lòng thử lại!');
       }
-    }, function (error) {
-      // Do something with response error
-      if (error.response.status === 401) {
-        seft.isErrorTrue();
-        document.getElementById("errModal").click();
-
-      }
     })
+    // , function (error) {
+    //   // Do something with response error
+    //   if (error.response.status === 401) {
+    //     seft.isErrorTrue();
+    //     document.getElementById("errModal").click();
+
+    //   }
+    // })
   }
   render() {
     return (

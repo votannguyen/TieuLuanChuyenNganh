@@ -19,7 +19,7 @@ import usersData from '../../users/UsersData';
 import "../products/products.css";
 import "../brands/brand.css";
 import CategoryService from "../../../services/CategoryService";
-
+import GroupService from "../../../services/GroupService";
 const getBadge = status => {
     switch (status) {
         case 'Active': return 'success'
@@ -29,17 +29,18 @@ const getBadge = status => {
         default: return 'primary'
     }
 }
-const fields = ['id','name', 'summary', 'imagePath']
+const fields = [ 'name', 'summary', 'groupId']
 class Products extends Component {
     state = {
         showModal: false,
-        categories:{},
+        categories: {},
         category: [],
-        listShowCategory:[],
+        listShowCategory: [],
+        group:[],
     };
     componentDidMount() {
         this.loadData();
-        
+
     }
     loadData = () => {
         CategoryService.listCategory().then((res) => {
@@ -48,16 +49,31 @@ class Products extends Component {
             console.log(this.state.listShowCategory);
 
         });
+        GroupService.listGroup().then((res) => {
+            this.setState({ group: res.data.Groups });
+        });
     }
     InputOnChange = (event) => {
         const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
-
-        const newCategory = { ...this.state.category, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
-        this.setState({ category: newCategory });
-        console.log(this.state.category);
+        const newCategory = { ...this.state.categories, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ categories: newCategory });
+        console.log(this.state.categories);
     }
-    save=()=>{
-        CategoryService.createCategory(this.state.category).then(res => {
+    InputOnChangeGroup = (event) => {
+        const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
+        // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        {
+          this.state.group.map((group) => {
+            if (group.name === value) {
+              const newCategory = { ...this.state.categories, [name]: group.id }
+              this.setState({ categories: newCategory });
+            }
+          })
+        }
+        console.log(this.state.categories)
+      }
+    save = () => {
+        CategoryService.createCategory(this.state.categories).then(res => {
             alert("Cập nhật thông tin thành công")
             this.loadData();
 
@@ -107,11 +123,30 @@ class Products extends Component {
                             <Form>
                                 <Form.Group controlId="formBasicName">
                                     <Form.Label>Tên Category</Form.Label>
-                                    <Form.Control type="text" name="nameProduct" placeholder="Tên danh mục" name="name" onChange={this.InputOnChange}/>
+                                    <Form.Control type="text" placeholder="Tên danh mục" name="name" onChange={this.InputOnChange} />
+                                </Form.Group>
+                                <Form.Group controlId="ControlSelect">
+                                    <Form.Label>Nhóm sản phẩm</Form.Label>
+                                    <Form.Control
+                                        as="select"
+                                        name="groupId"
+                                        onChange={this.InputOnChangeGroup}
+                                    >
+                                        <option>Choose....</option>
+                                        {this.state.group.map((group, idx) => {
+                                            return (
+                                                <option
+                                                    key={idx}
+                                                    value={group.name}>
+                                                    {group.name}
+                                                </option>
+                                            )
+                                        })}
+                                    </Form.Control>
                                 </Form.Group>
                                 <Form.Group controlId="exampleForm.ControlTextarea1">
                                     <Form.Label>Mô tả</Form.Label>
-                                    <Form.Control as="textarea" type="text" name="summary" rows={2} onChange={this.InputOnChange}/>
+                                    <Form.Control as="textarea" type="text" name="summary" rows={2} onChange={this.InputOnChange} />
                                 </Form.Group>
                                 <Button variant="primary" type="submit" onClick={this.save}>
                                     Thêm

@@ -10,9 +10,11 @@ import Api from "./Api";
 const createProduct = data => Api.post(Api.url.product, data)
 const listProduct = () => Api.get(Api.url.product);
 const getProduct = id => Api.get(`${Api.url.product}/${id}`)
+const createImage = data => Api.post(Api.url.image, data)
 // const getProduct = () => Api.get(`${Api.url.product}/${id}`)
 export default{
     createProduct : createProduct,
     listProduct : listProduct,
-    getProduct: getProduct
+    getProduct: getProduct,
+    createImage: createImage,
 };

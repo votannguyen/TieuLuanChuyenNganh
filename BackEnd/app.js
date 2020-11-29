@@ -10,6 +10,8 @@ const userRoutes = require('./routes/user-routes');
 const categoryRoutes = require('./routes/category-routes');
 const productRoutes = require('./routes/product-routes');
 const groupRoutes = require('./routes/group-routes');
+const billRoutes = require('./routes/order-routes');
+const promotionRoutes = require('./routes/promotion-routes');
 const HttpError = require('./error-handle/http-error');
 const { get } = require('http');
 
@@ -47,7 +49,8 @@ app.use((req, res, next) => {
 //   });
 
 app.use('/api/product', productRoutes);
-//app.use('/api/bills',billRoutes);
+app.use('/api/promotion', promotionRoutes);
+app.use('/api/bills',billRoutes);
 app.use('/api/brand', brandRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/user', userRoutes);

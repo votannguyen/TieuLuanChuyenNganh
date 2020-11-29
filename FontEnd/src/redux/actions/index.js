@@ -1,11 +1,12 @@
 import * as Types from '../constants/ActionType';
-export const actAddToCart = (product, quantity, total, totalDiscount) =>{
+export const actAddToCart = (product, quantity, total, totalDiscount,inputDiscount) =>{
     return{
         type: Types.ADD_TO_CART,
         product,
         quantity,
         total,
-        totalDiscount
+        totalDiscount,
+        inputDiscount
     }
 }
 export const actChangeMessage = (message) =>{
@@ -59,5 +60,11 @@ export const actOnDeleteProductInWishList = (product) => {
     return{
         type: Types.ADD_TO_WISH_LIST,
         product
+    }
+}
+export const actOnLoadPromotionInState = (promotion) =>{
+    return{
+        type: Types.ON_LOAD_PROMOTION_ON_STATE,
+        promotion
     }
 }

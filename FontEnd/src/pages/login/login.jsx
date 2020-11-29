@@ -2,44 +2,41 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import Cookies from "js-cookie";
 import LoginUser from "../../services/UserService";
+
 import "../login/login.css";
 class Login extends Component {
     state = {
         message: " ",
         isLogin: false,
         isError: false,
-
+        realTime:"",
     }
     emailRef = React.createRef();
     passwordRef = React.createRef();
     login = () => {
         const email = this.emailRef.current.value;
         const password = this.passwordRef.current.value;
-        console.log(email, password)
-        var seft = this;
+        //var seft = this;
         LoginUser.login(email, password).then(res => {
-            // this.setState({ message: "Đăng nhập thành công:" });
-            // alert("Bạn đã đăng nhập thành công");
-            // console.log(res.data.errorCode);
-            //save cookie
-            // Cookies.set('loginInfo', brcypt.hashSync(JSON.stringify(res.data),9), { expires: 1 });
             Cookies.set('loginInfo', JSON.stringify(res.data.token), { expires: 1 / 24 });
+            LoginUser.getUser().then((res) => {
+                var userInfo = res.data.users;
+                this.props.onUserLogin(userInfo);
+            });
+            
             //redirect to dashboard
-            this.props.history.push({ pathname: '/' })
+            // this.props.history.push("/");
 
-            // if (res.data.message === "Email or Password is invalid") {
-            //     alert('Tài khoảng không tồn tại hoặc mật khẩu không đúng');
-            // }
-            // this.setState({message : "Tài khoảng không tồn tại hoặc mật khẩu không đúng"})
-            // console.log(this.message);
-        }, function (error) {
-            // Do something with response error
-            if (error.response.status === 401) {
-                seft.isErrorTrue();
-                document.getElementById("errModal").click();
-                
-            }
         })
+        // , function (error) {
+        //     // Do something with response error
+        //     if (error.response.status === 401) {
+        //         seft.isErrorTrue();
+        //         document.getElementById("errModal").click();
+                
+        //     }
+        // })
+
     }
     isErrorFalse = ()=>{
         this.setState({isError : false});

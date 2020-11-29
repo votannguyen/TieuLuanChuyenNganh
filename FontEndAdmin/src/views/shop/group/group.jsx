@@ -15,7 +15,6 @@ import {
     CDataTable,
     CRow
 } from '@coreui/react'
-import usersData from '../../users/UsersData';
 import "../products/products.css";
 import "../brands/brand.css";
 import GroupService from "../../../services/GroupService";

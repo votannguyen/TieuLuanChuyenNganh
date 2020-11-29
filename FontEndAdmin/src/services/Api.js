@@ -9,7 +9,9 @@ const url={
     category: "api/category/",
     user: "api/user/",
     login: "api/user/login/",
-    group: "/api/group",
+    group: "api/group",
+    image: "api/product/createProductImage",
+    promotion: "/api/promotion"
 
 };
 const instance = axios.create({
@@ -20,7 +22,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((request)=>{
-    const loginInfoStr = Cookies.get('loginInfo');
+    const loginInfoStr = Cookies.get('loginInfoAdmin');
     if(loginInfoStr){
         const loginInfos = JSON.parse(loginInfoStr);
         request.headers.Authorization = `Bearer ${loginInfos}`;

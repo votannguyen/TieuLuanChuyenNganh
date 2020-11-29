@@ -88,7 +88,7 @@ class Profile extends Component {
         )
     }
     genderCheck = () => {
-        if (this.state.user.gender === '1') {
+        if (this.state.user.gender === 1) {
             return (
                 <div class="col-sm-10">
                     <div class="form-check form-check-inline">

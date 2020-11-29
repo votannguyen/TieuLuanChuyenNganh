@@ -98,7 +98,7 @@ class Products extends Component {
     console.log(this.state.products)
   }
   processGender = (value) => {
-    if (value === '1') {
+    if (value === 1) {
       return (
         <i class="fas fa-male male fa-2x"></i>
       )

@@ -1,3 +1,6 @@
+import PromotionService from '../../services/PromotionService';
+import * as Types from '../constants/ActionType';
+
 var discountPer=[
     {
         id:1,
@@ -55,11 +58,22 @@ var discountPer=[
         summary: 'Mã giảm 80%',
         available : true
     },
-
 ]
-const discount = (state = discountPer, action) => {
+var discountCodes = {
+    promotion: []
+}
+
+const discount = (state = discountCodes, action) => {
+    var { promotion } = action;
     switch(action.type){
-        default : return[...state];
+        case Types.ON_LOAD_PROMOTION_ON_STATE:
+            return{
+                ...state,
+                promotion : promotion
+            }
+
+        
+        default : return{...state};
     }
 }
 

@@ -6,34 +6,27 @@ import UserService from '../services/UserService';
 class Header extends Component {
     state = {
         fullname: "",
-        user: [],
-        users: {},
         id: "",
         email: "",
-        token: ""
+        token: "",
+        user: []
 
     }
     logout = () => {
-        console.log("aaaa");
         Cookies.remove('loginInfo', { path: "/" });
-        this.componentDidMount();
+        Cookies.remove('expireAuth', { path: "/" });
+        this.props.onUserLogout();
+        this.loadData();
     }
-    componentDidMount = () => {
+    componentDidMount () {
         this.loadData();
     }
     loadData = () => {
-        const loginInfoStr = Cookies.get('loginInfo');
-        if (loginInfoStr) {
-            const loginInfos = JSON.parse(loginInfoStr);
-            this.setState({ email: loginInfos.email })
-            this.setState({ token: loginInfos.token })
-        }
         UserService.getUser().then((res) => {
-            this.setState({ users: res.data.users });
-            console.log(this.state.users)
+            this.setState({ user: res.data.users });
         });
     }
-    resultProductInCart = cart => {         //tính sosos lượng sản phẩm trong cart
+    resultProductInCart = cart => {         //tính số lượng sản phẩm trong cart
         var result = 0;
         if (cart.length > 0) {
             for (var i = 0; i < cart.length; i++) {
@@ -84,11 +77,11 @@ class Header extends Component {
                                             </div>
                                             <div className="header-info-right ">
                                                 <ul>
-                                                    {Cookies.get("loginInfo") ?
+                                                    {Cookies.get("loginInfo")  ?
                                                         <li><Link to="/profile">Tài Khoản Của Tôi</Link></li>
                                                         : null
                                                     }
-                                                    {Cookies.get("loginInfo") ?
+                                                    {Cookies.get("loginInfo")  ?
                                                         <li><Link to="/wishlist">Sản Phẩm Yêu Thích</Link></li>
                                                         : null
                                                     }
@@ -109,10 +102,10 @@ class Header extends Component {
                                     </button>
                                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                         <ul class="navbar-nav mr-auto">
-                                            {Cookies.get("loginInfo") ?
+                                            {Cookies.get("loginInfo")  ?
                                                 <li class="nav-item dropdown">
                                                     <a class="nav-link dropdown-toggle nameProfile" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <img className="btnUser" src={require('../img/Shoe/avatar.jpg')}></img>{this.state.users.fullName}
+                                                        <img className="btnUser" src={require('../img/Shoe/avatar.jpg')}></img>{this.state.user.fullName}
                                                     </a>
                                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                         <Link class="dropdown-item" to="/">Đơn hàng của tôi</Link>
@@ -249,7 +242,7 @@ class Header extends Component {
                                                             </div>
                                                         </div>
                                                     </div> :
-                                                    <div className="quantityCartNotLogin">02</div>
+                                                    <div className="quantityCartNotLogin">{this.resultProductInCart(cart)}</div>
                                                 }
 
                                                 {Cookies.get("loginInfo") ?
@@ -270,7 +263,7 @@ class Header extends Component {
                                                         <img className="btnUser" onClick={this.cookieUser} src={require('../img/Shoe/avatar.jpg')} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                                         {/* <div className="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-chevron-down btnChevron-down btn"></i></div> */}
                                                         <div class="dropdown-menu dropDownMargin" aria-labelledby="dropdownMenuButton">
-                                                            <p class="nameHeader">{this.state.users.fullName}</p>
+                                                            <p class="nameHeader">{this.state.user.fullName}</p>
                                                             <Link class="dropdown-item" to="/profile">Đơn hàng của tôi</Link>
                                                             <Link class="dropdown-item" to="/profile">Tài khoản của tôi</Link>
                                                             <Link class="btn btn-danger btnLogout" to="/" onClick={this.logout}>Đăng xuất</Link>

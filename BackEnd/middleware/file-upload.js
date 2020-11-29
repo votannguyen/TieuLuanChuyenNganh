@@ -9,7 +9,7 @@ const MINE_TYPE_MAP = {
 }
 
 const fileUpload = multer({
-    limits: 50000,
+    limits: 5000000,
     storage: multer.diskStorage({
         destination: (req, file, cb) => {
             cb(null, 'uploads/images');

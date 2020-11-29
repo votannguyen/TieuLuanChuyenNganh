@@ -5,21 +5,22 @@ import { Link } from 'react-router-dom';
 class CartResult extends Component {
     state = {
         discount: '',
-        nameDiscount : '',
-        nameTagDiscount : ''
+        nameDiscount: '',
+        nameTagDiscount: ''
     }
     showTotalAmount = (cart) => {
         var total = 0;
         if (cart.length > 0) {
             for (var i = 0; i < cart.length; i++) {
-                total+=cart[i].total;
+                total += cart[i].total;
             }
-                         
+
         }
+        console.log(this.props.discount.promotion[0])
         return total;
     }
     InputOnChange = (event) => {
-        const { value } = event.target;    
+        const { value } = event.target;
         this.setState({ discount: value })
         this.setState({ nameDiscount: '' })
     }
@@ -42,19 +43,19 @@ class CartResult extends Component {
         this.processNameDiscount(discountState, discountCurrent);
         var { onChangeDiscountInCart } = this.props;
         onChangeDiscountInCart(discountState, discountCurrent, cart);
-        
+
     }
     //Xử ý tổng tiền
-    processTotal = (cart)=>{
-        var totalDiscount=0;
-        var total=0;
+    processTotal = (cart) => {
+        var totalDiscount = 0;
+        var total = 0;
         if (cart.length > 0) {
             for (var i = 0; i < cart.length; i++) {
-                totalDiscount+=cart[i].totalDiscount;
-                total+=cart[i].total;
+                totalDiscount += cart[i].totalDiscount;
+                total += cart[i].total;
             }
         }
-        if(totalDiscount === 0){
+        if (totalDiscount === 0) {
             return this.showTotalAmount(cart)
         }
         else {
@@ -62,29 +63,44 @@ class CartResult extends Component {
         }
     }
     //xử lý giảm giá
-    processDiscount = cart =>{
+    processDiscount = cart => {
         var totalDiscount = 0;
         for (var i = 0; i < cart.length; i++) {
-            totalDiscount+=cart[i].totalDiscount;
+            totalDiscount += cart[i].totalDiscount;
         }
         return totalDiscount;
     }
-    processNameDiscount = (discount, inputDiscount) =>{
+    processNameDiscount = (discount, inputDiscount) => {
+        const formatter = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+            minimumFractionDigits: 0
+        })
         var nameDiscount = -1;
-        for (var i = 0; i < discount.length; i++) {
-            if(inputDiscount === discount[i].code){
-                nameDiscount = discount[i].summary;
-                this.setState({nameDiscount: nameDiscount})
-                this.setState({nameTagDiscount: 'nameTagSuccessDiscount'})
-                break
+        for (var i = 0; i < discount.promotion.length; i++) {
+            if (inputDiscount === discount.promotion[i].promotionCode) {
+                if (discount.promotion[i].promotionValue <= 1) {
+                    nameDiscount = `Bạn đã sử dụng mã giảm giá ${discount.promotion[i].promotionValue * 100} %`;
+                    this.setState({ nameDiscount: nameDiscount })
+                    this.setState({ nameTagDiscount: 'nameTagSuccessDiscount' })
+                    break
+                }
+                else{
+                    nameDiscount = `Bạn đã sử dụng mã giảm giá ${formatter.format(discount.promotion[i].promotionValue)}`;
+                    this.setState({ nameDiscount: nameDiscount })
+                    this.setState({ nameTagDiscount: 'nameTagSuccessDiscount' })
+                    break
+                }
+
+
             }
         }
-        if(inputDiscount !== '' && nameDiscount === -1) { 
-            nameDiscount = 'Mã bạn nhập không đúng đã hoặc đã sử dụng' 
-            this.setState({nameDiscount: nameDiscount})
-            this.setState({nameTagDiscount: 'nameTagFailDiscount'})
+        if (inputDiscount !== '' && nameDiscount === -1) {
+            nameDiscount = 'Mã bạn nhập không đúng đã hoặc đã sử dụng'
+            this.setState({ nameDiscount: nameDiscount })
+            this.setState({ nameTagDiscount: 'nameTagFailDiscount' })
         }
-        
+
     }
     render() {
         var { cart, discount } = this.props;
@@ -130,8 +146,8 @@ class CartResult extends Component {
                                 </span>
                                 </div>
                                 <div className="col-6 alignmentRightPrice">
-                                    <span 
-                                        id="provisional" 
+                                    <span
+                                        id="provisional"
                                     >
                                         {formatter.format(this.showTotalAmount(cart))}
                                     </span>
@@ -167,7 +183,7 @@ class CartResult extends Component {
                                 </div>
                                 <div className="col-8 alignmentRightPrice">
                                     <span className="colorTextTotal">
-                                    {formatter.format(this.processTotal(cart))}
+                                        {formatter.format(this.processTotal(cart))}
                                     </span>
                                     <div class="w-100"></div>
                                     <span className="vatTextFontSize">(Đã bao gồm thuế VAT)</span>

@@ -7,18 +7,19 @@ import CartResult from '../../pages/cartResult/cartResult';
 
 import * as Message from '../constants/Message';
 
-import { actChangeDiscountInCart, actChangeQuantityProductInCart, actDeleteProductInCart, actOnLoadThisPage } from '../actions/index';
+import { actChangeDiscountInCart, actChangeQuantityProductInCart, actDeleteProductInCart, actOnLoadPromotionInState, actOnLoadThisPage } from '../actions/index';
 
 class CartContainer extends Component {
     state = {}
     render() {
-        var { cart, discount, onLoadThisPage } = this.props;
+        var { cart, discount, onLoadThisPage, onLoadPromotionInState } = this.props;
         return (
             <Cart 
             cart={cart}
             cartItem={this.showCartItem(cart)} 
             cartResult ={this.showTotalResult(cart, discount)}
             onLoadThisPage = {onLoadThisPage}
+            onLoadPromotionInState = {onLoadPromotionInState}
             />
         );
     }
@@ -39,6 +40,7 @@ class CartContainer extends Component {
                         onDeleteProductInCart={onDeleteProductInCart}
                         onChangQuantityProductInCart={onChangQuantityProductInCart}
                         onChangeDiscountInCart={onChangeDiscountInCart}
+                        
                     />
                 );
             });
@@ -78,7 +80,8 @@ CartContainer.propTypes = {
 const mapStateToProps = state => {
     return {
         cart: state.cart,
-        discount: state.discount
+        discount: state.discount,
+
     }
 }
 const mapDispatchToProps = (dispatch, props) => {
@@ -94,6 +97,9 @@ const mapDispatchToProps = (dispatch, props) => {
         },
         onLoadThisPage : cart => {
             dispatch(actOnLoadThisPage(cart));
+        },
+        onLoadPromotionInState: (promotion) =>{
+            dispatch(actOnLoadPromotionInState(promotion));
         }
         // onChangeMessage : (message) => {
         //     dispatch(actChangeMessage(message));

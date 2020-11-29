@@ -88,9 +88,9 @@ const cart = (state = initialState, action) => {
         case Types.CHANGE_DISCOUNT_IN_CART:
             var isDiscount = 0;
             if (cart.length > 0) {
-                for (var i = 0; i < discount.length; i++) {
-                    if (discount[i].code === inputDiscount) {
-                        isDiscount = discount[i].action;
+                for (var i = 0; i < discount.promotion.length; i++) {
+                    if (discount.promotion[i].promotionCode === inputDiscount) {
+                        isDiscount = discount.promotion[i].promotionValue;
                         break;
                     }
                 }

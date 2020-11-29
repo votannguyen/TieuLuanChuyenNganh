@@ -1,0 +1,13 @@
+.backGroundMain{
+    background-color: white;
+}
+.titleTab{
+    font-size: 20px;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+.containerMain{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}

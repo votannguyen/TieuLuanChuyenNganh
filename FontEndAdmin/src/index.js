@@ -11,22 +11,22 @@ import 'bootstrap/dist/css/bootstrap.css'
 // import 'bootstrap/dist/js/bootstrap.bundle'
 
 import { icons } from './assets/icons'
-
+import AppContainer from './redux/containers/AppContainer';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux'
-import store from './store'
-// import { createStore } from 'redux';
-// import appReducers from './redux/reducers/index';
+import store1 from './store'
+import { createStore } from 'redux';
+import appReducers from './redux/reducers/index';
 
-// const store = createStore(
-//   appReducers,
-//   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-// );
+const store = createStore(
+  appReducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 React.icons = icons
 ReactDOM.render(
   <BrowserRouter>
-    <Provider store={store}>
-      <App/>
+    <Provider store = {store}>
+      <AppContainer/>
     </Provider>
   </BrowserRouter>,
   document.getElementById('root')
