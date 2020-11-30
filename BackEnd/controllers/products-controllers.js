@@ -210,6 +210,7 @@ const createProduct = async (req, res, next) => {
         const createdProduct = {
             name: req.body.name,
             productCode: req.body.productCode,
+            imagePath: image,
             price: req.body.price,
             status: 1,
             amount: req.body.amount,
@@ -229,15 +230,11 @@ const createProduct = async (req, res, next) => {
 const updateProductById = async (req, res, next) => {
     const productId = req.params.productId;
     const errors = validationResult(req);
+    
     if (!errors.isEmpty()) {
         console.log(errors);
         const error = new HttpError("Invalid Input! Pls check your data", 400);
-        let errReturn;
-        errReturn = {
-            fail: "SYSF03",
-            error,
-        };
-        return next(errReturn);
+        return next(error)
     }
     //Kiểm tra có chèn ảnh ko
     let image;
@@ -267,6 +264,7 @@ const updateProductById = async (req, res, next) => {
         const updatedProduct = {
             name: req.body.name,
             productCode: req.body.productCode,
+            imagePath: image,
             price: req.body.price,
             status: req.body.status,
             amount: req.body.amount,
@@ -335,7 +333,7 @@ const updateProductImage = async (req, res, next) => {
     const updatedImage = {
         imagePath: req.file.path
       };
-    let productImage
+    let productImage;
     productImage = await ProductImage.update(updatedImage, {
         where: {id: productImageId}
     });

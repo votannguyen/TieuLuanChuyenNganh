@@ -12,6 +12,7 @@ router.get('/getAlias/:productAlias', productsControllers.getProductByAlias);
 router.get('/getImageByProductId/:productId',productsControllers.getProductImageByProductId);
 router.post(
     '/',
+    fileUpload.single('imagePath'),
     [   
        check('name').not().isEmpty()
     ],
@@ -31,6 +32,7 @@ router.patch(
 
 router.patch(
 '/:productId',
+fileUpload.single('imagePath'),
 [   
    check('name').not().isEmpty()
 ],
