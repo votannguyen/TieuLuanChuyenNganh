@@ -4,22 +4,26 @@ var data = JSON.parse(localStorage.getItem('CART'));
 var initialState = data ? data : [];
 
 const cart = (state = initialState, action) => {
-    var { product, quantity, total, check, discount, inputDiscount, totalDiscount, cart } = action;
+    var { product, quantity, total, check, discount, inputDiscount, totalDiscount, cart, sizeProduct, idSizeProduct } = action;
     var index = -1;     //Không tìm thấy thì index = -1
+    var indexSize = -1;
     switch (action.type) {
         case Types.ADD_TO_CART:
             //index = findProductInCart(state, product);
-            index = state.findIndex(x => x.product.id === product.id)
+            index = state.findIndex(x => x.product.id === product.id)       //tìm mã sản phẩm
+
+            indexSize = state.findIndex(x => x.idProductSize === sizeProduct)   //tìm index của sản phẩm bằng idSizeProduct
+            
+            // indexSize = state.findIndex(x => x.product.ProductSizes.id === sizeProduct.id)
             totalDiscount = 0;
-            if (index !== -1) {
-                if (state[index].quantity >= 20) {      //Giới hạn số lượng mua là 20 sp một lần mua
-                    state[index].quantity = 20;
+            if (index !== -1 && indexSize !== -1) {
+                if (state[indexSize].quantity >= 20) {      //Giới hạn số lượng mua là 20 sp một lần mua
+                    state[indexSize].quantity = 20;
                 }
                 else {
-                    state[index].quantity += quantity;
-                    state[index].total = state[index].quantity * state[index].product.price
-                    for (var index = 0; index < state.length; index++) {
-                        state[index].totalDiscount = 0;
+                    state[indexSize].quantity += quantity;
+                    for (var idx = 0; idx < state.length; idx++) {
+                        state[indexSize].totalDiscount = 0;
                     }
                 }
             }
@@ -27,8 +31,9 @@ const cart = (state = initialState, action) => {
                 state.push({
                     product: product,
                     quantity: quantity,
-                    total: total,
-                    totalDiscount
+                    total: product.price * quantity,
+                    idProductSize: sizeProduct,
+                    totalDiscount,
                 })
             }
             localStorage.setItem('CART', JSON.stringify(state));
@@ -41,17 +46,19 @@ const cart = (state = initialState, action) => {
             localStorage.setItem('CART', JSON.stringify(state));
             return [...state];
         case Types.CHANGE_QUANTITY_PRODUCT_IN_CART:
+
             index = state.findIndex(x => x.product.id === product.id)
+            indexSize = state.findIndex(x => x.idProductSize === idSizeProduct)         //tìm index của sản phẩm bằng idSizeProduct
             if (check === 1) {
-                if (index !== -1) {
-                    if (state[index].quantity >= 20) {
-                        state[index].quantity = 20;
+                if (indexSize !== -1) {
+                    if (state[indexSize].quantity >= 20) {
+                        state[indexSize].quantity = 20;
                     }
                     else {
-                        state[index].quantity += 1;
-                        state[index].total = state[index].quantity * state[index].product.price
-                        for (var index = 0; index < state.length; index++) {
-                            state[index].totalDiscount = 0;
+                        state[indexSize].quantity += 1;
+                        state[indexSize].total = state[indexSize].quantity * state[indexSize].product.price
+                        for (var idxs = 0; idxs < state.length; idxs++) {
+                            state[indexSize].totalDiscount = 0;
                         }
                     }
                 }
@@ -62,15 +69,15 @@ const cart = (state = initialState, action) => {
                     })
                 }
             } else {
-                if (index !== -1) {
-                    if (state[index].quantity <= 1) {
-                        state[index].quantity = 1;
+                if (indexSize !== -1) {
+                    if (state[indexSize].quantity <= 1) {
+                        state[indexSize].quantity = 1;
                     }
                     else {
-                        state[index].quantity -= 1;
-                        state[index].total = state[index].quantity * state[index].product.price
+                        state[indexSize].quantity -= 1;
+                        state[indexSize].total = state[indexSize].quantity * state[indexSize].product.price
                         for (var index = 0; index < state.length; index++) {
-                            state[index].totalDiscount = 0;
+                            state[indexSize].totalDiscount = 0;
                         }
                     }
                 }
@@ -101,7 +108,7 @@ const cart = (state = initialState, action) => {
             localStorage.setItem('CART', JSON.stringify(state));
             return [...state]
         case Types.ON_LOAD_PAGE_CART:
-            for(var i = 0; i < cart.length; i++){
+            for (var i = 0; i < cart.length; i++) {
                 state[i].totalDiscount = 0;
             }
             localStorage.setItem('CART', JSON.stringify(state));

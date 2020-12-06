@@ -1,6 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+// import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+// import './css/assets/css/bootstrap.min.css';
+// import './css/assets/css/flaticon.css';
+// import './css/assets/css/slicknav.css';
+// import './css/assets/css/animate.min.css';
+// import './css/assets/css/magnific-popup.css';
+// import './css/fontawesome-free-5.15.1-web/css/all.min.css';
+// import './css/assets/css/themify-icons.css';
+// import './css/assets/css/slick.css';
+// import './css/assets/css/style.css';
+
+
+
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 // import 'bootstrap/dist/css/bootstrap.css'

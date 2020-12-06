@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import "../productList/productList.css";
+import ProductService from '../../services/ProductService'
 class ProductList extends Component {
   state = {
 
+  }
+  componentDidMount = () =>{
+    window.scrollTo(0, 0)
+    ProductService.listProduct().then(res =>{
+      this.props.onLoadProductFromApi(res.data.products)
+    })
   }
   render() {
     return (
@@ -97,83 +104,7 @@ class ProductList extends Component {
                     </ul>
                   </div>
                 </aside>
-                <aside className="ps-widget--sidebar ps-widget--category">
-                  <div className="ps-widget__header">
-                    <h3>Width</h3>
-                  </div>
-                  <div className="ps-widget__content">
-                    <ul className="ps-list--checked">
-                      <li className="current"><Link to="product-listing.html">Narrow</Link></li>
-                      <li><Link to="product-listing.html">Regular</Link></li>
-                      <li><Link to="product-listing.html">Wide</Link></li>
-                      <li><Link to="product-listing.html">Extra Wide</Link></li>
-                    </ul>
-                  </div>
-                </aside>
-                <div className="ps-sticky desktop">
-                  <aside className="ps-widget--sidebar">
-                    <div className="ps-widget__header">
-                      <div className="tagFilter">Kích thước</div>
-                    </div>
-                    <div className="ps-widget__content">
-                      <table className="table ps-table--size">
-                        <tbody>
-                          <tr>
-                            <td className="active">3</td>
-                            <td>5.5</td>
-                            <td>8</td>
-                            <td>10.5</td>
-                          </tr>
-                          <tr>
-                            <td>3.5</td>
-                            <td>6</td>
-                            <td>8.5</td>
-                            <td>11</td>
-                          </tr>
-                          <tr>
-                            <td>4</td>
-                            <td>6.5</td>
-                            <td>9</td>
-                            <td>11.5</td>
-                          </tr>
-                          <tr>
-                            <td>4.5</td>
-                            <td>7</td>
-                            <td>9.5</td>
-                            <td>12</td>
-                          </tr>
-                          <tr>
-                            <td>5</td>
-                            <td>7.5</td>
-                            <td>10</td>
-                            <td>12.5</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </aside>
-                  <aside className="ps-widget--sidebar">
-                    <div className="ps-widget__header">
-                      <div className="tagFilter">Color</div>
-                    </div>
-                    <div className="ps-widget__content">
-                      <ul className="ps-list--color">
-                        <li><Link to="#"></Link></li>
-                        <li><Link to="#"></Link></li>
-                        <li><Link to="#"></Link></li>
-                        <li><Link to="#"></Link></li>
-                        <li><Link to="#"></Link></li>
-                        <li><Link to="#"></Link></li>
-                        <li><Link to="#"></Link></li>
-                        <li><Link to="#"></Link></li>
-                        <li><Link to="#"></Link></li>
-                        <li><Link to="#"></Link></li>
-                        <li><Link to="#"></Link></li>
-                        <li><Link to="#"></Link></li>
-                      </ul>
-                    </div>
-                  </aside>
-                </div>
+
               </div>
             </div>
             <div className="col-10 rightList">
@@ -206,7 +137,7 @@ class ProductList extends Component {
               </div>
               <div className="container">
                 <div className="row">
-                    {this.props.children}
+                    {this.props.showProduct}
                 </div>
               </div>
             </div>

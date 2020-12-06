@@ -15,6 +15,7 @@ class Profile extends Component {
 
     }
     componentDidMount = () => {
+        window.scrollTo(0, 0)
         this.loadData();
     }
     loadData = () => {
@@ -88,7 +89,7 @@ class Profile extends Component {
         )
     }
     genderCheck = () => {
-        if (this.state.user.gender === 1) {
+        if (this.state.user.gender === 1 || this.state.user.gender === '1') {
             return (
                 <div class="col-sm-10">
                     <div class="form-check form-check-inline">

@@ -116,8 +116,8 @@ class Products extends Component {
   setCloseModalBlock = () => {
     this.setState({ showModalBlock: false });
   }
-  saveBlockUer = () =>{
-    
+  saveBlockUer = () => {
+
   }
   render() {
     return (
@@ -148,10 +148,10 @@ class Products extends Component {
                       <div className="scoreUserAccumulation">Điểm thưởng: 100</div>
                       <div className="scoreUserAccumulation">
                         <div className="row">
-                        <div className="col-5">Trạng thái:</div>
-                        <CBadge color={getBadge('Active')}>
-                          {'Active'}
-                        </CBadge>
+                          <div className="col-5">Trạng thái:</div>
+                          <CBadge color={getBadge('Active')}>
+                            {'Active'}
+                          </CBadge>
                         </div>
                       </div>
                       <div className="scoreUserAccumulation">Ngày tham gia: 03-11-2020</div>
@@ -200,7 +200,6 @@ class Products extends Component {
                                 <th>Ngày sinh</th>
                                 <th>Trạng thái</th>
                                 <th>Hành động</th>
-
                               </tr>
                             </thead>
                             <tbody>
@@ -274,7 +273,7 @@ class Products extends Component {
 
 
               </div>
-              
+
             </Modal.Footer>
           </Modal>
         </>
@@ -304,6 +303,9 @@ class Products extends Component {
                     </thead>
                     <tbody>
                       {this.state.listUser.map((listUser, idx) => {
+                        if(listUser.isAdmin === false){
+
+                        
                         return (
                           <tr>
                             <td>{idx + 1}</td>
@@ -330,6 +332,7 @@ class Products extends Component {
                             </td>
                           </tr>
                         )
+                        }
                       })}
                     </tbody>
                   </Table>

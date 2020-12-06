@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import {
     Button,
     Modal,
@@ -19,7 +17,6 @@ import {
 import "../products/products.css";
 import "../brands/brand.css";
 import "./promotion.css";
-import BrandService from "../../../services/BrandService";
 import PromotionService from "../../../services/PromotionService";
 const getBadge = status => {
     switch (status) {
@@ -136,9 +133,6 @@ class Products extends Component {
                                     </div>
 
                                 </div>
-
-
-
                                 <Button variant="primary" type="submit" onClick={this.save}>
                                     Thêm
                                 </Button>

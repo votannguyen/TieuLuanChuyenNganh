@@ -16,6 +16,7 @@ class Order extends Component {
                             eventKey="orderNotConfirm"
                             title="Đơn hàng chưa được xác nhận"
                             tabClassName="titleTab">
+                            <div className="titleTable">Bảng đơn hàng chưa được xác nhận</div>
                             <Table striped hover>
                                 <thead>
                                     <tr>
@@ -50,6 +51,7 @@ class Order extends Component {
                             eventKey="orderConfirm"
                             title="Đơn hàng đã xác nhận"
                             tabClassName="titleTab">
+                            <div className="titleTable">Bảng đơn hàng đã được xác nhận</div>
                             <Table striped hover>
                                 <thead>
                                     <tr>
@@ -84,6 +86,7 @@ class Order extends Component {
                             eventKey="orderHaveBeenDelivery"
                             title="Đơn hàng đã vận chuyển xong"
                             tabClassName="titleTab">
+                            <div className="titleTable">Bảng đơn hàng đã vận chuyển xong</div>
                             <Table striped hover>
                                 <thead>
                                     <tr>

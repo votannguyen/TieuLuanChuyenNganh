@@ -8,17 +8,7 @@ class CartResult extends Component {
         nameDiscount: '',
         nameTagDiscount: ''
     }
-    showTotalAmount = (cart) => {
-        var total = 0;
-        if (cart.length > 0) {
-            for (var i = 0; i < cart.length; i++) {
-                total += cart[i].total;
-            }
-
-        }
-        console.log(this.props.discount.promotion[0])
-        return total;
-    }
+    
     InputOnChange = (event) => {
         const { value } = event.target;
         this.setState({ discount: value })
@@ -45,23 +35,7 @@ class CartResult extends Component {
         onChangeDiscountInCart(discountState, discountCurrent, cart);
 
     }
-    //Xử ý tổng tiền
-    processTotal = (cart) => {
-        var totalDiscount = 0;
-        var total = 0;
-        if (cart.length > 0) {
-            for (var i = 0; i < cart.length; i++) {
-                totalDiscount += cart[i].totalDiscount;
-                total += cart[i].total;
-            }
-        }
-        if (totalDiscount === 0) {
-            return this.showTotalAmount(cart)
-        }
-        else {
-            return total - totalDiscount;
-        }
-    }
+    
     //xử lý giảm giá
     processDiscount = cart => {
         var totalDiscount = 0;
@@ -110,7 +84,7 @@ class CartResult extends Component {
             minimumFractionDigits: 0
         })
         return (
-            <div className="container fixed">
+            <div className="container fixedResult">
                 <div class="card cardMagin">
                     <div class="card-body">
                         <h5 class="card-title fontTitleCardCoupon">Mã giảm giá   <i className="fas fa-tags colorTagCoupon"></i></h5>
@@ -149,7 +123,7 @@ class CartResult extends Component {
                                     <span
                                         id="provisional"
                                     >
-                                        {formatter.format(this.showTotalAmount(cart))}
+                                        {formatter.format(this.props.showTotalAmount)}
                                     </span>
                                 </div>
                             </div>
@@ -183,7 +157,7 @@ class CartResult extends Component {
                                 </div>
                                 <div className="col-8 alignmentRightPrice">
                                     <span className="colorTextTotal">
-                                        {formatter.format(this.processTotal(cart))}
+                                        {formatter.format(this.props.processTotal)}
                                     </span>
                                     <div class="w-100"></div>
                                     <span className="vatTextFontSize">(Đã bao gồm thuế VAT)</span>

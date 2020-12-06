@@ -15,6 +15,9 @@ class Checkout extends Component {
         stateAddress: '',
 
     }
+    componentDidMount(){
+        window.scrollTo(0, 0)
+    }
     showFormInterCard(value) {
         if (value === false) {
             this.setState({ closeFormInterCard: true });
@@ -86,6 +89,13 @@ class Checkout extends Component {
         this.setState({state:''})
 
     }
+    InputOnChange = (event) => {
+        const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
+    
+        const newUser = { ...this.state.user, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ users: newUser });
+        console.log(this.state.user)
+      }
     render() {
         // var provinceTemp = Province.sort((a, b) => a._name - b._name)
         var provinceTemp = Province.sort((a, b) => a._name.localeCompare(b._name))          //sort by name
@@ -121,7 +131,7 @@ class Checkout extends Component {
                                                 <label className="paddingLable" for="exampleInputEmail1 ">Họ và tên:</label>
                                             </div>
                                             <div className="col-md-9">
-                                                <input type="text" class="form-control" id="nameUser" placeholder="Họ và tên" />
+                                                <input type="text" class="form-control" id="nameUser" placeholder="Họ và tên" onChange={this.InputOnChange}/>
                                             </div>
                                         </div>
                                     </div>
@@ -132,7 +142,7 @@ class Checkout extends Component {
                                                 <label className="paddingLable" for="exampleInputEmail1 ">Số điện thoại:</label>
                                             </div>
                                             <div className="col-md-9">
-                                                <input type="text" class="form-control" id="phoneUser" placeholder="Số điện thoại" />
+                                                <input type="number" class="form-control" id="phoneUser" placeholder="Số điện thoại" onChange={this.InputOnChange}/>
                                             </div>
                                         </div>
                                     </div>
@@ -165,7 +175,7 @@ class Checkout extends Component {
                                                 <label className="paddingLable" for="exampleInputEmail1 ">Quận huyện</label>
                                             </div>
                                             <div className="col-md-9">
-                                                <select class="form-control selectBoxAddress" id="districtUser" onChange={this.InputOnChangeDistrict}>
+                                                <select className="form-control selectBoxAddress" id="districtUser" onChange={this.InputOnChangeDistrict}>
                                                     <option>Quận huyện</option>
                                                     {this.state.stateDistrict.map((district, idx) => {
                                                         return (
@@ -209,7 +219,7 @@ class Checkout extends Component {
                                                 <label className="paddingLable" for="exampleInputEmail1 ">Địa chỉ</label>
                                             </div>
                                             <div className="col-md-9">
-                                                <input type="text" class="form-control addressDetailHeight" id="addressDetail" />
+                                                <input type="text" class="form-control addressDetailHeight" id="addressDetail" onChange={this.InputOnChangeAddress}/>
                                             </div>
                                         </div>
                                     </div>

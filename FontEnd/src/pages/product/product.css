@@ -16,3 +16,28 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
 }
+.descriptionProduct {
+  /* font-family: Open Sans, sans-serif !important;
+font-size: 18px;
+text-overflow: ellipsis !important;
+
+width: 200px;
+overflow: hidden;
+word-break: break-all; */
+  font-size: 13px;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 25px;
+  -webkit-line-clamp: 2;
+  height: 100px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+.sizeOnSelect{
+  background-color: #dbdbdb;
+  border-radius: 5px;
+}
+.heightBoxSize{
+  height: 50px;
+}

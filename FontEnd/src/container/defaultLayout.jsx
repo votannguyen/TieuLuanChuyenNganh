@@ -5,8 +5,15 @@ import { Route, Switch } from "react-router-dom";
 import PrivateRoutes from "../Routes/privateRoutes";
 import PublicRoutes from "../Routes/publicRoutes";
 import Cookies from "js-cookie";
+import ProductService from "../services/ProductService";
 class DefaultLayout extends Component {
     state = {};
+    componentDidMount(){
+        ProductService.listProduct().then(res => {
+            console.log(res.data.products)
+            this.props.onLoadProductFromApi(res.data.products)
+        })
+    }
     render() {
         return (
             <div>
@@ -34,7 +41,8 @@ class DefaultLayout extends Component {
                                     path={route.path}
                                     exact={route.exact}
                                     name={route.name}
-                                    component={route.component} />
+                                    component={route.component}
+                                    />
                             ) : null;
                         })}
                     </Switch>

@@ -7,6 +7,7 @@ const ProductImage = models.ProductImage;
 const Group = models.Group;
 const Brand = models.Brand;
 const Category = models.Category;
+const Size = models.Size;
 const { validationResult } = require('express-validator'); //lấy dc lỗi từ body validate
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op; 
@@ -29,6 +30,12 @@ const getAllProduct = async (req, res, next) => {
                             model: Group
                         }]
                     },
+                    {
+                        model: ProductSize,
+                        include: [{
+                            model: Size
+                        }]
+                    }
                 ],
             }
         );
@@ -69,12 +76,19 @@ const getProductById = async (req, res, next) => {
                     model: Brand
                    
                 },
-                {
+                {   
                     model: Category,
                     include: [{
                         model: Group
-                    }]
+                    }],
+                    
                 },
+                {
+                    model: ProductSize,
+                    include: [{
+                        model: Size
+                    }]
+                }
             ],
         });
     }
@@ -291,13 +305,13 @@ const createProductSize = async (req, res, next) => {
         const error = new HttpError('Could not find any Product', 404);
         return next(error);
     }
-    let productReduce;
-    productReduce = products.amount - req.body.productCount;
-    if( productReduce < 0)
-    {
-        const error = new HttpError('The product is out of sources', 400);
-        return next(error);
-    }
+    // let productReduce;
+    // productReduce = products.amount - req.body.productCount;
+    // if( productReduce < 0)
+    // {
+    //     const error = new HttpError('The product is out of sources', 400);
+    //     return next(error);
+    // }
     const createdProductSize = {
         productCount: req.body.productCount,
         productId: req.body.productId,

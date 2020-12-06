@@ -16,9 +16,11 @@ const groupRoutes = require('./routes/group-routes');
 const sizeRoutes = require('./routes/size-routes');
 const orderRoutes = require('./routes/order-routes');
 const promotionRoutes = require('./routes/promotion-routes');
+const {createProxyMiddleware} = require('http-proxy-middleware');
 const HttpError = require('./error-handle/http-error');
-
 const app = express();
+
+
 app.use(passport.initialize());
 
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
@@ -43,7 +45,6 @@ app.use('/api/user', userRoutes);
 app.use('/api/size', sizeRoutes);
 app.use('/api/order', orderRoutes);
 app.use('/api/promotion',promotionRoutes);
-
 app.get('/sync', (req, res) =>{
     let models = require('./models');
     models.sequelize.sync()
@@ -69,8 +70,6 @@ app.use((error, req, res, next) => {
     res.status(error.code || 500);  
     res.json({message: error.message || 'An unknown error occurred'});
 })
-
-
 //Start server
 app.listen(5000); 
 

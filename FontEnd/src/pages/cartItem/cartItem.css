@@ -41,7 +41,7 @@
   border-color: #379af4 !important;
   border: 0.5px solid;
   height: 30px;
-  padding-top: 0px;
+  padding-top: 2px !important;
   margin-left: -0.5px;
   margin-right: -1px;
   border-radius: 0%;
@@ -52,4 +52,11 @@
 .textQuantity {
   color: #a7a7a7;
   margin-bottom: 10px;
+}
+.textSize{
+  font-size: 18px;
+  font-weight: 500;
+  color: #FF0000;
+  padding-bottom: 5px;
+  padding-top: 20px;
 }

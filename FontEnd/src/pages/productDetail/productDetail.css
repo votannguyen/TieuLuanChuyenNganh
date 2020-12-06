@@ -153,17 +153,13 @@ p{
   margin-left: 10px;
   padding-left: 5px;
   padding-right: 5px;
-  color: black;
+  color: rgb(78, 78, 78);
   text-align: center;
-  border-color: #A7A7A7;
+  border-color: #bbbbbb !important;
   border: 1px solid;
+  border-radius: 8px;
 }
-.containerChildColor:hover{
-  cursor: pointer;
-  color: white;
-  border-color: #A7A7A7;
-  border: 1px solid;
-}
+
 .pTextCenter{
   text-align: center;
   
@@ -175,15 +171,22 @@ p{
   width: 30px;
   height: 30px;
   text-align: center;
-  border-color: #A7A7A7;
+  border-color: #c5c5c5 !important;
   border: 0.5px solid;
   padding-top: 4px;
   margin-left: 10px;
+  border-radius: 10px;
 }
 .sizeShoe:hover{
   background-color: #379AF4;
   cursor: pointer;
   color: white;
+  border-color: #379AF4 !important;
+}
+.sizeShoeSelect{
+  background-color: #379AF4;
+  color: white;
+  border-color: #379AF4 !important;
 }
 .spanQuantity{
   color: red;

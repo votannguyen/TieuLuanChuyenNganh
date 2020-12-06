@@ -24,7 +24,7 @@ const routes = [
   { path: "/wishlist", exact: true, name: "Whish List", component: WishList },
   { path: "/profile", exact: true, name: "Profile", component: Profile },
   { path: "/checkout", exact: true, name: "Checkout", component: CheckoutContainer },
-  { path: "/productDetail/:id", exact: true, name: "Product Detail", component: ProductDetailContainer },
+  { path: "/productDetail/:id", name: "Product Detail", component: ProductDetailContainer },
   { path: "/invoiceDetail", exact: true, name: "Invoice Detail", component: InvoiceDetail },
   { name: "404", component: Page404 }
 ];

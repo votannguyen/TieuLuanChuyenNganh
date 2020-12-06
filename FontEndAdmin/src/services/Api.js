@@ -11,7 +11,10 @@ const url={
     login: "api/user/login/",
     group: "api/group",
     image: "api/product/createProductImage",
-    promotion: "/api/promotion"
+    promotion: "/api/promotion",
+    sizes: "/api/size",
+    
+    
 
 };
 const instance = axios.create({

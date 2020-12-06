@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 import "./invoiceDetail.css";
 class InvoiceDetail extends Component {
     state = {  }
+    componentDidMount(){
+        window.scrollTo(0, 0)
+    }
     render() { 
         return ( 
             <div className="backGroundLayoutInvoiceDetail">

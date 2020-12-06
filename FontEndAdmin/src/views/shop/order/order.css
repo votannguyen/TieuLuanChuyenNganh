@@ -4,10 +4,28 @@
 .titleTab{
     font-size: 20px;
     font-family: Roboto, Helvetica, Arial, sans-serif;
+    border-top-left-radius: 15px !important;
+    border-top-right-radius: 15px !important;
 }
+/* .titleTab::after{
+    background-color: #007BFF !important;
+    color: white !important;
+} */
 .containerMain{
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     margin-left: 10px;
     margin-right: 10px;
+}
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    color: white;
+    background-color:#669DB3FF;
+    border-color: #dee2e6 #dee2e6 #fff;
+}
+.titleTable{
+    font-size: 26px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+    font-weight: 700;
 }

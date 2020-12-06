@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../productDetail/productDetail.css';
 import ReactImageMagnify from 'react-image-magnify';
-import { queryAllByTestId } from '@testing-library/react';
-import queryString from 'query-string';
-
+import ProductService from '../../services/ProductService';
 class ProductDetail extends Component {
     state = {
         quantity: 1,
         resultID: "resultID",
         imgID: "imgID",
-        hideContainer: true
+        hideContainer: true,
+        listImgThumbnail: [],
+        realTime: ''
     };
     plusQuantity = () => {
         if (this.state.quantity < 20) {
@@ -38,11 +38,21 @@ class ProductDetail extends Component {
         }
 
     }
-    componentDidMount() {
+    componentDidMount(){
+        window.scrollTo(0, 0)
+        console.log(this.props.p)
+        ProductService.listProduct().then(res => {
+            this.props.onLoadProductFromApi(res.data.products)
+        })
+        ProductService.getImageByProductId(this.props.idProduct).then(res => {
+            this.setState({ listImgThumbnail: res.data.productImage })
+            this.setState({ realTime: '' })
+        })
 
     }
+    
     render() {
-        var { product } = this.props
+        var { product, urlBackend, sizeIsSelect } = this.props
         const formatter = new Intl.NumberFormat('vi-VN', {
             style: 'currency',
             currency: 'VND',
@@ -69,18 +79,14 @@ class ProductDetail extends Component {
                             <div className="">
                                 <div className="row">
                                     <div className="col-lg-2 colmaginProDe backGroundContainerMain marginContainerLeft ">
-                                        <div className="thumbnailImgProductDetail colmaginThumbail">
-                                            <img id="" class="card-img-top boderimg_Pro cursorThumbnailImage" src={(require('../../img/Shoe/vans.png'))} />
-                                        </div>
-                                        <div className="thumbnailImgProductDetail colmaginThumbail">
-                                            <img id="" class="card-img-top boderimg_Pro cursorThumbnailImage" src={(require('../../img/Shoe/vans.png'))} />
-                                        </div>
-                                        <div className="thumbnailImgProductDetail colmaginThumbail">
-                                            <img class="card-img-top boderimg_Pro cursorThumbnailImage" src={(require('../../img/Shoe/vans.png'))} />
-                                        </div>
-                                        <div className="thumbnailImgProductDetail colmaginThumbail">
-                                            <img class="card-img-top boderimg_Pro cursorThumbnailImage" src={(require('../../img/Shoe/vans.png'))} />
-                                        </div>
+                                        {this.state.listImgThumbnail.map((listImgThumbnail, idx) => {
+                                            return (
+                                                <div className="thumbnailImgProductDetail colmaginThumbail" key={idx}>
+                                                    <img id="" class="card-img-top boderimg_Pro cursorThumbnailImage" src={`${urlBackend}${listImgThumbnail.imagePath}`} />
+                                                </div>
+                                            )
+                                        })}
+
                                         <div className="thumbnailImgProductDetail colmaginThumbail">
                                             <p className="cursorThumbnailImageMore cursorThumbnailImage" data-toggle="modal" data-target=".bd-example-modal-lg" data-backdrop="static" data-keyboard="false">Xem thêm hình ảnh</p>
                                         </div>
@@ -95,15 +101,23 @@ class ProductDetail extends Component {
                                                     </div>
                                                     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                                                         <div class="carousel-inner">
-                                                            <div class="carousel-item active">
-                                                                <img class="d-block w-100" src={(require('../../img/Shoe/vans.png'))} alt="First slide" />
-                                                            </div>
-                                                            <div class="carousel-item">
-                                                                <img class="d-block w-100" src={(require('../../img/Shoe/vans.png'))} alt="Second slide" />
-                                                            </div>
-                                                            <div class="carousel-item">
-                                                                <img class="d-block w-100" src={(require('../../img/Shoe/vans.png'))} alt="Third slide" />
-                                                            </div>
+                                                            {this.state.listImgThumbnail.map((listImgThumbnail, idx) => {
+                                                                if (idx === 0) {
+                                                                    return (
+                                                                        <div class="carousel-item active">
+                                                                            <img class="d-block w-100" src={`${urlBackend}${listImgThumbnail.imagePath}`} alt="First slide" />
+                                                                        </div>
+                                                                    )
+                                                                }
+                                                                else {
+                                                                    return (
+                                                                        <div class="carousel-item">
+                                                                            <img class="d-block w-100" src={`${urlBackend}${listImgThumbnail.imagePath}`} alt="First slide" />
+                                                                        </div>
+                                                                    )
+                                                                }
+
+                                                            })}
                                                         </div>
                                                         <a class="carousel-control-prev " href="#carouselExampleControls" role="button" data-slide="prev">
                                                             <span class="carousel-control-prev-icon prev-color" aria-hidden="true"></span>
@@ -125,10 +139,10 @@ class ProductDetail extends Component {
                                                 smallImage: {
                                                     // alt: 'Wristwatch by Ted Baker London',
                                                     isFluidWidth: true,
-                                                    src: product.image,
+                                                    src: `${urlBackend}${product.imagePath}`,
                                                 },
                                                 largeImage: {
-                                                    src: product.image,
+                                                    src: `${urlBackend}${product.imagePath}`,
                                                     width: 1000,
                                                     height: 1000,
                                                     enlargedImageClassName: 'backGroundZoomImg'
@@ -167,10 +181,10 @@ class ProductDetail extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-lg-4 positionR">
-                                    <p className="">Thương hiệu: <Link className="LinkHoverReview ">{product.brand}</Link></p>
+                                    <div className="">Thương hiệu: <Link className="LinkHoverReview ">{product.Brand.name}</Link></div>
                                 </div>
-                                <div className="col-lg-4 positionR">
-                                    <p className="pColorMaSP">Mã SP: {product.code}</p>
+                                <div className="col-lg-8 positionR">
+                                    <div className="pColorMaSP">Mã SP: {product.productCode}</div>
                                 </div>
                             </div>
                             <hr className="paddingDivHR" />
@@ -178,21 +192,55 @@ class ProductDetail extends Component {
                                 <p className="pColorShip"><i class="fas fa-truck iconShip"></i>Miễn phí ship cho đơn hàng trên 1.000.000 vnđ</p>
                             </div>
                             <p className="pPriceProduct">{formatter.format(product.price)}</p>
-                            <p className="pSave">Tiết kiệm: 10% ({formatter.format(product.price * 0.1)})</p>
-                            <p className="pSave">Giá thị trường: {formatter.format(product.price + (product.price * 0.1))} </p>
+                            {/* <p className="pSave">Tiết kiệm: 10% ({formatter.format(product.price * 0.1)})</p>
+                            <p className="pSave">Giá thị trường: {formatter.format((product.price + (product.price * 0.1)))} </p> */}
                             <hr className="paddingDivHR" />
                             <p>Màu sắc:
-                                <div className="containerChildColor pInline">Màu xanh rêu</div>
+                                        <div className="containerChildColor pInline">{product.color}</div>
                             </p>
                             <p>kích thước:
-                                <div className="sizeShoe pInline">39</div>
-                                <div className="sizeShoe pInline">40</div>
+                            {product.ProductSizes.sort((a, b) => a.Size.sizeName - b.Size.sizeName).map((productSize, idx) => {
+                                if (sizeIsSelect !== undefined) {
+                                    if (sizeIsSelect.productSize.id === productSize.id) {
+                                        return (
+                                            <div
+                                                className="sizeShoe pInline sizeShoeSelect"
+                                                onClick={() => this.selectSize(productSize, productSize.productId)}
+                                            >
+                                                {productSize.Size.sizeName}
+                                            </div>
+                                        )
+                                    }
+                                    else {
+                                        return (
+                                            <div
+                                                className="sizeShoe pInline"
+                                                onClick={() => this.selectSize(productSize, productSize.productId)}
+                                            >
+                                                {productSize.Size.sizeName}
+                                            </div>
+                                        )
+
+                                    }
+                                }
+                                else {
+                                    return (
+                                        <div
+                                            className="sizeShoe pInline"
+                                            onClick={() => this.selectSize(productSize, productSize.productId)}
+                                        >
+                                            {productSize.Size.sizeName}
+                                        </div>
+                                    )
+                                }
+                            })}
+                                {/* <div className="sizeShoe pInline">40</div>
                                 <div className="sizeShoe pInline">41</div>
                                 <div className="sizeShoe pInline">42</div>
                                 <div className="sizeShoe pInline">43</div>
-                                <div className="sizeShoe pInline">44</div>
+                                <div className="sizeShoe pInline">44</div> */}
                             </p>
-                            <p>Còn hàng: <span className="spanQuantity">{product.inventory}</span> sản phẩm</p>
+                            <p>Số lượng còn lại: <span className="spanQuantity">{sizeIsSelect ? sizeIsSelect.productSize.productCount : '0'}</span>  sản phẩm</p>
                             <hr className="paddingDivHR" />
                             <div className="container containerBuyWish">
                                 <div className="row">
@@ -230,9 +278,20 @@ class ProductDetail extends Component {
             </div>
         );
     }
+    selectSize = (sizeProduct, idProduct) => {
+        console.log(this.props.sizeIsSelect)
+        this.props.onProductIsSelect(sizeProduct, idProduct);
+    }
     addToCart = (product, quantity) => {
+        
         var { addToCart } = this.props;
-        addToCart(product, quantity)
+        
+        if(this.props.sizeIsSelect === undefined){
+            alert("Vui lòng chọn size cho sản phẩm")
+        }
+        else{
+        addToCart(product, quantity, this.props.sizeIsSelect.productSize.id)
+        }
     }
 }
 

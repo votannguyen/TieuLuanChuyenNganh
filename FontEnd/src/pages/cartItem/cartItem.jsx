@@ -11,16 +11,16 @@ class CartItem extends Component {
         caution: false,
     }
     onDelete = (product) => {
-        var { onDeleteProductInCart, onChangeMessage } = this.props;
+        var { onDeleteProductInCart } = this.props;
         onDeleteProductInCart(product);
         // onChangeMessage(Message.MSG_DELETE_PRODUCT_IN_CART_SUCCESS)
 
     }
-    onChangeQuantity = (product, check) => {
+    onChangeQuantity = (product, check, idSizeProduct) => {
         var { onChangQuantityProductInCart } = this.props;
-        onChangQuantityProductInCart(product, check);
+        onChangQuantityProductInCart(product, check, idSizeProduct);
     }
-    plusQuantity = (product, quantity) => {
+    plusQuantity = (product, quantity, idSizeProduct) => {
         if (this.state.caution === true) {
             this.setState({ caution: false });
         }
@@ -29,16 +29,16 @@ class CartItem extends Component {
                 this.setState({ caution: true });
             }
         }
-        this.onChangeQuantity(product, 1) // 1 là cộng
+        this.onChangeQuantity(product, 1, idSizeProduct) // 1 là cộng
     }
-    minusQuantity = (product) => {
+    minusQuantity = (product, idSizeProduct) => {
         if (this.state.caution === true) {
             this.setState({ caution: false });
         }
-        this.onChangeQuantity(product, 0)   //0 là trừ
+        this.onChangeQuantity(product, 0, idSizeProduct)   //0 là trừ
     }
     render() {
-        var { item } = this.props;
+        var { item, urlBackend, sizeName } = this.props;
         const formatter = new Intl.NumberFormat('vi-VN', {
             style: 'currency',
             currency: 'VND',
@@ -49,26 +49,36 @@ class CartItem extends Component {
                 <div class="card-body">
                     <div className="row">
                         <div className="col-3">
-                            <img class="card-img-top resizeImage" src={item.product.image} />
+                            <Link to={`/productdetail/${item.product.id}`}>
+                                <img class="card-img-top resizeImage" src={`${urlBackend}${item.product.imagePath}`} />
+                            </Link>
                         </div>
                         <div className="col-9">
                             <div className="row">
                                 <div className="col-6">
+                                    <Link to={`/productdetail/${item.product.id}`}>
                                     <a className="fontSize_a">
                                         {item.product.name}
                                         <br />
                                     </a>
-                                    <p className="pCart pPaddingTop fontSize_p_span">
+                                    </Link>
+
+                                    <p className="pCart textSize">
+                                        <span>
+                                            Size:  {sizeName}
+                                        </span>
+                                    </p>
+                                    <p className="pCart fontSize_p_span">
                                         <span>
                                             Nhóm:
                                                         </span>
-                                        <Link className="defaultLink" to="/">{item.product.group}</Link>
+                                        <Link className="defaultLink" to="/">{item.product.Category.Group.name}</Link>
                                     </p>
                                     <p className="pCart fontSize_p_span">
                                         <span>
                                             Hãng sản xuất:
                                                         </span>
-                                        <Link className="defaultLink" to="/">{item.product.brand}</Link>
+                                        <Link className="defaultLink" to="/">{item.product.Brand.name}</Link>
                                     </p>
                                     <p className="pCart fontSize_p_span">
                                         <div
@@ -87,9 +97,9 @@ class CartItem extends Component {
                                         </div>
                                         <div className="col-6">
                                             <p className="textQuantity">Số lượng:</p>
-                                            <div className="minusButton pInline minusText" onClick={() => this.minusQuantity(item.product)}><i class="fas fa-minus"></i></div>
+                                            <div className="minusButton pInline minusText" onClick={() => this.minusQuantity(item.product, this.props.idSizeProduct)}><i class="fas fa-minus"></i></div>
                                             <input type="text" className="form-control pInline textBoxSize" id="quantityProduct" value={item.quantity} disabled />
-                                            <div className="plusButton pInline plusText" onClick={() => this.plusQuantity(item.product, item.quantity)}><i class="fas fa-plus"></i></div>
+                                            <div className="plusButton pInline plusText" onClick={() => this.plusQuantity(item.product, item.quantity, this.props.idSizeProduct)}><i class="fas fa-plus"></i></div>
                                             {this.state.caution ? <div>Xin lỗi số lượng tối đa mua được là 20 sản phẩm</div> : null}
                                         </div>
 

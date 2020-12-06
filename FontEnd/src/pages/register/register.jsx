@@ -8,6 +8,9 @@ class Register extends Component {
         user: {},
         message: "",
     }
+    componentDidMount(){
+        window.scrollTo(0, 0)
+    }
     save = () => {
         // console.log(this.data.errorCode);
         if (this.state.user.password === this.state.user.confirmPassword) {

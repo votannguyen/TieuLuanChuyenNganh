@@ -9,7 +9,7 @@ import CheckoutContainer from '../redux/containers/CheckoutContainer';
 import ProductDetailContainer from '../redux/containers/ProductDetailContainer';
 import LoginContainer from '../redux/containers/LoginContainer';
 
-const routes = [
+const routes =  [
   { path: "/", exact: true, name: "Home", component: Home },
   { path: "/home", exact: true, name: "Home", component: Home },
   { path: "/login", exact: true, name: "Login", component: LoginContainer },
@@ -21,7 +21,7 @@ const routes = [
   { path: "/girl", exact: true, name: "Girl", component: ProductList },
   { path: "/cart", exact: true, name: "Cart", component: CartContainer },
   { path: "/checkout", exact: true, name: "Checkout", component: CheckoutContainer },
-  { path: "/productDetail/:id", exact: true, name: "Product Detail", component: ProductDetailContainer },
+  { path: "/productDetail/:id", exact: true , name: "Product Detail", component: ProductDetailContainer},
   { path: "/invoiceDetail", exact: true, name: "Invoice Detail", component: InvoiceDetail },
   { name: "404", component: Page404 }
 ];

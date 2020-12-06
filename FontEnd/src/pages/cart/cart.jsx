@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import "../cart/cart.css";
 import PromotionService from '../../services/PromotionService';
+import ProductService from '../../services/ProductService'
 class Cart extends Component {
     state = {};
     componentDidMount(){
+        window.scrollTo(0, 0)
+        ProductService.listProduct().then(res =>{
+            this.props.onLoadProductFromApi(res.data.products)
+        })
         this.loadDiscount();
     }
     loadDiscount = ()=>{

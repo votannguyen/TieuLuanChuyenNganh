@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 import { Switch, Route } from 'react-router-dom';
-import DefaultLayout from './container/defaultLayout';
 import DefaultLayoutContainer from './redux/containers/DefaultLayoutContainer'
+
 function App() {
   return (
     <Switch>
@@ -11,5 +11,4 @@ function App() {
     
   );
 }
-
 export default App;

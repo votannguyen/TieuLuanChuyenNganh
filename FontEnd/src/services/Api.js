@@ -8,7 +8,10 @@ const url={
     register: "api/user/signup",
     userInfo: "api/user/myaccount",
     updateUser: "api/user/myaccount",
-    promotion: "/api/promotion"
+    promotion: "/api/promotion",
+    product: "api/product/",
+    user: "api/user",
+    userGoogle: "/api/userGoogle",
 
 };
 const instance = axios.create({

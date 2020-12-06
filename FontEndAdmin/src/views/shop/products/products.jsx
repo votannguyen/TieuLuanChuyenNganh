@@ -21,6 +21,8 @@ import ProductService from "../../../services/ProductService";
 import BrandService from "../../../services/BrandService";
 import CategoryService from "../../../services/CategoryService";
 import GroupService from "../../../services/GroupService";
+import SizesService from '../../../services/SizesService';
+import { message } from 'antd';
 const getBadge = status => {
   switch (status) {
     case 'Active': return 'success'
@@ -38,7 +40,6 @@ class Products extends Component {
     listProduct: [],
     brand: [],
     category: [],
-    listFilter: [],
     listImage: [],
     group: [],
     editBrand: '',
@@ -46,25 +47,32 @@ class Products extends Component {
     editGroup: '',
     edit: false, // biến đánh dấu edit hay new
     updateDaily: '', /// biến dùng để cập nhật state realtime
-    tempImage: 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty-300x240.jpg',
+    tempImage: '',
     realTime: '',
     typeSize: [
       {
         id: 1,
-        name: "Size US"
+        name: "US"
       },
       {
         id: 1,
-        name: "Size UK"
+        name: "UK"
       },
       {
         id: 1,
-        name: "Size VN"
+        name: "VN"
       },
     ],
     stateID: '',
     listImageToApi: [], ///List ảnh để đưa xuống backend xử lý
     showModalViewImage: false,
+    getSizeBySizeType: [],
+    sizes: [],
+    sizeID: {},        //lưu size id
+    avatarProduct: '',
+    avatarProductSaveAPI: [],
+    message: false,
+    listImageProductById: [],
 
   };
   componentDidMount() {
@@ -88,6 +96,9 @@ class Products extends Component {
       this.setState({ group: res.data.Groups })
       this.realTime();
     })
+    SizesService.listSize().then((res) => {
+      this.setState({ sizes: res.data.sizes });
+    });
   }
   realTime = () => {
     this.setState({ updateDaily: '1' });
@@ -100,34 +111,51 @@ class Products extends Component {
     this.realTime();
     console.log(this.state.products)
   }
-  firstSaveImage(idProduct) {
+  firstSaveImage = (idProduct) => {
+    this.realTime()
     console.log(idProduct)
     console.log(this.state.listImageToApi)
     for (var i = 0; i < this.state.listImageToApi.length; i++) {
       this.saveImage(i, idProduct);
     }
   }
-  saveImage(index, idProduct) {
+  saveImage = (index, idProduct) => {
     var data = new FormData();
     console.log(idProduct)
     data.append("productId", idProduct);
     data.append("imagePath", this.state.listImageToApi[index]);
+    this.realTime()
     console.log(this.state.stateID)
-    ProductService.createImage(data).then(res => {
-
-    }, function (error) {
-
-    });
+    ProductService.createImage(data)
   }
-  saveProduct() {
-    ProductService.createProduct(this.state.products).then(res => {
+  saveProduct =()=> {
+    var { products, avatarProductSaveAPI } = this.state
+    var data = new FormData();
+    data.append("name", products.name);
+    data.append("productCode", products.productCode);
+    data.append("price", products.price);
+    data.append("description", products.description);
+    data.append("color", products.color);
+    data.append("imagePath", avatarProductSaveAPI[0]);
+    data.append("brandId", products.brandId);
+    data.append("categoryId", products.categoryId);
+    ProductService.createProduct(data).then(res => {
       this.firstSaveImage(res.data.products.id);
-      // this.realTime()
-      // this.props.onGetIdProductAfterCreateProduct(res.data.products.id)    //Dùng redux để lưu id product sau khi tạo sản phẩm
+      this.firstSaveSize(res.data.products.id)
     }, function (error) {
       alert("Lỗi")
     });
-
+  }
+  firstSaveSize = (idProduct) => {
+    var newSize = { ...this.state.sizeID, ['productId']: idProduct } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+    this.setState({ sizeID: newSize });
+    this.realTime()
+    console.log(this.state.sizeID)
+    this.saveSize(this.state.sizeID);
+  }
+  saveSize(data) {
+    this.realTime()
+    ProductService.createProductSize(data);
   }
   save = () => {
     // var data = new FormData();
@@ -147,9 +175,16 @@ class Products extends Component {
     // }, function (error) {
     //   alert("Lỗi")
     // });
+    var { products } = this.state
+    if (products.name === undefined || products.productCode === undefined || products.price === undefined || products.description === undefined
+      || products.brandId === undefined || products.color === undefined || products.categoryId === undefined) {
+      alert("Vui lòng nhập đủ các ô input")
+   }
+   else{
     this.saveProduct();
     this.loadData();
     this.setCloseModal();
+   }
   }
   setShowModal = (id) => {
     this.setState({ products: {} });
@@ -175,11 +210,16 @@ class Products extends Component {
     this.setState({ listImage: [] })
     this.setState({ tempImage: 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty-300x240.jpg' })
   }
-
+  getImgByIdPro = (id) => {
+    ProductService.getImageByProductId(id).then(res => {
+      this.setState({ listImageProductById: res.data.productImage })
+    }, function (error) {
+      alert("Lỗi")
+    });
+  }
   setShowModalViewImage = (id) => {
     this.setState({ showModalViewImage: true })
-
-
+    this.getImgByIdPro(id);
   }
   setCloseModalViewImage = () => {
     this.setState({ showModalViewImage: false })
@@ -225,6 +265,23 @@ class Products extends Component {
     }
     console.log(this.state.products)
   }
+  InputOnChangeTypeSize = (event) => {
+    this.setState({ getSizeBySizeType: [] })
+    const { value } = event.target;
+
+    SizesService.getSizeByTypeSize(value).then((res) => {
+      this.setState({ getSizeBySizeType: res.data.listSize.sort((a, b) => a.sizeName - b.sizeName) })
+    });
+    console.log(this.state.getSizeBySizeType)
+  }
+  InputOnChangeSize = (event) => {
+    const { name, value } = event.target;
+    var newSize = { ...this.state.sizeID, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+    this.realTime();
+    this.setState({ sizeID: newSize });
+    this.realTime();
+    console.log(this.state.sizeID)
+  }
   render() {
     const { products, productEdit } = this.state
     const formatterNum = Intl.NumberFormat('en');
@@ -242,7 +299,7 @@ class Products extends Component {
           <button type="button" className="btn btn-sm btnAddProduct" onClick={() => this.setShowModal(-1)}><p className="fas fa-plus-circle textInBtnAddProduct">   Thêm sản phẩm</p></button>
           {/* </div> */}
         </div>
-          {/* Modal basic */}
+        {/* Modal basic */}
         <>
           <Modal
             show={this.state.showModal}
@@ -255,6 +312,7 @@ class Products extends Component {
             <Modal.Header closeButton>
               <Modal.Title id="example-custom-modal-styling-title " dialogClassName="textCenterModalTitle">
                 Thêm thông tin sản phẩm
+                {this.state.message === true ? <div>Vui lòng nhập đủ các ô input</div> : null}
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -264,6 +322,7 @@ class Products extends Component {
                     <Form.Group controlId="formBasicName">
                       <Form.Label>Mã sản phẩm</Form.Label>
                       <Form.Control
+                        required
                         type="text"
                         name="productCode"
                         placeholder="Mã sản phẩm"
@@ -273,20 +332,32 @@ class Products extends Component {
                     <Form.Group controlId="formBasicName">
                       <Form.Label>Tên sản phẩm</Form.Label>
                       <Form.Control
+                        required
                         type="text"
                         name="name"
                         placeholder="Tên sản phẩm"
                         onChange={this.InputOnChange}
                         value={products.name || ''} />
                     </Form.Group>
+                    <Form.Group controlId="formBasicName">
+                      <Form.Label>Màu sắc</Form.Label>
+                      <Form.Control
+                        required
+                        type="text"
+                        name="color"
+                        placeholder="Màu sắc của giày"
+                        onChange={this.InputOnChange}
+                        value={products.color || ''} />
+                    </Form.Group>
                     <Form.Group controlId="ControlSelect">
                       <Form.Label>Thương hiệu</Form.Label>
                       <Form.Control
+                        required
                         as="select"
                         name="brandId"
                         onChange={this.InputOnChangeBrand}
                       >
-                        <option>{products.Brand===undefined?'Choose.....':products.Brand.name}</option>
+                        <option>{products.Brand === undefined ? 'Choose.....' : products.Brand.name}</option>
                         {this.state.brand.map((brand, idx) => {
                           return (
                             <option
@@ -301,12 +372,13 @@ class Products extends Component {
                     <Form.Group controlId="ControlSelect">
                       <Form.Label>Danh mục</Form.Label>
                       <Form.Control
+                        required
                         as="select"
                         name="categoryId"
                         onChange={this.InputOnChangeCategory}
-                        value={products.Category || ''}
+                      // value={products.Category || ''}
                       >
-                        <option>{products.Category===undefined?'Choose.....':products.Category.name}</option>
+                        <option>{products.Category === undefined ? 'Choose.....' : products.Category.name}</option>
                         {this.state.category.map((category, idx) => {
                           return (
                             <option
@@ -321,9 +393,10 @@ class Products extends Component {
                     <Form.Group controlId="ControlSelect">
                       <Form.Label>Loại size</Form.Label>
                       <Form.Control
+                        required
                         as="select"
                         name="typeSize"
-                        onChange={this.InputOnChangeCategory}
+                        onChange={this.InputOnChangeTypeSize}
                       >
                         <option>Choose....</option>
                         {this.state.typeSize.map((typeSize, idx) => {
@@ -340,33 +413,46 @@ class Products extends Component {
                     <Form.Group controlId="formBasicName">
                       <Form.Label>Size giày</Form.Label>
                       <Form.Control
-                        type="number"
-                        name="sizeNumber"
-                        placeholder="Size giày"
-                        onChange={this.InputOnChange}
-                        value={'' || ''} />
-                    </Form.Group>
-
-                    {/* Nhóm sản phẩm*/}
-                    {/* <Form.Group controlId="ControlSelect">
-                      <Form.Label>Nhóm</Form.Label>
-                      <Form.Control
+                        required
                         as="select"
-                        name="groupId"
-                        onChange={this.InputOnChangeGroup}
-                        value={this.state.editGroup}
+                        name="sizeId"
+                        onChange={this.InputOnChangeSize}
                       >
                         <option>Choose....</option>
-                        {this.state.group.map((group, idx) => {
+                        {this.state.getSizeBySizeType.map((size, idx) => {
                           return (
-                            <option key={idx}>{group.name}</option>
+                            <option
+                              key={size.id}
+                              value={size.id}
+                            >
+                              {size.sizeName}
+                            </option>
                           )
                         })}
                       </Form.Control>
-                    </Form.Group> */}
-
+                    </Form.Group>
                     <Form>
-                      <div>Hình ảnh</div>
+                      <div>Ảnh đại diện của sản phẩm</div>
+                      <div className="borderImgSizeIcon">
+                        <label for="upload-avatar-photo" className="iconOnImgBorder"><i className="fas fa-image fa-3x"></i></label>
+                        <Form.Control
+                          id="upload-avatar-photo"
+                          type="file"
+                          accept=".png, .jpg, .svg, .jfif"
+                          onChange={this.imageAvatarProductHandler}
+                          name="imagePath"
+                          oninput="pic.src=window.URL.createObjectURL(this.files[0])"
+                        />
+                      </div>
+                      {this.state.avatarProduct === '' ? null :
+                        <img className="borderImgSize" src={this.state.avatarProduct} />
+                      }
+                    </Form>
+
+                  </div>
+                  <div className="col-6">
+                    <Form>
+                      <div>Hình ảnh Thumbnail</div>
                       <div className="borderImgSizeIcon">
                         <label for="upload-photo" className="iconOnImgBorder"><i className="fas fa-image fa-3x"></i></label>
                         <Form.Control
@@ -378,8 +464,8 @@ class Products extends Component {
                           oninput="pic.src=window.URL.createObjectURL(this.files[0])"
                         />
                       </div>
-                      {this.state.edit ? <img className="borderImgSize" src={`http://localhost:5000/${products.imagePath}`} /> : null
-                      }
+                      {/* {this.state.edit ? <img className="borderImgSize" src={`http://localhost:5000/${products.imagePath}`} /> : null
+                      } */}
 
                       {this.state.edit ? null : this.state.listImage.map((image, idx) => {
                         return (
@@ -387,49 +473,41 @@ class Products extends Component {
                         );
                       })}
                     </Form>
-                  </div>
-                  <div className="col-6">
 
                     <Form.Group controlId="formBasicQuantity">
                       <Form.Label>Số lượng</Form.Label>
                       <Form.Control
+                        required
                         type="number"
-                        name="amount"
+                        name="productCount"
                         placeholder="Số lượng"
-                        onChange={this.InputOnChange}
-                        value={products.amount || ''} />
-                    </Form.Group>
-                    <Form.Group controlId="formBasicName">
-                      <Form.Label>Màu sắc</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="color"
-                        placeholder="Màu sắc của giày"
-                        onChange={this.InputOnChange} 
-                        value={products.color || ''}/>
+                        onChange={this.InputOnChangeSize}
+
+                      />
                     </Form.Group>
                     <Form.Group controlId="formBasicQuantity">
                       <Form.Label>Giá tiền</Form.Label>
                       <Form.Control
+                        required
                         type="number"
                         name="price"
                         placeholder="Giá tiền"
                         onChange={this.InputOnChange}
-                        value={products.price || ''} />
+                        value={products.price || ''}
+                      />
                     </Form.Group>
-
                     <Form.Group controlId="exampleForm.ControlTextarea1">
                       <Form.Label>Mô tả sản phẩm</Form.Label>
                       <Form.Control
+                        required
                         as="textarea"
                         type="text"
                         name="description"
                         rows={12}
                         onChange={this.InputOnChange}
-                        value={products.description} />
+                        value={products.description}
+                      />
                     </Form.Group>
-                    
-
                   </div>
                 </div>
                 <Button variant="primary" onClick={this.save}>
@@ -457,27 +535,18 @@ class Products extends Component {
             <Modal.Body>
               <Form>
                 <Carousel>
-                  <Carousel.Item>
-                    <img
-                      className="d-block w-100"
-                      src={(require('../img/vans.png'))}
-                      alt="First slide"
-                    />
-                  </Carousel.Item>
-                  <Carousel.Item>
-                    <img
-                      className="d-block w-100"
-                      src={(require('../img/vans.png'))}
-                      alt="Third slide"
-                    />
-                  </Carousel.Item>
-                  <Carousel.Item>
-                    <img
-                      className="d-block w-100"
-                      src={(require('../img/vans.png'))}
-                      alt="Third slide"
-                    />
-                  </Carousel.Item>
+                  {this.state.listImageProductById.map((listImageProduct, idx) => {
+                    return (
+                      <Carousel.Item>
+                        <img
+                          key={idx}
+                          className="d-block w-100"
+                          src={`http://localhost:5000/${listImageProduct.imagePath}`}
+                        />
+                      </Carousel.Item>
+                    )
+                  })
+                  }
                 </Carousel>
               </Form>
             </Modal.Body>
@@ -514,7 +583,10 @@ class Products extends Component {
                           <tr key={listProduct.id}>
                             <td>{idx + 1}</td>
                             <td>
-                              <div className="view" onClick={() => this.setShowModalViewImage(listProduct.id)}>View</div>
+
+                              <img className="borderImgSize" src={`http://localhost:5000/${listProduct.imagePath}`} />
+
+                              <div className="view" onClick={() => this.setShowModalViewImage(listProduct.id)}>View All</div>
                             </td>
                             <td>{listProduct.productCode}</td>
                             <td>{listProduct.name}</td>
@@ -540,26 +612,6 @@ class Products extends Component {
 
                     </tbody>
                   </Table>
-                  {/* <CDataTable
-                    items={this.state.listProduct}
-                    fields={fields}
-                    hover
-                    striped
-                    bordered
-                    size="lg"
-                    itemsPerPage={15}
-                    pagination
-                    scopedSlots={{
-                      'status':
-                        (item) => (
-                          <td>
-                            <CBadge color={getBadge(item.status)}>
-                              {item.status}
-                            </CBadge>
-                          </td>
-                        )
-                    }}
-                  /> */}
                 </CCardBody>
               </CCard>
             </CCol>
@@ -570,7 +622,7 @@ class Products extends Component {
     );
   }
   imageHandler = (event) => {
-    const { name } = event.target;
+    // const { name } = event.target;
     const reader = new FileReader()
     reader.onload = () => {
       if (reader.readyState === 2) {
@@ -578,8 +630,8 @@ class Products extends Component {
         this.realTime();    //Cập nhật state ngay lập tức
       }
     }
-    // const newProduct = { ...this.state.products, [name]: event.target.files[0] } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
-    // this.setState({ products: newProduct });
+    // const newProduct = {...this.state.products, [name]: event.target.files[0] } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+    // this.setState({products: newProduct });
     // console.log(this.state.products)
     this.state.listImageToApi.push(event.target.files[0])
     this.realTime();    //Cập nhật state ngay lập tức
@@ -591,6 +643,19 @@ class Products extends Component {
   }
   ShowModalImage = (id) => {
 
+  }
+  imageAvatarProductHandler = (event) => {
+    const reader1 = new FileReader()
+    reader1.onload = () => {
+      if (reader1.readyState === 2) {
+        this.setState({ avatarProduct: reader1.result })
+        this.realTime();    //Cập nhật state ngay lập tức
+      }
+    }
+    this.state.avatarProductSaveAPI.push(event.target.files[0])
+    this.realTime();    //Cập nhật state ngay lập tức
+    console.log(this.state.avatarProductSaveAPI)
+    reader1.readAsDataURL(event.target.files[0])
   }
 }
 export default Products;

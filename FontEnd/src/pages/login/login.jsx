@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import Cookies from "js-cookie";
 import LoginUser from "../../services/UserService";
 
@@ -9,7 +9,11 @@ class Login extends Component {
         message: " ",
         isLogin: false,
         isError: false,
-        realTime:"",
+        realTime: "",
+        redirect: false
+    }
+    componentDidMount() {
+        window.scrollTo(0, 0)
     }
     emailRef = React.createRef();
     passwordRef = React.createRef();
@@ -23,7 +27,7 @@ class Login extends Component {
                 var userInfo = res.data.users;
                 this.props.onUserLogin(userInfo);
             });
-            
+
             //redirect to dashboard
             // this.props.history.push("/");
 
@@ -33,18 +37,44 @@ class Login extends Component {
         //     if (error.response.status === 401) {
         //         seft.isErrorTrue();
         //         document.getElementById("errModal").click();
-                
+
         //     }
         // })
 
     }
-    isErrorFalse = ()=>{
-        this.setState({isError : false});
-        
+    LoginGoogle = () => {
+        var { urlBackend } = this.props;
+        window.open(`${urlBackend}api/user/auth/google`, "mywindow", "top=50,left=500,location=1,status=1,scrollbars=1, width=800,height=800");
+        let listener = window.addEventListener('message', (message) => {
+            //message will contain facebook user and details
+            console.log(message)
+            Cookies.set('loginInfo', JSON.stringify(message.data.token), { expires: 1 / 24 });
+            LoginUser.getUser().then((res) => {
+                var userInfo = res.data.users;
+                this.props.onUserLogin(userInfo);
+            });
+
+        });
+
     }
-    isErrorTrue = ()=>{
-        this.setState({isError : true});
-        
+    // LoginGoogle = () => {
+    //     this.setState({
+    //          redirect: true
+    //     })
+    //  }
+    // doRedirect = () => {
+    //     var { urlBackend } = this.props
+    //      if(this.state.redirect === true){
+    //          return window.location.assign(`${urlBackend}api/user/auth/google`)
+    //      } 
+    //  }
+    isErrorFalse = () => {
+        this.setState({ isError: false });
+
+    }
+    isErrorTrue = () => {
+        this.setState({ isError: true });
+
     }
     render() {
         return (
@@ -99,6 +129,15 @@ class Login extends Component {
                                                     log in
                                                 </button>
                                                 <a class="lost_pass" href="#">forget password?</a>
+                                                <br />
+                                                <br />
+                                                <div id="login" className="btn btnGoogle" onClick={this.LoginGoogle}>
+                                                    <i class="fab fa-google-plus fa-3x iconGoogle"><div className="textOnIconGoogle">Đăng nhập bằng Google</div></i>
+                                                </div>
+                                                <br />
+                                                <div id="login" className="btn btnFacebook" onClick={this.LoginFacebook}>
+                                                    <i class="fab fa-facebook fa-3x iconFacebook"><div className="textOnIconGoogle">Đăng nhập bằng Facebook</div></i>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -109,23 +148,23 @@ class Login extends Component {
                 </section>
                 <button type="button" class="btn" id="errModal" data-toggle="modal" data-target="#exampleModal">
                 </button>
-                {this.state.isError?
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal- backGroundIconFailded">
-                                <div className="iconFailed"><i class="fas fa-exclamation-circle fa-8x"></i></div>
-                            </div>
-                            <div class="modal-body">
-                                <p className="pSorry">Xin lỗi</p>
-                                <p className="pDetailSorry">Email đăng nhập hoặc mật khẩu không đúng!</p>
-                                <p className="pDetailSorry">Vui lòng đăng nhập lại</p>
-                                <button type="button" class="btn btnReturn" data-dismiss="modal" onClick={this.isErrorFalse}>Thử lại</button>
+                {this.state.isError ?
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal- backGroundIconFailded">
+                                    <div className="iconFailed"><i class="fas fa-exclamation-circle fa-8x"></i></div>
+                                </div>
+                                <div class="modal-body">
+                                    <p className="pSorry">Xin lỗi</p>
+                                    <p className="pDetailSorry">Email đăng nhập hoặc mật khẩu không đúng!</p>
+                                    <p className="pDetailSorry">Vui lòng đăng nhập lại</p>
+                                    <button type="button" class="btn btnReturn" data-dismiss="modal" onClick={this.isErrorFalse}>Thử lại</button>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>:null
+                    </div> : null
                 }
             </div>
         );

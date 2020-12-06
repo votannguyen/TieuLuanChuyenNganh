@@ -43,9 +43,15 @@ export default [
   },
   {
     _tag: 'CSidebarNavItem',
-    name: 'Sản Phẩm',
+    name: 'Sản phẩm',
     to: '/shop/product',
     icon: "cil-basket",
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Size sản phẩm',
+    to: '/shop/sizes',
+    icon: "cil-fullscreen",
   },
   {
     _tag: 'CSidebarNavItem',

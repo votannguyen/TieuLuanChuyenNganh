@@ -43,6 +43,7 @@ const Group = React.lazy(() => import('./views/shop/group/group') );
 const Promotion = React.lazy(() => import('./views/shop/promotion/promotion') );
 const Product = React.lazy(() => import('./views/shop/products/products') );
 const Order = React.lazy(() => import('./views/shop/order/order') );
+const Sizes = React.lazy(() => import('./views/shop/sizes/sizes') );
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/shop/user', name: 'User', component: UserManagement},
@@ -51,7 +52,8 @@ const routes = [
   { path: '/shop/brand', name: 'Brand', component: Brand},
   { path: '/shop/category', name: 'Category', component: Category},
   { path: '/shop/promotion', name: 'Brand', component: Promotion},
-  { path: '/shop/order', name: 'Brand', component: Order},
+  { path: '/shop/order', name: 'Order', component: Order},
+  { path: '/shop/sizes', name: 'Size', component: Sizes},
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
