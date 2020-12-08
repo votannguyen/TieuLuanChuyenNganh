@@ -6,9 +6,9 @@ class ProductList extends Component {
   state = {
 
   }
-  componentDidMount = () =>{
+  componentDidMount = () => {
     window.scrollTo(0, 0)
-    ProductService.listProduct().then(res =>{
+    ProductService.listProduct().then(res => {
       this.props.onLoadProductFromApi(res.data.products)
     })
   }
@@ -32,23 +32,23 @@ class ProductList extends Component {
           <div id="carouselExampleControls" className="carousel slide " data-ride="carousel">
             <div className="carousel-inner ">
               <div className="carousel-item active ">
-                <p className="textCenter color-text p1"><i className="fas fa-truck"></i><strong className="paddingLeftStrong">Giao hàng miễn phí</strong>: Miễn phí giao hàng tiêu chuẩn cho tất cả đơn hàng của Shoes Shop</p>
+                <p className="textCenter color-text p1"><i className="fas fa-truck truck_s"></i><strong className="paddingLeftStrong">Giao hàng miễn phí</strong>: Miễn phí giao hàng cho đơn trên 1.000.000đ của Shoes Shop</p>
               </div>
               <div className="carousel-item textCenter">
-                <p className=" color-text p1"><i className="fas fa-truck"></i><strong className="paddingLeftStrong">Giao hàng miễn phí</strong>: Miễn phí giao hàng tiêu chuẩn cho tất cả đơn hàng của Shoes Shop</p>
+                <p className=" color-text p1"><i className="fas fa-truck truck_s"></i><strong className="paddingLeftStrong">Giao hàng miễn phí</strong>: Miễn phí giao hàng cho đơn trên 1.000.000đ của Shoes Shop</p>
               </div>
               <div className="carousel-item">
-                <p className="textCenter color-text p1"><i className="fas fa-truck"></i><strong className="paddingLeftStrong">Giao hàng miễn phí</strong>: Miễn phí giao hàng tiêu chuẩn cho tất cả đơn hàng của Shoes Shop</p>
+                <p className="textCenter color-text p1"><i className="fas fa-truck truck_s"></i><strong className="paddingLeftStrong">Giao hàng miễn phí</strong>: Miễn phí giao hàng cho đơn trên 1.000.000đ của Shoes Shop</p>
               </div>
-          </div>
-            <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            </div>
+            {/* <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
               <span className="carousel-control-prev-icon" aria-hidden="true"></span>
               <span className="sr-only">Previous</span>
             </a>
             <a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
               <span className="carousel-control-next-icon" aria-hidden="true"></span>
               <span className="sr-only">Next</span>
-            </a>
+            </a> */}
           </div>
         </div>
         {/* <div className="header-services">
@@ -61,7 +61,62 @@ class ProductList extends Component {
         <div className="container containerMainMarginTop">
           <div className="row">
             <div className="col-2 backgroundLeftCategory">
-              <div className="ps-sidebar" data-mh="product-listing">
+              <div className="tagFilter">Danh mục</div>
+              <div className="filterCategory">
+                <Link to="product-listing.html">Giày chạy <i className="">(76)</i></Link>
+              </div>
+              <div className="filterCategory">
+                <Link to="product-listing.html">Giày đá banh <i className="">(21)</i></Link>
+              </div>
+              <div className="filterCategory">
+                <Link to="product-listing.html">Giày thời trang <i className="">(105)</i></Link>
+              </div>
+              <div className="filterCategory">
+                <Link to="product-listing.html">Giày tây <i className="">(105)</i></Link>
+              </div>
+
+              <div className="tagFilter">Thương hiệu</div>
+              <div className="filterBrand">
+                <Link to="product-listing.html">
+                  <img 
+                    className="filterImgBrand" 
+                    src="https://file.hstatic.net/1000230642/article/download1_4efe949eadcf407d8204d16fb2492540.png"/>
+                </Link>
+              </div>
+              <div className="filterBrand">
+                <Link to="product-listing.html">
+                  <img 
+                    className="filterImgBrand" 
+                    src="https://cdn.britannica.com/94/193794-050-0FB7060D/Adidas-logo.jpg"/>
+                </Link>
+              </div>
+              <div className="filterBrand">
+                <Link to="product-listing.html">
+                  <img className="filterImgBrand" 
+                  src="https://i.pinimg.com/originals/83/dd/1a/83dd1aa03d73812fcbd5a3d18a181aeb.png"/>
+                </Link>
+              </div>
+              <div className="filterBrand">
+                <Link to="product-listing.html">
+                  <img className="filterImgBrand" 
+                    src="https://lh3.googleusercontent.com/proxy/7EF-PLxlCAg55k2edOr5gzKoeDfFrQrS2x3FleT0GOZjPrD2GQyCReEUp_F0tYSwXLKO1rZfFMcAOKfPXCKie37_WwTJcIJd3CVLWw"/>
+                </Link>
+              </div>
+              <div className="filterBrand">
+                <Link to="product-listing.html">
+                  <img className="filterImgBrand" 
+                    src="https://preview.thenewsmarket.com/Previews/RBOK/StillAssets/800x600/321447.jpg"/>
+                </Link>
+              </div>
+              <div className="filterBrand">
+                <Link to="product-listing.html">
+                  <img className="filterImgBrand" 
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Converse_logo.svg/1200px-Converse_logo.svg.png"/>
+                </Link>
+              </div>
+
+
+              {/* <div className="ps-sidebar" data-mh="product-listing">
                 <aside className="ps-widget--sidebar ps-widget--category">
                   <div className="ps-widget__header">
                     <div className="tagFilter">Danh mục</div>
@@ -75,8 +130,8 @@ class ProductList extends Component {
                       <li><Link to="product-listing.html">More</Link></li>
                     </ul>
                   </div>
-                </aside>
-                {/* <aside className="ps-widget--sidebar ps-widget--filter">
+                </aside> */}
+              {/* <aside className="ps-widget--sidebar ps-widget--filter">
                 <div className="ps-widget__header">
                   <h3>Category</h3>
                 </div>
@@ -88,7 +143,10 @@ class ProductList extends Component {
                       href="#">Filter</a>
                 </div>
               </aside> */}
-                <aside className="ps-widget--sidebar ps-widget--category">
+
+
+
+              {/* <aside className="ps-widget--sidebar ps-widget--category">
                   <div className="ps-widget__header">
                     <div className="tagFilter">Thương hiệu</div>
                   </div>
@@ -103,9 +161,9 @@ class ProductList extends Component {
                       <li><Link to="product-listing.html">Reebok‎(47)</Link></li>
                     </ul>
                   </div>
-                </aside>
+                </aside> */}
 
-              </div>
+              {/* </div> */}
             </div>
             <div className="col-10 rightList">
               <div className="container backgroundRow boderRaFilter">
@@ -137,7 +195,7 @@ class ProductList extends Component {
               </div>
               <div className="container">
                 <div className="row">
-                    {this.props.showProduct}
+                  {this.props.showProduct}
                 </div>
               </div>
             </div>

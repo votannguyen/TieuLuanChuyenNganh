@@ -1,6 +1,18 @@
 import { push } from 'react-router-redux';
 import * as Types from '../constants/ActionType';
 import * as TypesProduct from '../constants/actTypeProduct';
+var crypto = require('crypto-js');
+// Lấy danh sách byte đã mã hóa
+var data
+if (localStorage.getItem('Pross_acst')) {
+    var bytes = crypto.AES.decrypt(localStorage.getItem('Pross_acst'), '300699NguyenTanVo');
+    // // Chuyển sang chuỗi gốc
+    var message_decode = bytes.toString(crypto.enc.Utf8);
+
+    // var data = JSON.parse(localStorage.getItem('CART'));
+    data = JSON.parse(message_decode);
+}
+else data = JSON.parse(localStorage.getItem('Pross_acst'));;
 var initialState = [
     // {
     //     id : 1,
@@ -100,20 +112,23 @@ var initialState = [
     // }
 ];
 
-var initialStateProduct={
-    products:[],
-    sizeIsSelect:[]
-}
-// var data = JSON.parse(localStorage.getItem('Pross'));
-
-// var initialStateProduct = data ? data : {
+// var initialStateProduct={
 //     products:[],
 //     sizeIsSelect:[]
-// };
+// }
+// var data = JSON.parse(localStorage.getItem('Pross_acst'));
+
+var initialStateProduct = data ? {
+    products: data,
+    sizeIsSelect: []
+} : {
+        products: [],
+        sizeIsSelect: []
+    };
 
 const products = (state = initialStateProduct, action) => {
-    var { product} = action
-    switch(action.type){
+    var { product } = action
+    switch (action.type) {
         // case Types.ON_LOAD_PRODUCT_IS_SELECT:
         //     if(product.length > 0){
         //         for(var i = 0; i < product.length;i++){
@@ -127,12 +142,13 @@ const products = (state = initialStateProduct, action) => {
         //     }
         //     localStorage.setItem('PRODUCT_SELECT', JSON.stringify(product));
         case TypesProduct.LOAD_DATA_PRODUCT_FROM_API:
-            return{
+            localStorage.setItem('Pross_acst', crypto.AES.encrypt(JSON.stringify(product), '300699NguyenTanVo').toString());
+            return {
                 ...state,
-                products:product
+                products: product
             }
 
-        default : return{...state};
+        default: return { ...state };
 
     }
 }

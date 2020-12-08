@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ProductDetail from '../../pages/productDetail/productDetail';
 import { actAddToCart, actSelectSizeOnProduct, actOnloadProductFromApi } from '../actions/index';
-import '../../pages/productDetail/productDetail.css'
 class ProductDetailContainer extends Component {
-    state = {
-        productCallAPi: []
-    }
     render() {
         var { products, idOnUrl, addToCart, urlBackend, onProductIsSelect, onLoadProductFromApi } = this.props
         var index = this.findIdProOnState(idOnUrl);
@@ -24,6 +20,7 @@ class ProductDetailContainer extends Component {
     }
     findIdProOnState = (idOnUrl) => {
         var { products } = this.props.products
+        console.log(products)
         if (products.length > 0) {
             for (var i = 0; i < products.length; i++) {
                 if (products[i].id === Number.parseInt(idOnUrl)) {

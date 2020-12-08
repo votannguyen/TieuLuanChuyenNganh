@@ -5,7 +5,7 @@ import {
   Modal,
   Form,
   Table,
-  Carousel
+  Carousel, Tabs, Tab
 } from "react-bootstrap";
 import {
   CBadge,
@@ -65,7 +65,8 @@ class Products extends Component {
     ],
     stateID: '',
     listImageToApi: [], ///List ảnh để đưa xuống backend xử lý
-    showModalViewImage: false,
+    showModalViewImage: false,    //Biến hiển thị modal ảnh
+    showModalViewSizeProduct: false,      //biến hiển thị modal size
     getSizeBySizeType: [],
     sizes: [],
     sizeID: {},        //lưu size id
@@ -73,6 +74,7 @@ class Products extends Component {
     avatarProductSaveAPI: [],
     message: false,
     listImageProductById: [],
+
 
   };
   componentDidMount() {
@@ -128,7 +130,7 @@ class Products extends Component {
     console.log(this.state.stateID)
     ProductService.createImage(data)
   }
-  saveProduct =()=> {
+  saveProduct = () => {
     var { products, avatarProductSaveAPI } = this.state
     var data = new FormData();
     data.append("name", products.name);
@@ -179,12 +181,12 @@ class Products extends Component {
     if (products.name === undefined || products.productCode === undefined || products.price === undefined || products.description === undefined
       || products.brandId === undefined || products.color === undefined || products.categoryId === undefined) {
       alert("Vui lòng nhập đủ các ô input")
-   }
-   else{
-    this.saveProduct();
-    this.loadData();
-    this.setCloseModal();
-   }
+    }
+    else {
+      this.saveProduct();
+      this.loadData();
+      this.setCloseModal();
+    }
   }
   setShowModal = (id) => {
     this.setState({ products: {} });
@@ -217,12 +219,22 @@ class Products extends Component {
       alert("Lỗi")
     });
   }
+  //Xử lý modal của ảnh sản phẩm
   setShowModalViewImage = (id) => {
     this.setState({ showModalViewImage: true })
     this.getImgByIdPro(id);
   }
   setCloseModalViewImage = () => {
     this.setState({ showModalViewImage: false })
+  }
+
+  //Xử lý modal quản lý size cảu sản phẩm tương ứng
+  setShowModalViewSizeProduct = (id) => {
+    this.setState({ showModalViewSizeProduct: true })
+    this.getImgByIdPro(id);
+  }
+  setCloseModalViewSizeProduct = () => {
+    this.setState({ showModalViewSizeProduct: false })
   }
 
   InputOnChangeCategory = (event) => {
@@ -552,6 +564,222 @@ class Products extends Component {
             </Modal.Body>
           </Modal>
         </>
+        {/* Modal Size */}
+        <>
+          <Modal
+            show={this.state.showModalViewSizeProduct}
+            onHide={this.setCloseModalViewSizeProduct}
+            keyboard={false}
+            backdrop="static"
+            dialogClassName="modalSizeMaxWidth"
+            aria-labelledby="example-custom-modal-styling-title"
+          >
+            <Modal.Header closeButton>
+              <Modal.Title id="example-custom-modal-styling-title " dialogClassName="textCenterModalTitle">
+                Thêm thông tin tất cả các kích thước của sản phẩm
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="row">
+                <div className="col-7">
+                  <Tabs justify defaultActiveKey="orderNotConfirm" transition={false} id="noanim-tab-example">
+                    <Tab
+                      eventKey="orderNotConfirm"
+                      title="Thêm từng kích thước một cho sản phẩm"
+                      tabClassName="">
+                      <div className="nameTitleSize">Thêm kích thước cho sản phẩm</div>
+                      <div className="container">
+                        <Form>
+                          <Form.Group controlId="ControlSelect">
+                            <Form.Label>Loại size</Form.Label>
+                            <Form.Control
+                              required
+                              as="select"
+                              name="typeSize"
+                              onChange={this.InputOnChangeTypeSize}
+                            >
+                              <option>Choose....</option>
+                              {this.state.typeSize.map((typeSize, idx) => {
+                                return (
+                                  <option
+                                    key={idx}
+                                    value={typeSize.name}>
+                                    {typeSize.name}
+                                  </option>
+                                )
+                              })}
+                            </Form.Control>
+                          </Form.Group>
+                          <Form.Group controlId="formBasicName">
+                            <Form.Label>Size giày</Form.Label>
+                            <Form.Control
+                              required
+                              as="select"
+                              name="sizeId"
+                              onChange={this.InputOnChangeSize}
+                            >
+                              <option>Choose....</option>
+                              {this.state.getSizeBySizeType.map((size, idx) => {
+                                return (
+                                  <option
+                                    key={size.id}
+                                    value={size.id}
+                                  >
+                                    {size.sizeName}
+                                  </option>
+                                )
+                              })}
+                            </Form.Control>
+                          </Form.Group>
+                          <Form.Group controlId="formBasicPassword">
+                            <Form.Label>Số lượng</Form.Label>
+                            <Form.Control type="number" placeholder="Số lượng" />
+                          </Form.Group>
+                          <Button variant="primary" type="submit">
+                            Lưu
+                        </Button>
+                        </Form>
+                      </div>
+
+                    </Tab>
+                    <Tab
+                      eventKey="orderConfirm"
+                      title="Thêm nhiều kích thước cho sản phẩm"
+                      tabClassName="">
+                      <div className="titleTable">Bảng đơn hàng đã được xác nhận</div>
+                    </Tab>
+                  </Tabs>
+
+                </div>
+                <div className="col-5">
+                  <div className="sizeNameTable">Kích thước của sản phẩm</div>
+                  <div className="tbl-header">
+                    <Table striped hover>
+                      <thead>
+                        <tr>
+                          <th className="th_Sticky">#</th>
+                          <th className="th_Sticky">Type Name</th>
+                          <th className="th_Sticky">Size</th>
+                          <th className="th_Sticky">Quantity</th>
+                          <th className="th_Sticky">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td>VN</td>
+                          <td>29</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>VN</td>
+                          <td>30</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>VN</td>
+                          <td>31</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td>VN</td>
+                          <td>32</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                        <tr>
+                          <td>5</td>
+                          <td>VN</td>
+                          <td>33</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                        <tr>
+                          <td>6</td>
+                          <td>VN</td>
+                          <td>34</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                        <tr>
+                          <td>7</td>
+                          <td>VN</td>
+                          <td>35</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                        <tr>
+                          <td>8</td>
+                          <td>VN</td>
+                          <td>36</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                        <tr>
+                          <td>9</td>
+                          <td>VN</td>
+                          <td>37</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                        <tr>
+                          <td>10</td>
+                          <td>VN</td>
+                          <td>38</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                        <tr>
+                          <td>11</td>
+                          <td>VN</td>
+                          <td>38</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                        <tr>
+                          <td>12</td>
+                          <td>VN</td>
+                          <td>38</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                        <tr>
+                          <td>13</td>
+                          <td>VN</td>
+                          <td>38</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                        <tr>
+                          <td>14</td>
+                          <td>VN</td>
+                          <td>38</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                        <tr>
+                          <td>15</td>
+                          <td>VN</td>
+                          <td>38</td>
+                          <td>100</td>
+                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </div>
+                </div>
+
+              </div>
+
+            </Modal.Body>
+          </Modal>
+        </>
 
         <>
           <CRow>
@@ -570,13 +798,13 @@ class Products extends Component {
                         <th>Name Product</th>
                         <th>Color</th>
                         <th>Brand</th>
-                        {/* <th>Category</th>
-                        <th>Group</th> */}
-                        <th>Quantity</th>
+                        <th>Size</th>
                         <th>Price</th>
                         <th>Action</th>
                       </tr>
                     </thead>
+
+                    {/* Show danh sách các sản phẩm */}
                     <tbody>
                       {this.state.listProduct.map((listProduct, idx) => {
                         return (
@@ -586,15 +814,13 @@ class Products extends Component {
 
                               <img className="borderImgSize" src={`http://localhost:5000/${listProduct.imagePath}`} />
 
-                              <div className="view" onClick={() => this.setShowModalViewImage(listProduct.id)}>View All</div>
+                              <div className="view" onClick={() => this.setShowModalViewImage(listProduct.id)}>View all</div>
                             </td>
                             <td>{listProduct.productCode}</td>
                             <td>{listProduct.name}</td>
                             <td>{listProduct.color}</td>
                             <td>{listProduct.Brand.name}</td>
-                            {/* <td>{listProduct.Category.name}</td> */}
-                            {/* <td>{listProduct.Group.name}</td> */}
-                            <td>{listProduct.amount}</td>
+                            <td><div className="view" onClick={() => this.setShowModalViewSizeProduct(listProduct.id)}>View size</div></td>
                             <td>{formatter.format(listProduct.price)}</td>
                             <td>
                               <div className="row">
@@ -609,7 +835,6 @@ class Products extends Component {
                           </tr>
                         )
                       })}
-
                     </tbody>
                   </Table>
                 </CCardBody>

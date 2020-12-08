@@ -5,6 +5,7 @@ import discount from './discount';
 import user from './user';
 import urlBackend from './urlBackend';
 import sizeIsSelect from './sizeIsSelect';
+import wishLists from './wishList'
 const appReducers = combineReducers({
     products: products,
     cart: cart,
@@ -12,6 +13,7 @@ const appReducers = combineReducers({
     user: user,
     urlBackend: urlBackend,
     sizeIsSelect: sizeIsSelect,
+    wishLists: wishLists
 });
 
 export default appReducers;

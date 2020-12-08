@@ -4,18 +4,25 @@ import { Link } from 'react-router-dom';
 import Province from '../../redux/reducers/ProvinceDistrictWard/province';
 import District from '../../redux/reducers/ProvinceDistrictWard/district';
 import Ward from '../../redux/reducers/ProvinceDistrictWard/ward';
+import {
+    Button,
+    Modal,
+    Form,
+    Table,
+    Carousel
+} from "react-bootstrap";
 class Checkout extends Component {
     state = {
         closeFormInterCard: false,
         closeFormWallet: false,
         stateDistrict: [],
         stateWard: [],
-        initialState :[],
+        initialState: [],
         state: '',
         stateAddress: '',
 
     }
-    componentDidMount(){
+    componentDidMount() {
         window.scrollTo(0, 0)
     }
     showFormInterCard(value) {
@@ -42,60 +49,60 @@ class Checkout extends Component {
         this.setState({ closeFormInterCard: false });
         this.setState({ closeFormWallet: false });
     }
-    InputOnChangeProvince = (event) =>{
+    InputOnChangeProvince = (event) => {
         const { value } = event.target;
-        var id ;
+        var id;
         console.log(value);
-        for(var j =0; j < Province.length;j++){
-            if(Province[j]._name === value){
+        for (var j = 0; j < Province.length; j++) {
+            if (Province[j]._name === value) {
                 id = Province[j]._id;
                 break;
             }
         }
-        this.setState({stateDistrict: this.state.initialState})             //reset lại state District
-        this.setState({stateWard: this.state.initialState})                 //reset lại state Ward
-        this.setState({state:''})       //reset all state
-        var x=[];           //biến để push tạm
-        for(var i = 0; i< District.length;i++){
-            if(District[i]._province_id === id){
+        this.setState({ stateDistrict: this.state.initialState })             //reset lại state District
+        this.setState({ stateWard: this.state.initialState })                 //reset lại state Ward
+        this.setState({ state: '' })       //reset all state
+        var x = [];           //biến để push tạm
+        for (var i = 0; i < District.length; i++) {
+            if (District[i]._province_id === id) {
                 x.push(District[i]);
             }
         }
-        this.setState({stateDistrict:x.sort((a, b) => a._name.localeCompare(b._name)) })
-        this.setState({state:''})
+        this.setState({ stateDistrict: x.sort((a, b) => a._name.localeCompare(b._name)) })
+        this.setState({ state: '' })
         console.log(this.state.stateDistrict)
-        this.setState({state:''})
+        this.setState({ state: '' })
     }
-    InputOnChangeDistrict = (event) =>{
+    InputOnChangeDistrict = (event) => {
         const { value } = event.target;
-        var districtId, provinceId ;
+        var districtId, provinceId;
         console.log(value);
-        for(var j =0; j < District.length;j++){
-            if(District[j]._name === value){
+        for (var j = 0; j < District.length; j++) {
+            if (District[j]._name === value) {
                 districtId = District[j]._id;
                 break;
             }
         }
         console.log(districtId);
         console.log(provinceId);
-        var x =[];
-        for(var i = 0; i< Ward.length;i++){
-            if(Ward[i]._district_id === districtId){
+        var x = [];
+        for (var i = 0; i < Ward.length; i++) {
+            if (Ward[i]._district_id === districtId) {
                 x.push(Ward[i]);
             }
         }
-        this.setState({stateWard : x.sort((a, b) => a._name.localeCompare(b._name))})
+        this.setState({ stateWard: x.sort((a, b) => a._name.localeCompare(b._name)) })
         console.log(this.state.stateWard);
-        this.setState({state:''})
+        this.setState({ state: '' })
 
     }
     InputOnChange = (event) => {
         const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
-    
+
         const newUser = { ...this.state.user, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
         this.setState({ users: newUser });
         console.log(this.state.user)
-      }
+    }
     render() {
         // var provinceTemp = Province.sort((a, b) => a._name - b._name)
         var provinceTemp = Province.sort((a, b) => a._name.localeCompare(b._name))          //sort by name
@@ -106,10 +113,9 @@ class Checkout extends Component {
             currency: 'VND',
             minimumFractionDigits: 0
         })
-
         return (
+
             <div className="backgroundCheckout">
-                <br />
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-7">
@@ -125,34 +131,34 @@ class Checkout extends Component {
                         <div className="row">
                             <div className="col-lg-7 ">
                                 <form className="backgroundContainerCheckout">
-                                    <div class="form-group">
+                                    <div className="form-group">
                                         <div className="row">
                                             <div className="col-md-3">
                                                 <label className="paddingLable" for="exampleInputEmail1 ">Họ và tên:</label>
                                             </div>
                                             <div className="col-md-9">
-                                                <input type="text" class="form-control" id="nameUser" placeholder="Họ và tên" onChange={this.InputOnChange}/>
+                                                <input type="text" className="form-control" id="nameUser" placeholder="Họ và tên" onChange={this.InputOnChange} />
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    <div class="form-group">
+
+                                    <div className="form-group">
                                         <div className="row">
                                             <div className="col-md-3">
                                                 <label className="paddingLable" for="exampleInputEmail1 ">Số điện thoại:</label>
                                             </div>
                                             <div className="col-md-9">
-                                                <input type="number" class="form-control" id="phoneUser" placeholder="Số điện thoại" onChange={this.InputOnChange}/>
+                                                <input type="number" className="form-control" id="phoneUser" placeholder="Số điện thoại" onChange={this.InputOnChange} />
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div className="form-group">
                                         <div className="row">
-                                            <div className="col-md-3">
+                                            <div className="col-3">
                                                 <label className="paddingLable " for="exampleInputEmail1 ">Tỉnh/Thành phố:</label>
                                             </div>
-                                            <div className="col-md-9 ">
-                                                <select class="form-control selectBoxAddress" id="cityUser" onChange={this.InputOnChangeProvince}>
+                                            <div className="col-9 ">
+                                                <select className="form-control selectBoxAddress" id="cityUser" onChange={this.InputOnChangeProvince}>
                                                     <option>Tỉnh/Thành phố</option>
                                                     {provinceTemp.map((province, idx) => {
                                                         return (
@@ -165,11 +171,11 @@ class Checkout extends Component {
                                                         )
                                                     })}
                                                 </select>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div className="form-group">
                                         <div className="row">
                                             <div className="col-md-3">
                                                 <label className="paddingLable" for="exampleInputEmail1 ">Quận huyện</label>
@@ -191,13 +197,13 @@ class Checkout extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div className="form-group">
                                         <div className="row">
                                             <div className="col-md-3">
                                                 <label className="paddingLable" for="exampleInputEmail1 ">Phường xã</label>
                                             </div>
                                             <div className="col-md-9">
-                                                <select class="form-control selectBoxAddress" id="wardsUser">
+                                                <select className="form-control selectBoxAddress" id="wardsUser">
                                                     <option>Phường xã</option>
                                                     {this.state.stateWard.map((ward, idx) => {
                                                         return (
@@ -213,75 +219,75 @@ class Checkout extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div className="form-group">
                                         <div className="row">
                                             <div className="col-md-3">
                                                 <label className="paddingLable" for="exampleInputEmail1 ">Địa chỉ</label>
                                             </div>
                                             <div className="col-md-9">
-                                                <input type="text" class="form-control addressDetailHeight" id="addressDetail" onChange={this.InputOnChangeAddress}/>
+                                                <input type="text" className="form-control addressDetailHeight" id="addressDetail" onChange={this.InputOnChangeAddress} />
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                    <div className="form-group form-check">
+                                        <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                                        <label className="form-check-label" for="exampleCheck1">Check me out</label>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" className="btn btn-primary">Submit</button>
                                 </form>
                                 <h3 className="h3Padding">Phương thức thanh toán</h3>
                                 <form className="backgroundContainerCheckout">
-                                    <div class="custom-control custom-radio paddingBottomRadio">
-                                        <input type="radio" id="paymentOnDelivery" name="customRadio" class="custom-control-input" onClick={() => this.closeFormWalletAndInterCard()} />
-                                        <label class="custom-control-label" for="paymentOnDelivery">Thanh toán khi nhận hàng</label>
+                                    <div className="custom-control custom-radio paddingBottomRadio">
+                                        <input type="radio" id="paymentOnDelivery" name="customRadio" className="custom-control-input" onClick={() => this.closeFormWalletAndInterCard()} />
+                                        <label className="custom-control-label" for="paymentOnDelivery">Thanh toán khi nhận hàng</label>
                                     </div>
-                                    <div class="custom-control custom-radio paddingBottomRadio">
-                                        <input type="radio" id="paymentInternationalCard" name="customRadio" class="custom-control-input" onClick={() => this.showFormInterCard(this.state.closeFormInterCard)} />
-                                        <label class="custom-control-label" for="paymentInternationalCard">Thanh toán bằng thẻ quốc tế Visa, Master, JCB</label>
+                                    <div className="custom-control custom-radio paddingBottomRadio">
+                                        <input type="radio" id="paymentInternationalCard" name="customRadio" className="custom-control-input" onClick={() => this.showFormInterCard(this.state.closeFormInterCard)} />
+                                        <label className="custom-control-label" for="paymentInternationalCard">Thanh toán bằng thẻ quốc tế Visa, Master, JCB</label>
                                     </div>
                                     {this.state.closeFormInterCard ?
-                                        <div class="card paddingBottomRadioWalletCard">
-                                            <div class="card-body">
+                                        <div className="card paddingBottomRadioWalletCard">
+                                            <div className="card-body">
                                                 <div className="row">
                                                     <div className="col-md-2">
 
                                                     </div>
                                                     <div className="col-md-4">
-                                                        <img class="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG/visa-icon.png'))} />
+                                                        <img className="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG/visa-icon.png'))} />
                                                     </div>
                                                     <div className="col-md-4">
-                                                        <img class="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG/master-card-icon-13.jpg'))} />
+                                                        <img className="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG/master-card-icon-13.jpg'))} />
                                                     </div>
                                                     <div className="col-md-2">
 
                                                     </div>
                                                 </div>
                                                 <form className="backgroundContainerCheckout1">
-                                                    <div class="form-group">
+                                                    <div className="form-group">
                                                         <div className="row">
                                                             <div className="col-md-5">
                                                                 <label className="paddingLable" for="exampleInputEmail1 ">Số thẻ:</label>
-                                                                <input type="text" class="form-control" id="idCard" placeholder="VD: 4564 5265 2598 4587" />
+                                                                <input type="text" className="form-control" id="idCard" placeholder="VD: 4564 5265 2598 4587" />
                                                                 <label className="paddingLable" for="exampleInputEmail1 ">Tên in trên thẻ:</label>
-                                                                <input type="text" class="form-control" id="nameUserCard" placeholder="VD: NGUYEN VAN A" />
+                                                                <input type="text" className="form-control" id="nameUserCard" placeholder="VD: NGUYEN VAN A" />
                                                                 <label className="paddingLable" for="exampleInputEmail1 ">Ngày hết hạn:</label>
-                                                                <input type="text" class="form-control" id="validDate" placeholder="VD: MM/YY" />
+                                                                <input type="text" className="form-control" id="validDate" placeholder="VD: MM/YY" />
                                                                 <label className="paddingLable" for="exampleInputEmail1 ">Mã bảo mật:</label>
-                                                                <input type="text" class="form-control" id="securityCode" placeholder="VD: 123" />
+                                                                <input type="text" className="form-control" id="securityCode" placeholder="VD: 123" />
                                                             </div>
                                                             <div className="col-md-7">
                                                                 <br />
                                                                 <br />
                                                                 <br />
-                                                                <div class="container containerBoderVisaCard">
+                                                                <div className="container containerBoderVisaCard">
                                                                     <div className="row">
                                                                         <div className="col-md-4">
                                                                             <h2 className="h2Visa">Visa</h2>
                                                                         </div>
                                                                         <div className="col-md-4"></div>
-                                                                        <div className="col-md-4"><img class="card-img-top imgSizeVisaCard" src={(require('../../img/checkoutIMG/visa-icon.png'))} /></div>
+                                                                        <div className="col-md-4"><img className="card-img-top imgSizeVisaCard" src={(require('../../img/checkoutIMG/visa-icon.png'))} /></div>
                                                                     </div>
-                                                                    <img class="card-img-top imgChipSize" src={(require('../../img/checkoutIMG/Chip-logo-3C162A3B9B-seeklogo.com.png'))} />
+                                                                    <img className="card-img-top imgChipSize" src={(require('../../img/checkoutIMG/Chip-logo-3C162A3B9B-seeklogo.com.png'))} />
 
                                                                     <p className="pIdCard">4564 - 3432 - 3434 - 1236</p>
                                                                     <div className="row">
@@ -305,22 +311,22 @@ class Checkout extends Component {
                                         </div> : null
                                     }
 
-                                    <div class="custom-control custom-radio paddingBottomRadio">
-                                        <input type="radio" id="paymentWithWallet" name="customRadio" class="custom-control-input" onClick={() => this.showFormWallet(this.state.closeFormWallet)} />
-                                        <label class="custom-control-label" for="paymentWithWallet">Thanh toán ví online</label>
+                                    <div className="custom-control custom-radio paddingBottomRadio">
+                                        <input type="radio" id="paymentWithWallet" name="customRadio" className="custom-control-input" onClick={() => this.showFormWallet(this.state.closeFormWallet)} />
+                                        <label className="custom-control-label" for="paymentWithWallet">Thanh toán ví online</label>
                                     </div>
                                     {this.state.closeFormWallet ?
-                                        <div class="card">
-                                            <div class="card-body">
+                                        <div className="card">
+                                            <div className="card-body">
                                                 <div className="row">
                                                     <div className="col-md-4">
-                                                        <Link to="/"><img class="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG/paypallogo.png'))} /></Link>
+                                                        <Link to="/"><img className="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG/paypallogo.png'))} /></Link>
                                                     </div>
                                                     <div className="col-md-4">
-                                                        <Link to="/"><div className="container containerMono"><img class="card-img-top boderimg imgSizeMomo" src={(require('../../img/checkoutIMG/logo-momo.jpg'))} /></div></Link>
+                                                        <Link to="/"><div className="container containerMono"><img className="card-img-top boderimg imgSizeMomo" src={(require('../../img/checkoutIMG/logo-momo.jpg'))} /></div></Link>
                                                     </div>
                                                     <div className="col-md-4">
-                                                        <Link to="/"><img class="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG//vnpay-qrcode-1.png'))} /></Link>
+                                                        <Link to="/"><img className="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG//vnpay-qrcode-1.png'))} /></Link>
                                                     </div>
                                                 </div>
 
@@ -333,16 +339,16 @@ class Checkout extends Component {
 
                                 <div className="container backgroundContainerCheckout fixed">
 
-                                    <div class="card cardShadowTotal">
-                                        <div class="card-body">
-                                            <h3 class="textCenterTotal textPaddingTotal">Tổng thanh toán</h3>
-                                            <h3 class="textCenterTotal textPaddingTotal">{formatter.format(this.totalCheckout(cart))}</h3>
+                                    <div className="card cardShadowTotal">
+                                        <div className="card-body">
+                                            <h3 className="textCenterTotal textPaddingTotal">Tổng thanh toán</h3>
+                                            <h3 className="textCenterTotal textPaddingTotal">{formatter.format(this.totalCheckout(cart))}</h3>
                                         </div>
                                     </div>
-                                    <div class="card borderCardPriceParent paddingCardTotalBottom">
+                                    <div className="card borderCardPriceParent paddingCardTotalBottom">
                                         {checkoutItem}
                                     </div>
-                                    <div class="card borderCardPriceParent paddingCardTotalBottom">
+                                    <div className="card borderCardPriceParent paddingCardTotalBottom">
                                         <div className="row">
                                             <div className="col-7 ">
                                                 <div className="finalTotal">Tạm tính</div>
@@ -366,6 +372,7 @@ class Checkout extends Component {
                 <br />
                 <br />
             </div>
+
         )
     }
     totalCheckout = (cart) => {

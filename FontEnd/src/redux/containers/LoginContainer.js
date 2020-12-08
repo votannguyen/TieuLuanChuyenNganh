@@ -10,7 +10,7 @@ import { Redirect } from 'react-router-dom';
 class LoginContainer extends Component {
     state = {  }
     render() { 
-        var {user, onUserLogin, urlBackend} = this.props
+        var {user, onUserLogin, urlBackend, ownProps} = this.props
         if (user.auth === true) return <Redirect to="/"/> ;
         return ( 
             <Login
@@ -21,10 +21,10 @@ class LoginContainer extends Component {
         );
     }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         user: state.user,
-        urlBackend: state.urlBackend
+        urlBackend: state.urlBackend,
     }
 }
 //nếu muốn mua nhiều sản phẩm cùng lúc thì truyền số lượng vào

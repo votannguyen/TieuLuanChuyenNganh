@@ -4,16 +4,23 @@ import PropTypes from 'prop-types';
 import Header from '../../container/header';
 import { actLogoutByUser } from '../actions/ActionLogin';
 class HeaderContainer extends Component {
-    state = {  }
-    render() { 
-        var { cart, user, onUserLogout } = this.props
-        return ( 
+    state = {}
+    render() {
+        var { cart, user, onUserLogout, wishLists } = this.props
+        return (
             <Header
-                user = {user}
-                cart = {cart}
-                onUserLogout = {onUserLogout}
+                user={user}
+                cart={cart}
+                onUserLogout={onUserLogout}
+                countInWishList={this.countProductInWishList(wishLists)}
             />
         );
+    }
+    countProductInWishList = (wishLists) => {
+        if (wishLists.length > 0) {
+            return wishLists.length;
+        }
+        return 0;
     }
 }
 HeaderContainer.propTypes = {
@@ -33,14 +40,15 @@ HeaderContainer.propTypes = {
 const mapStateToProps = state => {
     return {
         cart: state.cart,
-        user: state.user
+        user: state.user,
+        wishLists: state.wishLists
     }
 }
 const mapDispartToProps = (dispatch, props) => {
     return {
-        onUserLogout: ()=>{
+        onUserLogout: () => {
             dispatch(actLogoutByUser());
         }
     }
 }
-export default connect(mapStateToProps,mapDispartToProps)(HeaderContainer);
+export default connect(mapStateToProps, mapDispartToProps)(HeaderContainer);

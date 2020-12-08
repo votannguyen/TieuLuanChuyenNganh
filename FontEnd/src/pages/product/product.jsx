@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, Redirect, Route } from 'react-router-dom'
 import '../productList/productList.css';
 import './product.css';
+import Cookies from "js-cookie";
 
 class Product extends Component {
   state = {}
@@ -25,6 +26,32 @@ class Product extends Component {
     console.log(this.props.sizeIsSelect)
     this.props.onProductIsSelect(sizeProduct, idProduct);
   }
+  wishListProcess = (id) => {   ///xử lý icon wishlist in product
+    var { idProductInWishList } = this.props
+    if (idProductInWishList !== -1) {
+      return (<i className="fas fa-heart fa-2x mt-2 iconHeart" onClick={this.deleteProductInWishList}></i>)
+    }
+    else {
+      if (Cookies.get("loginInfo") === undefined) {
+        return (<Link to="/login" className="far fa-heart fa-2x mt-2 iconHeart"></Link>)
+      }
+      else {
+        return (<i className="far fa-heart fa-2x mt-2 iconHeart" onClick={this.addProductInWishList}></i>)
+      }
+    }
+
+    // return()
+    // <i className="fas fa-heart"></i>
+    // <i className="far fa-heart fa-2x mt-2"></i>
+  }
+  deleteProductInWishList = () => {   //Xóa sản phẩm ra khỏi wishlist
+    var { onDeleteProductInWishList, wishLists, product } = this.props;
+    onDeleteProductInWishList(product.id, wishLists);
+  }
+  addProductInWishList = () => {    //thêm sản phẩm vào wishlist
+    var { onAddProductToWishList, wishLists, product } = this.props;
+    onAddProductToWishList(product.id, wishLists);
+  }
   render() {
     const formatter = new Intl.NumberFormat('vi-VN', {
       style: 'currency',
@@ -42,28 +69,18 @@ class Product extends Component {
                 src={`${urlBackend}${product.imagePath}`} />
             </Link>
             <div className="card-body padding_card_body">
-                <div className="heightBoxSize">
-                  <div className="size-box">
-                    {product.ProductSizes.sort((a, b) => a.Size.sizeName - b.Size.sizeName).map((productSize, idx) => {
-                      if (sizeIsSelect !== undefined) {
-                        if (sizeIsSelect === productSize.id) {
-                          return (
-                            <div key={productSize.id}
-                              className="size_item pcolor sizeOnSelect"
-                              onClick={() => this.selectSize(productSize, productSize.productId)}>
-                              {productSize.Size.sizeName}
-                            </div>
-                          )
-                        }
-                        else {
-                          return (
-                            <div key={productSize.id}
-                              className="size_item pcolor"
-                              onClick={() => this.selectSize(productSize, productSize.productId)}>
-                              {productSize.Size.sizeName}
-                            </div>
-                          )
-                        }
+              <div className="heightBoxSize">
+                <div className="size-box">
+                  {product.ProductSizes.sort((a, b) => a.Size.sizeName - b.Size.sizeName).map((productSize, idx) => {
+                    if (sizeIsSelect !== undefined) {
+                      if (sizeIsSelect === productSize.id) {
+                        return (
+                          <div key={productSize.id}
+                            className="size_item pcolor sizeOnSelect"
+                            onClick={() => this.selectSize(productSize, productSize.productId)}>
+                            {productSize.Size.sizeName}
+                          </div>
+                        )
                       }
                       else {
                         return (
@@ -74,15 +91,25 @@ class Product extends Component {
                           </div>
                         )
                       }
-                    })}
-                    {/* <span className="size_item pcolor">41</span>
+                    }
+                    else {
+                      return (
+                        <div key={productSize.id}
+                          className="size_item pcolor"
+                          onClick={() => this.selectSize(productSize, productSize.productId)}>
+                          {productSize.Size.sizeName}
+                        </div>
+                      )
+                    }
+                  })}
+                  {/* <span className="size_item pcolor">41</span>
                 <span className="size_item pcolor">42</span>
                 <span className="size_item pcolor">43</span>
                 <span className="size_item pcolor">44</span>
                 <span className="size_item pcolor">45</span>
                 <span className="size_item pcolor">46</span> */}
-                  </div>
-                </div> 
+                </div>
+              </div>
               <hr />
               <Link to={`/productdetail/${product.id}`}>
                 <p className="card-title hoverTitleProduct nameProduct">{product.name}</p>
@@ -92,7 +119,8 @@ class Product extends Component {
 
               <div className="row">
                 <div className="col-4">
-                  <i className="far fa-heart fa-2x mt-2"></i>
+                  {/* <i className="far fa-heart fa-2x mt-2"></i> */}
+                  {this.wishListProcess(product.id)}
                 </div>
                 <div className="col-8">
                   <div
@@ -108,6 +136,7 @@ class Product extends Component {
       </div>
     );
   }
+
 }
 
 export default Product;

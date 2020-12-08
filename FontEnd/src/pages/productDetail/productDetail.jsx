@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import '../productDetail/productDetail.css';
+import './productDetail.css';
 import ReactImageMagnify from 'react-image-magnify';
 import ProductService from '../../services/ProductService';
+import {
+    Button,
+    Modal,
+    Form,
+    Table,
+    Carousel
+} from "react-bootstrap";
 class ProductDetail extends Component {
     state = {
         quantity: 1,
@@ -10,7 +17,8 @@ class ProductDetail extends Component {
         imgID: "imgID",
         hideContainer: true,
         listImgThumbnail: [],
-        realTime: ''
+        realTime: '',
+        showModalViewImage: false
     };
     plusQuantity = () => {
         if (this.state.quantity < 20) {
@@ -38,7 +46,7 @@ class ProductDetail extends Component {
         }
 
     }
-    componentDidMount(){
+    componentDidMount() {
         window.scrollTo(0, 0)
         console.log(this.props.p)
         ProductService.listProduct().then(res => {
@@ -50,7 +58,14 @@ class ProductDetail extends Component {
         })
 
     }
-    
+    setShowModalViewImage = (id) => {
+        this.setState({ showModalViewImage: true })
+        // this.getImgByIdPro(id);
+    }
+    setCloseModalViewImage = () => {
+        this.setState({ showModalViewImage: false })
+    }
+
     render() {
         var { product, urlBackend, sizeIsSelect } = this.props
         const formatter = new Intl.NumberFormat('vi-VN', {
@@ -80,17 +95,61 @@ class ProductDetail extends Component {
                                 <div className="row">
                                     <div className="col-lg-2 colmaginProDe backGroundContainerMain marginContainerLeft ">
                                         {this.state.listImgThumbnail.map((listImgThumbnail, idx) => {
-                                            return (
-                                                <div className="thumbnailImgProductDetail colmaginThumbail" key={idx}>
-                                                    <img id="" class="card-img-top boderimg_Pro cursorThumbnailImage" src={`${urlBackend}${listImgThumbnail.imagePath}`} />
-                                                </div>
-                                            )
+                                            if (idx < 4) {
+                                                return (
+                                                    <div className="thumbnailImgProductDetail colmaginThumbail" key={idx}>
+                                                        <img id="" class="card-img-top boderimg_Pro cursorThumbnailImage" src={`${urlBackend}${listImgThumbnail.imagePath}`} />
+                                                    </div>
+                                                )
+                                            }
+                                            else { return (<div></div>) }
                                         })}
 
+                                        {/* <div className="view" onClick={() => this.setShowModalViewImage()}>View All</div> */}
                                         <div className="thumbnailImgProductDetail colmaginThumbail">
-                                            <p className="cursorThumbnailImageMore cursorThumbnailImage" data-toggle="modal" data-target=".bd-example-modal-lg" data-backdrop="static" data-keyboard="false">Xem thêm hình ảnh</p>
+                                            <p
+                                                className="cursorThumbnailImageMore cursorThumbnailImage"
+                                                data-toggle="modal"
+                                                data-target=".bd-example-modal-lg"
+                                                data-backdrop="static"
+                                                data-keyboard="false"
+                                                onClick={() => this.setShowModalViewImage()}
+                                            >Xem thêm hình ảnh</p>
                                         </div>
-                                        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                        <>
+                                            <Modal
+                                                show={this.state.showModalViewImage}
+                                                onHide={this.setCloseModalViewImage}
+                                                keyboard={false}
+                                                backdrop="static"
+                                                dialogClassName="modalImageMaxWidth"
+                                                aria-labelledby="example-custom-modal-styling-title"
+                                            >
+                                                <Modal.Header closeButton>
+                                                </Modal.Header>
+                                                <Modal.Body>
+                                                    <Form>
+                                                        <Carousel>
+                                                            {this.state.listImgThumbnail.map((listImgThumbnail, idx) => {
+                                                                return (
+                                                                    <Carousel.Item>
+                                                                        <img
+                                                                            key={idx}
+                                                                            className="d-block w-100"
+                                                                            src={`${urlBackend}${listImgThumbnail.imagePath}`}
+                                                                        />
+                                                                    </Carousel.Item>
+                                                                )
+                                                            })}
+                                                        </Carousel>
+                                                    </Form>
+                                                </Modal.Body>
+                                                <Modal.Footer>
+                                                    <Button variant="secondary" onClick={this.setCloseModalViewImage}>Close</Button>
+                                                </Modal.Footer>
+                                            </Modal>
+                                        </>
+                                        {/* <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -130,8 +189,7 @@ class ProductDetail extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-
+                                        </div> */}
                                     </div>
                                     <div className="col-lg-10">
                                         <div className="container containerRectangleVertical img-zoom-container marginContainerLeft" onMouseMove={this.hideContainer}>
@@ -245,12 +303,12 @@ class ProductDetail extends Component {
                             <div className="container containerBuyWish">
                                 <div className="row">
                                     <div className="col-lg-4">
-                                        <p>
-                                            <p className="textQuantity">Số lượng:</p>
-                                            <div className="minusButton pInline minusText" onClick={this.minusQuantity}><i class="fas fa-minus"></i></div>
-                                            <input type="text" className="form-control pInline textBoxSize" id="quantityProduct" value={this.state.quantity} disabled />
-                                            <div className="plusButton pInline plusText" onClick={this.plusQuantity}><i class="fas fa-plus"></i></div>
-                                        </p>
+                                        <p className="textQuantity">Số lượng:</p>
+                                        <div className="inlineChangeQuantity">
+                                            <div className="minusButton minusText" onClick={this.minusQuantity}><i class="fas fa-minus minusText"></i></div>
+                                            <input type="text" className="form-control textBoxSize" id="quantityProduct" value={this.state.quantity} disabled />
+                                            <div className="plusButton plusText" onClick={this.plusQuantity}><i class="fas fa-plus plusText"></i></div>
+                                        </div>
                                     </div>
                                     <div className="col-lg-8">
                                         <div className="btn btn-danger buyButton" onClick={() => this.addToCart(product, this.state.quantity)}>
@@ -283,14 +341,14 @@ class ProductDetail extends Component {
         this.props.onProductIsSelect(sizeProduct, idProduct);
     }
     addToCart = (product, quantity) => {
-        
+
         var { addToCart } = this.props;
-        
-        if(this.props.sizeIsSelect === undefined){
+
+        if (this.props.sizeIsSelect === undefined) {
             alert("Vui lòng chọn size cho sản phẩm")
         }
-        else{
-        addToCart(product, quantity, this.props.sizeIsSelect.productSize.id)
+        else {
+            addToCart(product, quantity, this.props.sizeIsSelect.productSize.id)
         }
     }
 }

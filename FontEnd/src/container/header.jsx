@@ -36,19 +36,19 @@ class Header extends Component {
         return result;
     }
     render() {
-        var { cart } = this.props;
+        var { cart, countInWishList } = this.props;
         return (
             <div onLoad={this.loadData}>
-                <div id="preloader-active">
+                {/* <div id="preloader-active">
                     <div className="preloader d-flex align-items-center justify-content-center">
                         <div className="preloader-inner position-relative">
                             <div className="preloader-circle"></div>
                             <div className="preloader-img pere-text">
-                                <img src={require('../img/logo/ShoeIcon.png')} />
+                                <img src={require(process.env.PUBLIC_URL + '../img/logo/ShoeIcon.png')} />
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <header>
                     <div className="header-area">
                         <div className="main-header ">
@@ -60,7 +60,7 @@ class Header extends Component {
                                                 <div className="flag">
                                                     <img src={require('../img/ShopShoeOnline/Flag_of_Vietnam.png')} />
                                                 </div>
-                                                <div className="select-this">
+                                                {/* <div className="select-this">
                                                     <form action="#">
                                                         <div className="select-itms">
                                                             <select name="select" id="select1">
@@ -70,7 +70,7 @@ class Header extends Component {
                                                             </select>
                                                         </div>
                                                     </form>
-                                                </div>
+                                                </div> */}
                                                 <ul className="contact-now">
                                                     <li>+777 2345 7886</li>
                                                 </ul>
@@ -78,7 +78,7 @@ class Header extends Component {
                                             <div className="header-info-right ">
                                                 <ul>
                                                     {Cookies.get("loginInfo")  ?
-                                                        <li><Link to="/profile">Tài Khoản Của Tôi</Link></li>
+                                                        <li className="aBac"><Link to="/profile">Tài Khoản Của Tôi</Link></li>
                                                         : null
                                                     }
                                                     {Cookies.get("loginInfo")  ?
@@ -235,7 +235,7 @@ class Header extends Component {
                                                     <div className="marginQuantity">
                                                         <div className="row">
                                                             <div className="col-6">
-                                                                <div className="quantityFavorit">02</div>
+                                                        <div className="quantityFavorit">{countInWishList}</div>
                                                             </div>
                                                             <div className="col-6">
                                                         <div className="quantityCart">{this.resultProductInCart(cart)}</div>

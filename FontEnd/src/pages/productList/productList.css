@@ -57,8 +57,8 @@ body {
   padding: 0.25rem 0.25rem;
 }
 .boderimg_Pro {
-  border: 0.1px solid;
-  border-color: rgb(212, 212, 212);
+  border: 1px solid;
+  border-color: rgb(226, 226, 226);
 }
 .aHeart {
   color: #4caf50 !important;
@@ -71,7 +71,7 @@ body {
   color: black !important;
 }
 
-.size-box .size_item {
+.size-box .size_item{
   width: 25px;
   height: 25px;
   display: inline-block;
@@ -148,13 +148,34 @@ body {
   margin-top: 10px;
   border-radius: 10px;
 }
+.filterCategory{
+  font-size: 17px;
+  font-weight: 450;
+  margin-bottom: 20px;
+  margin-left: 5px;
+  margin-right: 0px;
+}
+a{
+  color: #626262;
+}
+/* i{
+  font-weight: 500;
+  color: #ff4e4e;
+} */
+.filterBrand{
+  margin-bottom: 15px;
+}
+.filterBrand:hover{
+  opacity: 0.9;
+  box-shadow: 0px 0px 5px 5px rgb(212, 212, 212);
+}
+.filterImgBrand{
+  max-width: 160px;
+}
 
-
-
-
-
-
-
+.truck_s{
+  color: white;
+}
 
 
 @media only screen and (max-width: 4096px) {
@@ -163,7 +184,7 @@ body {
     font-size: 25px;
     font-weight: 600;
     color: #626262;
-
+    margin-bottom: 10px;
   }
   .btnFilter{
     width: auto;
@@ -245,6 +266,7 @@ body {
     font-size: 20px;
     font-weight: 600;
     color: #626262;
+    margin-bottom: 10px;
   }
   .btnFilter{
     width: auto;

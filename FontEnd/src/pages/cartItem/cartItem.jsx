@@ -57,10 +57,10 @@ class CartItem extends Component {
                             <div className="row">
                                 <div className="col-6">
                                     <Link to={`/productdetail/${item.product.id}`}>
-                                    <a className="fontSize_a">
-                                        {item.product.name}
-                                        <br />
-                                    </a>
+                                        <a className="fontSize_a">
+                                            {item.product.name}
+                                            <br />
+                                        </a>
                                     </Link>
 
                                     <p className="pCart textSize">
@@ -97,9 +97,11 @@ class CartItem extends Component {
                                         </div>
                                         <div className="col-6">
                                             <p className="textQuantity">Số lượng:</p>
-                                            <div className="minusButton pInline minusText" onClick={() => this.minusQuantity(item.product, this.props.idSizeProduct)}><i class="fas fa-minus"></i></div>
-                                            <input type="text" className="form-control pInline textBoxSize" id="quantityProduct" value={item.quantity} disabled />
-                                            <div className="plusButton pInline plusText" onClick={() => this.plusQuantity(item.product, item.quantity, this.props.idSizeProduct)}><i class="fas fa-plus"></i></div>
+                                            <div className="inlineChangeQuantity">
+                                                <div className="minusButton minusText" onClick={() => this.minusQuantity(item.product, this.props.idSizeProduct)}><i class="fas fa-minus"></i></div>
+                                                <input type="text" className="form-control textBoxSize" id="quantityProduct" value={item.quantity} disabled />
+                                                <div className="plusButton plusText" onClick={() => this.plusQuantity(item.product, item.quantity, this.props.idSizeProduct)}><i class="fas fa-plus"></i></div>
+                                            </div>
                                             {this.state.caution ? <div>Xin lỗi số lượng tối đa mua được là 20 sản phẩm</div> : null}
                                         </div>
 

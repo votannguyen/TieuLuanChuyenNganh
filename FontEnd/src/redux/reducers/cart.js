@@ -1,5 +1,16 @@
 import * as Types from '../constants/ActionType';
-var data = JSON.parse(localStorage.getItem('CART'));
+var crypto = require('crypto-js');
+// Lấy danh sách byte đã mã hóa
+var data
+if (localStorage.getItem('Catzct_txns')) {
+    var bytes = crypto.AES.decrypt(localStorage.getItem('Catzct_txns'), '300699NguyenTanVo');
+    // // Chuyển sang chuỗi gốc
+    var message_decode = bytes.toString(crypto.enc.Utf8);
+
+    // var data = JSON.parse(localStorage.getItem('CART'));
+    data = JSON.parse(message_decode);
+}
+else data = JSON.parse(localStorage.getItem('Catzct_txns'));;
 
 var initialState = data ? data : [];
 
@@ -13,7 +24,7 @@ const cart = (state = initialState, action) => {
             index = state.findIndex(x => x.product.id === product.id)       //tìm mã sản phẩm
 
             indexSize = state.findIndex(x => x.idProductSize === sizeProduct)   //tìm index của sản phẩm bằng idSizeProduct
-            
+
             // indexSize = state.findIndex(x => x.product.ProductSizes.id === sizeProduct.id)
             totalDiscount = 0;
             if (index !== -1 && indexSize !== -1) {
@@ -36,14 +47,16 @@ const cart = (state = initialState, action) => {
                     totalDiscount,
                 })
             }
-            localStorage.setItem('CART', JSON.stringify(state));
+            // crypto.AES.encrypt('Nội dung cần mã hóa', 'itsasecret123').toString();
+            localStorage.setItem('Catzct_txns', crypto.AES.encrypt(JSON.stringify(state), '300699NguyenTanVo').toString());
             return [...state];
         case Types.DELETE_PRODUCT_IN_CART:
             index = findProductInCart(state, product);
             if (index !== -1) {
                 state.splice(index, 1)
             }
-            localStorage.setItem('CART', JSON.stringify(state));
+            // localStorage.setItem('CART', JSON.stringify(state));
+            localStorage.setItem('Catzct_txns', crypto.AES.encrypt(JSON.stringify(state), '300699NguyenTanVo').toString());
             return [...state];
         case Types.CHANGE_QUANTITY_PRODUCT_IN_CART:
 
@@ -90,7 +103,8 @@ const cart = (state = initialState, action) => {
                 }
             }
 
-            localStorage.setItem('CART', JSON.stringify(state));
+            // localStorage.setItem('CART', JSON.stringify(state));
+            localStorage.setItem('Catzct_txns', crypto.AES.encrypt(JSON.stringify(state), '300699NguyenTanVo').toString());
             return [...state];
         case Types.CHANGE_DISCOUNT_IN_CART:
             var isDiscount = 0;
@@ -105,13 +119,15 @@ const cart = (state = initialState, action) => {
                     cart[j].totalDiscount = (cart[j].total * isDiscount);
                 }
             }
-            localStorage.setItem('CART', JSON.stringify(state));
+            // localStorage.setItem('CART', JSON.stringify(state));
+            localStorage.setItem('Catzct_txns', crypto.AES.encrypt(JSON.stringify(state), '300699NguyenTanVo').toString());
             return [...state]
         case Types.ON_LOAD_PAGE_CART:
             for (var i = 0; i < cart.length; i++) {
                 state[i].totalDiscount = 0;
             }
-            localStorage.setItem('CART', JSON.stringify(state));
+            // localStorage.setItem('CART', JSON.stringify(state));
+            localStorage.setItem('Catzct_txns', crypto.AES.encrypt(JSON.stringify(state), '300699NguyenTanVo').toString());
             return [...state]
         default: return [...state];
     }

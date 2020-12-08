@@ -7,11 +7,11 @@
   overflow: hidden;
   word-break: break-all; */
     font-size: 18px;
-    width: 200px;
+    /* width: 200px; */
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 25px;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: ;
     height: 50px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -25,11 +25,11 @@ width: 200px;
 overflow: hidden;
 word-break: break-all; */
   font-size: 13px;
-  width: 200px;
+  /* width: 200px; */
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 25px;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 4;
   height: 100px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -40,4 +40,10 @@ word-break: break-all; */
 }
 .heightBoxSize{
   height: 50px;
+}
+.iconHeart{
+  color: #ff5353
+}
+.iconHeart:hover{
+  cursor: pointer;
 }

@@ -127,6 +127,7 @@ p{
 .iconShip{
   font-size: 20px;
   padding-right: 10px;
+  color: white;
 }
 .pPriceProduct{
   color: red;
@@ -149,7 +150,6 @@ p{
 .containerChildColor{
   width: auto;
   height: 30px;
-  padding-top: 5px;
   margin-left: 10px;
   padding-left: 5px;
   padding-right: 5px;
@@ -173,7 +173,6 @@ p{
   text-align: center;
   border-color: #c5c5c5 !important;
   border: 0.5px solid;
-  padding-top: 4px;
   margin-left: 10px;
   border-radius: 10px;
 }
@@ -201,7 +200,6 @@ p{
   border: 0.5px solid;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
-  padding-top: 3% !important;
 }
 .plusButton:hover{
   background-color: #379AF4;
@@ -215,28 +213,38 @@ p{
   border: 0.5px solid;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  padding-top: 3% !important;
 }
 .minusButton:hover{
   background-color: #379AF4;
   cursor: pointer;
   color: white;
-
 }
+.inlineChangeQuantity{
+  display: flex;
+}
+
 .plusText{
   font-size: 20px;
   text-align: center;
+  color: #686868;
 }
 .minusText{
   font-size: 20px;
   text-align: center;
+  color: #686868;
 }
+.minusText:hover{
+  color: white;
+}
+.plusText:hover{
+  color: white;
+}
+
 .textBoxSize{
   width: 70px;
   border-color: #379AF4 !important;
   border: 0.5px solid;
   height: 35px;
-  padding-top: 2px !important;
   margin-left: -0.5px;
   margin-right: -1px;
   border-radius: 0%;
@@ -254,6 +262,7 @@ p{
 }
 .paddingRightCart{
   padding-right: 10px;
+  color: white;
 }
 .containerBuyWish{
   padding-left: 50px;
@@ -337,4 +346,21 @@ p{
 .ratingProductPacing{
   margin-top: 20px;
   margin-bottom: 5px;
+}
+.carousel-control-prev:hover{
+  background-color: rgb(209, 209, 209);
+  opacity: 0.3;
+}
+.carousel-control-next:hover{
+  background-color: rgb(209, 209, 209);
+  opacity: 0.3;
+}
+.carousel-control-prev-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+ }
+ .carousel-control-next-icon {
+   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+ }
+ .modalImageMaxWidth {
+  max-width: 700px !important;
 }
