@@ -72,7 +72,7 @@ const createCategory = async (req, res, next) => {
     {
         const createdCategory = {
             name: req.body.name,
-            summary: req.body.summary,
+            description: req.body.description,
             groupId: req.body.groupId,
             alias: getAlias(req.body.name)
           };
@@ -88,7 +88,7 @@ const createCategory = async (req, res, next) => {
         const createdCategory = {
             name: req.body.name,
             imagePath: image,
-            summary: req.body.summary,
+            description: req.body.description,
             groupId: req.body.groupId,
             alias: getAlias(req.body.name)
           };
@@ -179,22 +179,13 @@ const deleteCategoryById = async (req, res, next) => {
     }
     catch (err) {
         const error = new HttpError('Something went wrong, can not delete', 500);
-        let errReturn;
-        errReturn = {
-            fail: "SYSF04",
-            error,
-        };
-        return next(errReturn);
+
+        return next(error);
     }
     if(!categories)
     {
         const error =  new HttpError('Could not find any category', 404);
-        let errReturn;
-        errReturn = {
-            fail: "USERF01",
-            error,
-        };
-        return next(errReturn);
+        return next(error);
     }
     res.status(200).json({success: "SYSS03",message: 'Deleted category:'});
     
@@ -207,12 +198,8 @@ const updateCategoryById = async (req, res, next) => {
     {
         console.log(errors);
         const error =  new HttpError('Invalid Input! Pls check your data', 400);
-        let errReturn;
-        errReturn = {
-            fail: "SYSF03",
-            error,
-        };
-        return next(errReturn);
+
+        return next(error);
     }
 
     let image;
@@ -227,7 +214,7 @@ const updateCategoryById = async (req, res, next) => {
     {
         const updatedCategory = {
             name: req.body.name,
-            summary: req.body.summary,
+            description: req.body.description,
             groupId: req.body.groupId,
             alias: getAlias(req.body.name)
           };
@@ -242,7 +229,7 @@ const updateCategoryById = async (req, res, next) => {
         const updatedCategory = {
             name: req.body.name,
             imagePath: image,
-            summary: req.body.summary,
+            description: req.body.description,
             alias: getAlias(req.body.name)
           };
           console.log(req.file);

@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Product.hasMany(models.ProductSize, {foreignKey:'productId'});
-      Product.hasMany(models.OrderDetail, {foreignKey:'productId'});
       Product.hasMany(models.ProductImage, {foreignKey:'productId'});
       Product.belongsTo(models.Brand, {foreignKey: 'brandId'});
       Product.belongsTo(models.Category, {foreignKey: 'categoryId'});
@@ -20,14 +19,14 @@ module.exports = (sequelize, DataTypes) => {
   Product.init({
     name: DataTypes.STRING,
     productCode: DataTypes.STRING,
-    price: DataTypes.DECIMAL,
-    status: DataTypes.INTEGER,
+    status: DataTypes.STRING,
     description: DataTypes.TEXT,
     alias: DataTypes.STRING,
-    amount: DataTypes.INTEGER,
     color: DataTypes.TEXT,
     imagePath: DataTypes.STRING,
-    promotion: DataTypes.DECIMAL
+    promotion: DataTypes.DECIMAL,
+    importPrice: DataTypes.DECIMAL,
+    sellPrice: DataTypes.DECIMAL
   }, {
     sequelize,
     modelName: 'Product',

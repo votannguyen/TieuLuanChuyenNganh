@@ -32,33 +32,6 @@ const addOrder = async(req, res, next) => {
         const error =  new HttpError('Could not find any users', 404);
         return next(error);
     }
-    if(req.body.promotionCode != undefined)
-    {
-        let promotion;
-        try{
-            promotion = await Promotion.findOne({
-                where: {promotionCode: req.body.promotionCode}
-            })
-        } catch (err) {
-            const error = new HttpError('This promotion code is wrong', 400);
-            return next(error);
-        }
-        const orderCreated = {
-            orderCode: req.body.orderCode,
-            promotionCode: req.body.promotionCode,
-            address: req.body.address,
-            totalPrice: req.body.totalPrice,
-            status: 1,          //trạng thái 1 (Đã đặt hàng)
-            userId: users.id,
-            fullName: req.body.fullName,
-            phone: req.body.phone,
-        }
-        let createOrder;
-            createOrder = await Order.create(orderCreated);
-            res.status(200).json({createOrder})
-    }
-    else 
-    {
         const orderCreated = {
             orderCode: req.body.orderCode,
             address: req.body.address,
@@ -68,13 +41,12 @@ const addOrder = async(req, res, next) => {
             fullName: req.body.fullName,
             phone: req.body.phone,
             address: req.body.address,
-            totalPrice: req.body.totalPrice
+            totalPrice: req.body.totalPrice,
+            payment: req.body.payment
         }
         let createOrder;
-            createOrder = await Order.create(orderCreated);
-            res.status(200).json({createOrder})
-    }
-    
+        createOrder = await Order.create(orderCreated);
+        res.status(200).json({createOrder});
 }   
 
 const updateOrderById = async(req, res, next) => {
@@ -116,7 +88,7 @@ const addOrderDetail = async(req, res, next) => {
         orderId : req.body.orderId,
         unitAmount : req.body.unitAmount,
         unitPrice: req.body.unitPrice,
-        productId : req.body.productId
+        productSizeId : req.body.productSizeId
     };
     console.log(orderDetails)
     try{
@@ -126,6 +98,22 @@ const addOrderDetail = async(req, res, next) => {
         const error = new HttpError('There is system error. Pls try again', 500);
         return next(error);
     }
+    let findProductSize;
+    findProductSize = await ProductSize.findOne(
+            {
+                where: {
+                    id: req.body.productSizeId
+                },
+            }
+        );
+    let amountProductSize;
+    amountProductSize = findProductSize.productCount - req.body.unitAmount;
+    let updateProductSize;
+    updateProductSize = await ProductSize.update({productCount: amountProductSize}, {
+        where: {
+            id: findProductSize.id
+        }
+    })
     res.status(200).json({orderItem});
 }
 

@@ -57,7 +57,7 @@ const createSize = async (req, res, next) => {
         return next(error);
     }
     const createdSize = {
-        sizeName: req.body.sizeName,
+        sizeName: req.body.name,
         sizeType: req.body.sizeType
       };
     let sizes

@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Order.hasMany(models.OrderDetail, {foreignKey:'orderId'});
       Order.belongsTo(models.User, {foreignKey:'userId'});
-      
     }
   };
   Order.init({
@@ -23,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.INTEGER,
     totalPrice: DataTypes.DECIMAL,
     promotionCode: DataTypes.STRING,
-    payment: DataTypes.INTEGER,
+    payment: DataTypes.STRING,
     dateOfReturn: DataTypes.DATEONLY
   }, {
     sequelize,

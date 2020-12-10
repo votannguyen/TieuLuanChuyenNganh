@@ -23,8 +23,7 @@ router.patch(
    '/:brandId/',
    fileUpload.single('imagePath'),
    [
-      check('name').not().isEmpty(),
-      check('summary').not().isEmpty()
+      check('name').not().isEmpty()
    ],
    brandsControllers.updateBrandById
 );

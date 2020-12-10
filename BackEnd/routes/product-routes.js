@@ -10,6 +10,7 @@ router.get('/',productsControllers.getAllProduct);
 router.get('/:productId', productsControllers.getProductById);
 router.get('/getAlias/:productAlias', productsControllers.getProductByAlias);
 router.get('/getImageByProductId/:productId',productsControllers.getProductImageByProductId);
+
 router.post(
     '/',
     fileUpload.single('imagePath'),
@@ -18,17 +19,21 @@ router.post(
     ],
     productsControllers.createProduct
  );
+
 router.post('/createProductSize', productsControllers.createProductSize);
+
 
 router.post(
    '/createProductImage',
    fileUpload.single('imagePath'),
    productsControllers.createProductImage);
 
+
 router.patch(
    '/updateProductImage/:productImageId',
    fileUpload.single('imagePath'),
    productsControllers.updateProductImage);
+
 
 router.patch(
 '/:productId',
@@ -36,6 +41,11 @@ fileUpload.single('imagePath'),
 [   
    check('name').not().isEmpty()
 ],
-productsControllers.updateProductById)
+productsControllers.updateProductById);
+
+router.delete(
+   '/deleteProductImage/:productImageId',
+   productsControllers.deleteProductImage
+);
 
 module.exports = router;

@@ -11,8 +11,7 @@ router.get('/getSizeByType/:sizeTypeName',sizesControllers.getAllSizeByType)
 router.post(
     '/',
     [   
-       check('sizeName').not().isEmpty(),
-       check('sizeType').not().isEmpty()
+       check('name').not().isEmpty()
     ],
     sizesControllers.createSize
 );
@@ -22,8 +21,7 @@ router.delete('/:sizedId', sizesControllers.deleteSizeById);
 router.patch(
    '/:sizeId',
    [
-      check('sizeName').not().isEmpty(),
-      check('sizeType').not().isEmpty()
+      check('name').not().isEmpty()
    ],
    sizesControllers.updateSize
 );

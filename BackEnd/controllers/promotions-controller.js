@@ -23,6 +23,8 @@ const getAllPromotion = async (req, res, next) => {
 
 };
 
+
+
 const createPromotion = async (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty())

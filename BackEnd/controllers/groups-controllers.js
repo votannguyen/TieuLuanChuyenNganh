@@ -15,21 +15,11 @@ const getAllGroup = async (req, res, next) => {
             "System goes wrong, coud not find any Group",
             500
         );
-        let errReturn;
-        errReturn = {
-            fail: "SYSFF",
-            error,
-        };
-        return next(errReturn);
+        return next(error);
     }
     if (!Groups) {
         const error = new HttpError("Could not find any Group", 204);
-        let errReturn;
-        errReturn = {
-            fail: "USERNR",
-            error,
-        };
-        return next(errReturn);
+        return next(error);
     }
     res.status(200).json({
         success: "SYSS01",
@@ -37,17 +27,12 @@ const getAllGroup = async (req, res, next) => {
     });
 };
 
+//
 const createGroup = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        console.log(errors);
         const error = new HttpError("Invalid Input! Pls check your data", 400);
-        let errReturn;
-        errReturn = {
-            fail: "SYSF02",
-            error,
-        };
-        return next(errReturn);
+        return next(errors);
     }
     let image;
     if (typeof req.file !== "undefined") {
@@ -82,6 +67,7 @@ const createGroup = async (req, res, next) => {
     }
 };
 
+//
 const getGroupByAlias = async (req, res, next) => {
     const GroupAlias = req.params.alias;
     let Groups;
@@ -94,22 +80,14 @@ const getGroupByAlias = async (req, res, next) => {
             "System went wrong, coud not find any Group",
             500
         );
-        let errReturn;
-        errReturn = {
-            fail: "SYSF01",
-            error,
-        };
-        return next(errReturn);
+
+        return next(error);
     }
 
     if (!Groups) {
         const error = new HttpError("Could not find any Group", 204);
-        let errReturn;
-        errReturn = {
-            fail: "USERF01",
-            error,
-        };
-        return next(errReturn);
+
+        return next(error);
     }
     res.status(200).json({
         success: "SYSS01",
@@ -117,6 +95,7 @@ const getGroupByAlias = async (req, res, next) => {
     });
 };
 
+//
 const getGroupById = async (req, res, next) => {
     const groupId = req.params.groupId;
     let Groups;
@@ -150,6 +129,7 @@ const getGroupById = async (req, res, next) => {
     });
 };
 
+//
 const deleteGroupById = async (req, res, next) => {
     const groupId = req.params.groupId;
     let Groups;
@@ -157,22 +137,12 @@ const deleteGroupById = async (req, res, next) => {
         Groups = await Group.destroy({ where: { id: groupId } });
     } catch (err) {
         const error = new HttpError("System went wrong, can not delete", 500);
-        let errReturn;
-        errReturn = {
-            fail: "SYSF04",
-            error,
-        };
-        return next(errReturn);
+        return next(error);
     }
 
     if (!Groups) {
         const error = new HttpError("Could not find any Group for delete", 204);
-        let errReturn;
-        errReturn = {
-            fail: "USERF01",
-            error,
-        };
-        return next(errReturn);
+        return next(error);
     }
     res.status(200).json({ success: "SYSS03" ,message: "Deleted Group:" });
 };
@@ -183,12 +153,8 @@ const updateGroupById = async (req, res, next) => {
     if (!errors.isEmpty()) {
         console.log(errors);
         const error = new HttpError("Invalid Input! Pls check your data", 400);
-        let errReturn;
-        errReturn = {
-            fail: "SYSF03",
-            error,
-        };
-        return next(errReturn);
+
+        return next(error);
     }
     //Kiểm tra có chèn ảnh ko
     let image;

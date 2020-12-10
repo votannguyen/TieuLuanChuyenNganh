@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   User.init({
     googleId: DataTypes.STRING,
+    facebookId: DataTypes.STRING,
     fullName: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
@@ -27,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     isAdmin: DataTypes.BOOLEAN,
     isConfirm: DataTypes.BOOLEAN,
     isLock: DataTypes.BOOLEAN,
-    authType: DataTypes.INTEGER
+    authType: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User',
