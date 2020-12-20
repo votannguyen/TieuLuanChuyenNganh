@@ -7,11 +7,14 @@ import * as Message from '../constants/Message';
 class CheckoutContainer extends Component {
     state = {  }
     render() { 
-        var { cart } = this.props;
+        var { cart, user, discount, urlBackend } = this.props;
         return ( 
             <Checkout
                 cart = { cart }
                 checkoutItem = {this.showCheckoutItem(cart)}
+                user = {user}
+                discount = {discount}
+                urlBackend = {urlBackend}
             />
         );
     }
@@ -51,7 +54,10 @@ CheckoutContainer.propTypes = {
 }
 const mapStateToProps = state => {
     return {
-        cart: state.cart
+        cart: state.cart,
+        user: state.user,
+        discount: state.discount,
+        urlBackend: state.urlBackend,
     }
 }
 export default connect(mapStateToProps,null)(CheckoutContainer);

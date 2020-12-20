@@ -5,7 +5,7 @@ import {
   Modal,
   Form,
   Table,
-  Carousel, Tabs, Tab
+  Carousel, Tabs, Tab, Dropdown
 } from "react-bootstrap";
 import {
   CBadge,
@@ -22,6 +22,8 @@ import BrandService from "../../../services/BrandService";
 import CategoryService from "../../../services/CategoryService";
 import GroupService from "../../../services/GroupService";
 import SizesService from '../../../services/SizesService';
+
+
 import { message } from 'antd';
 const getBadge = status => {
   switch (status) {
@@ -74,6 +76,20 @@ class Products extends Component {
     avatarProductSaveAPI: [],
     message: false,
     listImageProductById: [],
+    //state dùng để lưu các giá trị xử lý trong size modal
+    stateOnSizeModal: [],
+    stateProductOnSizeModal: '',
+    showModalCreateImage: false,
+
+
+    //state on model create image
+    idOnModalCreateImg: '',
+    nameOnModalCreateImg: '',
+    codeOnModalCreateImg: '',
+
+    //State Promotion
+    statePromotion: [],
+
 
 
   };
@@ -113,6 +129,8 @@ class Products extends Component {
     this.realTime();
     console.log(this.state.products)
   }
+
+  //Chuẩn bị đầu tiên cho lưu sản phẩm
   firstSaveImage = (idProduct) => {
     this.realTime()
     console.log(idProduct)
@@ -222,17 +240,76 @@ class Products extends Component {
   //Xử lý modal của ảnh sản phẩm
   setShowModalViewImage = (id) => {
     this.setState({ showModalViewImage: true })
+    console.log(this.state.listProduct)
     this.getImgByIdPro(id);
   }
   setCloseModalViewImage = () => {
     this.setState({ showModalViewImage: false })
   }
 
+  //Khu vực xử lý code của modal Create Image
+  setShowModalCreateImage = (id) => {
+    this.setState({ showModalCreateImage: true })
+    this.setState({ idOnModalCreateImg: id })
+    this.processGetNameProduct(id);
+  }
+  setCloseModalCreateImage = () => {
+    this.setState({ showModalCreateImage: false })
+  }
+
+  //Lấy tên sản phẩm và Lấy mã sản phẩm
+  processGetNameProduct = (id) => {
+    var { listProduct } = this.state
+    console.log(listProduct)
+    console.log(id)
+    for (var i = 0; i < listProduct.length; i++) {
+      if (id === listProduct[i].id) {
+        console.log(listProduct[i].name)
+        console.log(listProduct[i].productCode)
+        this.setState({ nameOnModalCreateImg: listProduct[i].name });
+        this.setState({ codeOnModalCreateImg: listProduct[i].productCode });
+      }
+    }
+  }
+  saveImageProduct = (id) => {
+    console.log(id);
+    this.saveAvatarImage(id);
+    setTimeout(this.firstSaveImage(id), 500);
+    this.loadData();
+    this.loadData();
+  }
+  saveAvatarImage = (id) => {
+    var data = new FormData();
+    console.log(this.state.avatarProductSaveAPI[[0]])
+    data.append("imagePath", this.state.avatarProductSaveAPI[[0]]);
+    ProductService.updateProduct(data, id)
+    this.setCloseModalCreateImage()
+    this.componentDidMount()
+  }
+  //Lấy mã sản phẩm
+  // processGetCodeProduct = (id) =>{
+  //   var { product } = this.state.listProduct
+  //   for(var i = 0; i < product.length; i++){
+  //     if(id === product.id){
+  //       {}
+  //     }
+  //   }
+  // }
   //Xử lý modal quản lý size cảu sản phẩm tương ứng
   setShowModalViewSizeProduct = (id) => {
-    this.setState({ showModalViewSizeProduct: true })
-    this.getImgByIdPro(id);
+    this.setState({ showModalViewSizeProduct: true }) //set để mở modal
+
+    var newStateOnSizeModal = { ...this.state.stateOnSizeModal, ['productId']: id } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+    this.realTime();
+    this.setState({ stateOnSizeModal: newStateOnSizeModal });
+    ProductService.getProduct(id).then(res => {
+      this.setState({ stateProductOnSizeModal: res.data.product })
+    }, function (error) {
+      alert("Lỗi không lấy được sản phẩm")
+    })
+
   }
+
   setCloseModalViewSizeProduct = () => {
     this.setState({ showModalViewSizeProduct: false })
   }
@@ -294,6 +371,49 @@ class Products extends Component {
     this.realTime();
     console.log(this.state.sizeID)
   }
+  //xử lý các state trong Size Modal
+  InputOnChangeSizeModal = (event) => {
+    const { name, value } = event.target;
+    var newStateOnSizeModal = { ...this.state.stateOnSizeModal, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+    this.realTime();
+    this.setState({ stateOnSizeModal: newStateOnSizeModal });
+
+
+    this.realTime();
+    console.log(this.state.stateOnSizeModal)
+    console.log(this.state.stateProductOnSizeModal)
+
+  }
+  //Lưu size của sản phẩm xuống db 
+  loadDataOnSizeModal(id) {
+    ProductService.getProduct(id).then(res => {
+      this.setState({ stateProductOnSizeModal: res.data.product })
+    }, function (error) {
+      alert("Lỗi không lấy được sản phẩm")
+    })
+  }
+  saveOnSizeModal = () => {
+    ProductService.createProductSize(this.state.stateOnSizeModal).then(res => {
+    }, function (error) {
+      alert("Lỗi")
+    })
+    // alert("Thêm thành công")
+    this.loadDataOnSizeModal(this.state.stateOnSizeModal.productId)
+  }
+
+  inputOnchangePromotion = (event) => {
+    const { name, value } = event.target;
+    var newStatePromotion = { ...this.state.statePromotion, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+    this.realTime();
+    this.setState({ statePromotion: newStatePromotion });
+    this.realTime();
+  }
+  savePromotion = (id) => {
+    ProductService.updateProduct(this.state.statePromotion, id).then(res => {
+      alert("Cập nhật giảm giá thành công")
+      this.loadData()
+    })
+  }
   render() {
     const { products, productEdit } = this.state
     const formatterNum = Intl.NumberFormat('en');
@@ -305,12 +425,11 @@ class Products extends Component {
     })
     return (
       <div>
-        {/* <div className="row">
-          <div className="col-sm-10"></div> */}
-        <div className="container">
-          <button type="button" className="btn btn-sm btnAddProduct" onClick={() => this.setShowModal(-1)}><p className="fas fa-plus-circle textInBtnAddProduct">   Thêm sản phẩm</p></button>
-          {/* </div> */}
-        </div>
+        {/* <div className="container">
+          <button type="button" className="btn btn-sm btnAddProduct" onClick={() => this.setShowModal(-1)}>
+            <p className="fas fa-plus-circle textInBtnAddProduct">   Thêm sản phẩm</p>
+          </button>
+        </div> */}
         {/* Modal basic */}
         <>
           <Modal
@@ -580,8 +699,7 @@ class Products extends Component {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <div className="row">
-                <div className="col-7">
+              {/* <div className="col-7">
                   <Tabs justify defaultActiveKey="orderNotConfirm" transition={false} id="noanim-tab-example">
                     <Tab
                       eventKey="orderNotConfirm"
@@ -616,7 +734,7 @@ class Products extends Component {
                               required
                               as="select"
                               name="sizeId"
-                              onChange={this.InputOnChangeSize}
+                              onChange={this.InputOnChangeSizeModal}
                             >
                               <option>Choose....</option>
                               {this.state.getSizeBySizeType.map((size, idx) => {
@@ -633,9 +751,13 @@ class Products extends Component {
                           </Form.Group>
                           <Form.Group controlId="formBasicPassword">
                             <Form.Label>Số lượng</Form.Label>
-                            <Form.Control type="number" placeholder="Số lượng" />
+                            <Form.Control
+                              type="number"
+                              placeholder="Số lượng"
+                              name="productCount"
+                              onChange={this.InputOnChangeSizeModal} />
                           </Form.Group>
-                          <Button variant="primary" type="submit">
+                          <Button variant="primary" onClick={this.saveOnSizeModal}>
                             Lưu
                         </Button>
                         </Form>
@@ -650,133 +772,120 @@ class Products extends Component {
                     </Tab>
                   </Tabs>
 
-                </div>
-                <div className="col-5">
-                  <div className="sizeNameTable">Kích thước của sản phẩm</div>
-                  <div className="tbl-header">
-                    <Table striped hover>
-                      <thead>
-                        <tr>
-                          <th className="th_Sticky">#</th>
-                          <th className="th_Sticky">Type Name</th>
-                          <th className="th_Sticky">Size</th>
-                          <th className="th_Sticky">Quantity</th>
-                          <th className="th_Sticky">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>VN</td>
-                          <td>29</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>VN</td>
-                          <td>30</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td>VN</td>
-                          <td>31</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                        <tr>
-                          <td>4</td>
-                          <td>VN</td>
-                          <td>32</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                        <tr>
-                          <td>5</td>
-                          <td>VN</td>
-                          <td>33</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                        <tr>
-                          <td>6</td>
-                          <td>VN</td>
-                          <td>34</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                        <tr>
-                          <td>7</td>
-                          <td>VN</td>
-                          <td>35</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                        <tr>
-                          <td>8</td>
-                          <td>VN</td>
-                          <td>36</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                        <tr>
-                          <td>9</td>
-                          <td>VN</td>
-                          <td>37</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                        <tr>
-                          <td>10</td>
-                          <td>VN</td>
-                          <td>38</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                        <tr>
-                          <td>11</td>
-                          <td>VN</td>
-                          <td>38</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                        <tr>
-                          <td>12</td>
-                          <td>VN</td>
-                          <td>38</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                        <tr>
-                          <td>13</td>
-                          <td>VN</td>
-                          <td>38</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                        <tr>
-                          <td>14</td>
-                          <td>VN</td>
-                          <td>38</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                        <tr>
-                          <td>15</td>
-                          <td>VN</td>
-                          <td>38</td>
-                          <td>100</td>
-                          <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </div>
-                </div>
+                </div> */}
 
+              <div className="sizeNameTable">Kích thước của sản phẩm</div>
+              <div className="tbl-header">
+                <Table striped hover>
+                  <thead>
+                    <tr>
+                      <th className="th_Sticky">Type Name</th>
+                      <th className="th_Sticky">Size</th>
+                      <th className="th_Sticky">Quantity</th>
+                      <th className="th_Sticky">Action</th>
+                    </tr>
+                  </thead>
+                  {this.state.stateProductOnSizeModal ?     //kiểm tra xem có tồn tại hay chưa
+                    <tbody>
+                      {this.state.stateProductOnSizeModal.ProductSizes.sort((a, b) => a.Size.sizeName - b.Size.sizeName).map((ProductSizes, idx) => {
+                        return (
+                          <tr key={idx}>
+                            <td>{ProductSizes.Size.sizeType}</td>
+                            <td>{ProductSizes.Size.sizeName}</td>
+                            <td>{ProductSizes.productCount}</td>
+                            <td><i className="fas fa-trash-alt trashOnTableSize"></i></td>
+                          </tr>
+                        )
+                      })}
+                    </tbody> : null}
+                </Table>
               </div>
 
+
+
+
+            </Modal.Body>
+          </Modal>
+        </>
+        {/* Modal add image to product */}
+        <>
+          <Modal
+            show={this.state.showModalCreateImage}
+            onHide={this.setCloseModalCreateImage}
+            keyboard={false}
+            backdrop="static"
+            dialogClassName="modalMaxWidthCreateImage"
+            aria-labelledby="example-custom-modal-styling-title"
+          >
+            <Modal.Header closeButton>
+              <Modal.Title id="example-custom-modal-styling-title " dialogClassName="textCenterModalTitle">
+                Thêm thông tin sản phẩm
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group controlId="formBasicName">
+                  <Form.Label>Mã sản phẩm</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    name="productCode"
+                    placeholder="Mã sản phẩm"
+                    value={this.state.codeOnModalCreateImg || ''}
+                    disabled />
+                </Form.Group>
+                <Form.Group controlId="formBasicName">
+                  <Form.Label>Tên sản phẩm</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    name="name"
+                    placeholder="Tên sản phẩm"
+                    value={this.state.nameOnModalCreateImg || ''}
+                    disabled />
+                </Form.Group>
+                <Form>
+                  <div>Ảnh đại diện của sản phẩm</div>
+                  <div className="borderImgSizeIcon">
+                    <label for="upload-avatar-photo" className="iconOnImgBorder"><i className="fas fa-image fa-3x"></i></label>
+                    <Form.Control
+                      id="upload-avatar-photo"
+                      type="file"
+                      accept=".png, .jpg, .svg, .jfif"
+                      onChange={this.imageAvatarProductHandler}
+                      name="imagePath"
+                      oninput="pic.src=window.URL.createObjectURL(this.files[0])"
+                    />
+                  </div>
+                  {this.state.avatarProduct === '' ? null :
+                    <img className="borderImgSize" src={this.state.avatarProduct} />
+                  }
+                </Form>
+                <Form>
+                  <div>Hình ảnh Thumbnail</div>
+                  <div className="borderImgSizeIcon">
+                    <label for="upload-photo" className="iconOnImgBorder"><i className="fas fa-image fa-3x"></i></label>
+                    <Form.Control
+                      id="upload-photo"
+                      type="file"
+                      accept=".png, .jpg, .svg, .jfif"
+                      onChange={this.imageHandler}
+                      name="imagePath"
+                      oninput="pic.src=window.URL.createObjectURL(this.files[0])"
+                    />
+                  </div>
+                  {/* {this.state.edit ? <img className="borderImgSize" src={`http://localhost:5000/${products.imagePath}`} /> : null
+                      } */}
+                  {this.state.edit ? null : this.state.listImage.map((image, idx) => {
+                    return (
+                      <img key={idx} className="borderImgSize" src={image} />
+                    );
+                  })}
+                </Form>
+                <Button variant="primary" onClick={() => this.saveImageProduct(this.state.idOnModalCreateImg)}>
+                  Thêm
+                </Button>
+              </Form>
             </Modal.Body>
           </Modal>
         </>
@@ -800,6 +909,7 @@ class Products extends Component {
                         <th>Brand</th>
                         <th>Size</th>
                         <th>Price</th>
+                        <th>Promotion</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -810,18 +920,55 @@ class Products extends Component {
                         return (
                           <tr key={listProduct.id}>
                             <td>{idx + 1}</td>
-                            <td>
-
-                              <img className="borderImgSize" src={`http://localhost:5000/${listProduct.imagePath}`} />
-
-                              <div className="view" onClick={() => this.setShowModalViewImage(listProduct.id)}>View all</div>
-                            </td>
+                            {listProduct.imagePath !== null ?
+                              <td>
+                                <img
+                                  className="borderImgSizeAvatar"
+                                  src={`http://localhost:5000/${listProduct.imagePath}`}
+                                  onClick={() => this.setShowModalViewImage(listProduct.id)}
+                                />
+                                {/* <div className="view" onClick={() => this.setShowModalViewImage(listProduct.id)}>View all</div> */}
+                              </td> :
+                              <td>
+                                <div className="view" onClick={() => this.setShowModalCreateImage(listProduct.id)}>Thêm ảnh</div>
+                              </td>
+                            }
                             <td>{listProduct.productCode}</td>
                             <td>{listProduct.name}</td>
                             <td>{listProduct.color}</td>
                             <td>{listProduct.Brand.name}</td>
-                            <td><div className="view" onClick={() => this.setShowModalViewSizeProduct(listProduct.id)}>View size</div></td>
-                            <td>{formatter.format(listProduct.price)}</td>
+                            <td><div className="view" onClick={() => this.setShowModalViewSizeProduct(listProduct.id)}>View all size</div></td>
+                            <td>{formatter.format(listProduct.sellPrice)}</td>
+                            <td>
+                              <div className="namePromotion">{formatter.format(listProduct.promotion)}</div>
+                              <div className="">
+                                <Dropdown>
+                                  <Dropdown.Toggle variant="info" id="dropdown-basic">
+                                    <i class="fas fa-edit"></i>
+                                  </Dropdown.Toggle>
+
+                                  <Dropdown.Menu>
+                                    <div className="container">
+                                      <Form>
+                                        <Form.Group controlId="formBasicPassword">
+                                          <Form.Label>Giá giảm</Form.Label>
+                                          <Form.Control
+                                            type="number"
+                                            name="promotion"
+                                            placeholder="Giá giảm"
+                                            onChange={this.inputOnchangePromotion} />
+                                        </Form.Group>
+                                        <Button variant="primary" type="submit" onClick={() => this.savePromotion(listProduct.id)}>
+                                          Lưu
+                                        </Button>
+                                      </Form>
+
+                                    </div>
+
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </div>
+                            </td>
                             <td>
                               <div className="row">
                                 <div className="col-3 info">

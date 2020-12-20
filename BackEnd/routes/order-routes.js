@@ -6,8 +6,11 @@ const {isAdmin, isAuth} = require('../middleware/check-auth');
 
 const router = express.Router();
 
-router.use(isAuth);
 
+router.get('/',ordersControllers.getAllOrder);
+
+// router.get('/:orderId',ordersControllers.getOrderByProductId)
+router.use(isAuth);
 router.post(
     '/addOrder',
     [   

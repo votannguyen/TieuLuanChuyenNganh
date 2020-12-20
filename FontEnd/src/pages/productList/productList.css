@@ -72,13 +72,13 @@ body {
 }
 
 .size-box .size_item{
-  width: 25px;
+  width: 32px;
   height: 25px;
   display: inline-block;
   border: 1px solid transparent;
   text-align: center;
   cursor: pointer;
-  margin-right: 3px;
+  margin-right: 10px;
 }
 .backgroundContainer {
   background-color: #4caf50 !important;
@@ -149,11 +149,30 @@ body {
   border-radius: 10px;
 }
 .filterCategory{
-  font-size: 17px;
-  font-weight: 450;
+  font-size: 22px;
+  font-weight: 400;
   margin-bottom: 20px;
   margin-left: 5px;
   margin-right: 0px;
+  border-radius: 10px;
+  margin-left: 0px;
+  text-align: center;
+}
+.filterCategoryEffect{
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 20px;
+  margin-left: 5px;
+  margin-right: 0px;
+  /* text-shadow: 2px 2px 5px cornflowerblue; */
+  background-color: #e2e2e2;
+  border-radius: 10px;
+  margin-left: 0px;
+  text-align: center;
+}
+.filterCategory:hover{
+  color: cornflowerblue;
+  text-shadow: 2px 2px 5px cornflowerblue;
 }
 a{
   color: #626262;
@@ -164,6 +183,11 @@ a{
 } */
 .filterBrand{
   margin-bottom: 15px;
+}
+.filterBrandEffect{
+  margin-bottom: 15px;
+  opacity: 0.9;
+  box-shadow: 0px 0px 5px 5px rgb(212, 212, 212);
 }
 .filterBrand:hover{
   opacity: 0.9;
@@ -258,6 +282,10 @@ a{
   }
   .btnSearchPrice:hover{
     background-color: rgb(6, 92, 179);
+  }
+  .selectFilter{
+    background-color: dodgerblue;
+    color: white;
   }
 }
 @media only screen and (max-width: 1366px) {

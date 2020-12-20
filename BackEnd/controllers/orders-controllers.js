@@ -8,14 +8,62 @@ const Promotion = models.Promotion;
 const User = models.User;
 const Order =  models.Order;
 const OrderDetail = models.OrderDetail;
+const ProductSize = models.ProductSize;
+const Size = models.Size;
 const { validationResult } = require('express-validator'); //lấy dc lỗi từ body validate
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op; 
 
 
+const getAllOrder = async (req, res, next) => {
+    let orders;
+    try {
+        orders = await Order.findAll(
+            {
+                include: [
+                    {
+                        model: OrderDetail,
+                        include: [
+                            {
+                                model: ProductSize,
+                                include: [
+                                    {
+                                        model: Product,
+                                        include: [
+                                            {model: Brand}
+                                        ]
+                                    },
+                                    {
+                                        model: Size
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                ]
+            }
+        );
+    } catch (err) {
+        const error = new HttpError(
+            "System goes wrong, coud not find any Import",
+            500
+        );
+        return next(error);
+    }
+    if (!orders) {
+        const error = new HttpError("Could not find any Import", 204);
+        return next(error);
+    }
+    res.status(200).json({
+        success: "SYSS01",
+        orders
+    });
+}
+
 const addOrder = async(req, res, next) => {
     let users;
     let userCurrent =  req.userData.email;
+    console.log(req.userData)
     console.log(userCurrent);
     try{
         users = await User.findOne({
@@ -33,8 +81,9 @@ const addOrder = async(req, res, next) => {
         return next(error);
     }
         const orderCreated = {
-            orderCode: req.body.orderCode,
+            orderCode: randomStringCodeImport(),
             address: req.body.address,
+            promotionCode: req.body.promotion,
             total: req.body.total,
             status: 1,          //trạng thái 1 (Đã đặt hàng)
             userId: users.id,
@@ -48,7 +97,16 @@ const addOrder = async(req, res, next) => {
         createOrder = await Order.create(orderCreated);
         res.status(200).json({createOrder});
 }   
-
+const randomStringCodeImport = () => {
+    var charSet = '0123456789987654321001234567899876543210';  ///set chuỗi để có thể lấy ngẫu nhiên trong này bỏ vào kết quả
+    var randomString = '';
+    var len = 9;
+    for (var i = 0; i < len; i++) {
+        var randomPoz = Math.floor(Math.random() * charSet.length);
+        randomString += charSet.substring(randomPoz, randomPoz + 1);
+    }
+    return randomString;
+}
 const updateOrderById = async(req, res, next) => {
     const orderId = req.params.orderId;
     console.log(orderId)
@@ -122,19 +180,46 @@ const returnDetail = async(req, res, next) => {
     const orderDetailReturn = {
         isReturn: true
     };
-    let orderDetails
+
+   
+    let orderDetails;
     try{
         orderDetails = await OrderDetail.update(orderDetailReturn,{
             where: { id: detailId}
         });
         let orderDetailReturned;
         orderDetailReturned = await OrderDetail.findByPk(detailId);
-
+        console.log(orderDetailReturned)
+        let orderByDetailId;
+        let promoteCode;
+        let promotionValue = 0;
+        try {
+            orderByDetailId = await Order.findByPk(orderDetailReturned.orderId);
+            promoteCode = orderByDetailId.promotionCode;
+            console.log(orderByDetailId)
+            if(promoteCode !== null)
+            {
+                let promotion;
+                promotion = await Promotion.findOne({
+                    where: {
+                        promotionCode: promoteCode
+                    }
+                });
+                
+                
+                promotionValue = promotion.promotionValue;
+                console.log(promotion.promotionValue)
+            }
+        }
+        catch{
+            
+        }
+        console.log(promotionValue)
         let orderReturn;
         orderReturn = await Order.findByPk(orderDetailReturned.orderId);
 
         let orderPriceUpdate 
-        orderPriceUpdate = orderReturn.totalPrice - (orderDetailReturned.unitPrice*orderDetailReturned.unitAmount)
+        orderPriceUpdate = (parseFloat(orderReturn.totalPrice)  - parseFloat(orderDetailReturned.unitPrice*orderDetailReturned.unitAmount)*parseFloat(1-parseFloat(promotionValue)));
         
         const totalPriceUpdate = {
             totalPrice: orderPriceUpdate
@@ -151,4 +236,4 @@ const returnDetail = async(req, res, next) => {
     }
     res.status(200).json({success: 001});
 }
-module.exports = {addOrder, addOrderDetail, updateOrderById, returnDetail};
+module.exports = {getAllOrder, addOrder, addOrderDetail, updateOrderById, returnDetail};

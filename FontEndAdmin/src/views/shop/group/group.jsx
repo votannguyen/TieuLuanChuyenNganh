@@ -27,7 +27,7 @@ const getBadge = status => {
         default: return 'primary'
     }
 }
-const fields = ['id','name', 'summary', 'imagePath']
+const fields = ['id','name', 'summary']
 class Products extends Component {
     state = {
         showModal: false,

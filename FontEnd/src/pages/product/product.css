@@ -39,11 +39,14 @@ word-break: break-all; */
   border-radius: 5px;
 }
 .heightBoxSize{
-  height: 50px;
+  height: 85px;
 }
 .iconHeart{
   color: #ff5353
 }
 .iconHeart:hover{
   cursor: pointer;
+}
+.displaySelectBox{
+  display: inline !important;
 }

@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import "../profile/profile.css";
 import UserService from '../../services/UserService';
-import { Button, Form } from 'react-bootstrap';
+import OrderService from '../../services/OrderService';
+import {
+    Button,
+    Modal,
+    Form,
+    Table,
+    Dropdown
+} from "react-bootstrap";
 class Profile extends Component {
     state = {
         closeForm: false,
@@ -11,8 +18,8 @@ class Profile extends Component {
         male: false,
         female: true,
         gender: '',
-        check: ''
-
+        check: '',
+        stateListOrder: [],
     }
     componentDidMount = () => {
         window.scrollTo(0, 0)
@@ -22,6 +29,11 @@ class Profile extends Component {
         UserService.getUser().then((res) => {
             this.setState({ user: res.data.users });
         });
+        OrderService.listOrder().then(res => {
+            this.setState({ stateListOrder: res.data.orders })
+            this.props.onLoadOrderFromApi(res.data.orders)
+        })
+        
     }
     // closeFormResetPassword(){
     //     this.setState({closeForm: false});
@@ -66,7 +78,7 @@ class Profile extends Component {
                     <label class="form-check-label mt-2" for="inlineRadio1">Nam</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" checked/>
+                    <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" checked />
                     <label class="form-check-label mt-2" for="inlineRadio2">Nữ</label>
                 </div>
             </div>
@@ -82,7 +94,7 @@ class Profile extends Component {
                     <label class="form-check-label mt-2" for="inlineRadio1">Nam</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" onClick={this.genderCheck}/>
+                    <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" onClick={this.genderCheck} />
                     <label class="form-check-label mt-2" for="inlineRadio2">Nữ</label>
                 </div>
             </div>
@@ -97,7 +109,7 @@ class Profile extends Component {
                         <label class="form-check-label mt-2" for="inlineRadio1">Nam</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" onClick={this.checkGenderFemale}/>
+                        <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" onClick={this.checkGenderFemale} />
                         <label class="form-check-label mt-2" for="inlineRadio2">Nữ</label>
                     </div>
                 </div>
@@ -111,7 +123,7 @@ class Profile extends Component {
                         <label class="form-check-label mt-2" for="inlineRadio1">Nam</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" checked/>
+                        <input class="form-check-input mt-2" name="gender" type="radio" id="inlineRadio2" value="option2" checked />
                         <label class="form-check-label mt-2" for="inlineRadio2">Nữ</label>
                     </div>
                 </div>
@@ -148,7 +160,49 @@ class Profile extends Component {
     //     )
 
     // }
+    processPayment = (payment) => {
+        if (payment === 1 || payment === '1') {
+            return 'COD';
+        }
+        if (payment === 2 || payment === '2') {
+            return 'PayPal'
+        }
+        if (payment === 3 || payment === '3') {
+            return 'VNPay'
+        }
+        else return
+    }
+    processStatus = (status) => {
+        if (status === 1 || status === '1') {
+            return <span class="badge bg-warning text-dark fontBadges">Pending</span>
+        }
+        if (status === 2 || status === '2') {
+            return <span class="badge bg-primary fontBadges">Processing</span>
+        }
+        if (status === 3 || status === '3') {
+            return <span class="badge bg-success fontBadges">Completed</span>
+        }
+        else return
+    }
+    changeStatus = (status, id) => {
+        OrderService.updateOrder({ 'status': status }, id).then(res => {
+            console.log(res.data.orders)
+        })
+        setInterval(this.loadData(), 5000)
+        this.componentDidMount()
+    }
+    processDateOrder = (date) => {
+        var dateProcess;
+        // new Date(Date.now()).toLocaleDateString("vi-Vi")
+        dateProcess = new Date(date).toLocaleDateString("vi-Vi")
+        return dateProcess
+    }
     render() {
+        const formatter = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+            minimumFractionDigits: 0
+        })
         return (
             <div className="backGroundLayoutProfile" onLoad={this.componentDidMount}>
                 <div class="slider-area ">
@@ -177,8 +231,8 @@ class Profile extends Component {
                         </div>
                         <div className="col-md-9">
                             <div className="container backGroundCol containerTopANdBottomRight">
-                                <div class="tab-content" id="v-pills-tabContent">
-                                    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                <div className="tab-content" id="v-pills-tabContent">
+                                    <div className="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                         <h3>Thông tin tài khoản</h3>
 
                                         <div class="form-group row">
@@ -281,7 +335,8 @@ class Profile extends Component {
                                                 </form> : null
                                         }
                                     </div>
-                                    <div class="tab-pane fade paddingLeftAndRigthOder" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab">
+                                    <div className="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab">
+                                        <div className="titleTable">Danh sách tất cả đơn hàng</div>
                                         <div className="row paddingRow">
                                             <div className="col-md-2">
                                                 <p>Mã đơn hàng</p>
@@ -289,9 +344,7 @@ class Profile extends Component {
                                             <div className="col-md-2 PaddingCol-1">
                                                 <p>Ngày mua</p>
                                             </div>
-                                            <div className="col-md-4">
-                                                <p>Sản phẩm</p>
-                                            </div>
+                                            
                                             <div className="col-md-2">
                                                 <p>Tổng tiền</p>
                                             </div>
@@ -301,28 +354,30 @@ class Profile extends Component {
                                             </div>
                                         </div>
                                         <hr className="paddingHr" />
-                                        <div className="row paddingRow paddingRow">
-                                            <div className="col-md-2">
-                                                <Link className=" fontTextOder LinkColor" to="/invoicedetail">794258369</Link>
+                                        {this.state.stateListOrder.filter((a) => a.userId = this.state.user.id).sort((a, b) => a.status - b.status).map((order, idx) => {
+                                            if (parseInt(order.totalPrice) !== 0) {
+                                            return(
+                                            <div className="row paddingRow paddingRow">
+                                                <div className="col-md-2">
+                                                    <Link className=" fontTextOder LinkColor" to={`/invoicedetail/${order.id}`}>{order.orderCode}</Link>
+                                                </div>
+                                                <div className="col-md-2 PaddingCol-1">
+                                                    <p className=" fontTextOder">{this.processDateOrder(order.createdAt)}</p>
+                                                </div>
+                                                
+
+                                                <div className="col-md-2">
+                                                    <p className=" fontTextOder">{formatter.format(order.totalPrice)}</p>
+                                                </div>
+                                                <div className="col-md-2">
+                                                    <p className="pMarginStatusOder fontTextOder">{this.processStatus(order.status)}</p>
+                                                </div>
                                             </div>
-                                            <div className="col-md-2 PaddingCol-1">
-                                                <p className=" fontTextOder">10/09/2020</p>
-                                            </div>
-                                            <div className="col-md-4">
-                                                <p className=" fontTextOder">Máy Xay Hạt Tiêu Điện Tự Động Homgeek Gắn Đèn LED Ánh Sáng Xanh</p>
-                                            </div>
-                                            <div className="col-md-2">
-                                                <p className=" fontTextOder">197.000.000 đ</p>
-                                            </div>
-                                            <div className="col-md-2">
-                                                <p className="pMarginStatusOder fontTextOder">Giao hàng thành</p>
-                                                <p className="pPaddingRight fontTextOder">công</p>
-                                            </div>
-                                        </div>
+                                        )
+                                            }
+                                    })}
                                         <hr className="paddingHr" />
                                     </div>
-
-
                                     <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
                                 </div>
                             </div>

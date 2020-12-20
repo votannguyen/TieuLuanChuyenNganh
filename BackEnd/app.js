@@ -16,6 +16,7 @@ const groupRoutes = require('./routes/group-routes');
 const sizeRoutes = require('./routes/size-routes');
 const orderRoutes = require('./routes/order-routes');
 const promotionRoutes = require('./routes/promotion-routes');
+const importRoutes = require('./routes/import-routes');
 const {createProxyMiddleware} = require('http-proxy-middleware');
 const HttpError = require('./error-handle/http-error');
 const app = express();
@@ -45,6 +46,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/size', sizeRoutes);
 app.use('/api/order', orderRoutes);
 app.use('/api/promotion',promotionRoutes);
+app.use('/api/import',importRoutes);
 app.get('/sync', (req, res) =>{
     let models = require('./models');
     models.sequelize.sync()

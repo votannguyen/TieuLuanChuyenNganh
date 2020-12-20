@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import LoginUser from "../../../services/UserService";
 import Cookies from "js-cookie";
+import './login.css'
 import {
   CButton,
   CCard,
@@ -92,14 +93,16 @@ class Login extends Component {
                 </CCard>
                 <CCard className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
                   <CCardBody className="text-center">
-                    <div>
+                    {/* <div>
                       <h2>Sign up</h2>
                       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
                   labore et dolore magna aliqua.</p>
                       <Link to="/register">
                         <CButton color="primary" className="mt-3" active tabIndex={-1}>Register Now!</CButton>
                       </Link>
-                    </div>
+                      
+                    </div> */}
+                    <img className="imgLogoShop" src={require('../../../img/LogoShop.jpg')}/>
                   </CCardBody>
                 </CCard>
 

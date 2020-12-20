@@ -1,13 +1,44 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import "../home/home.css";
+import ProductService from '../../services/ProductService'
+import BrandService from '../../services/BrandService';
 class Home extends Component {
-    state = {}
-    componentDidMount(){
+    state = {
+        stateBrand: [],
+        stateCategory: [],
+        stateGroup: [],
+        stateProducts: [],
+        stateBestSeller: '',
+    }
+    componentDidMount() {
         window.scrollTo(0, 0)
+        this.loadData();
+    }
+    async loadData() {
+        await ProductService.listProduct().then(res => {
+            this.setState({ stateProducts: res.data.products })
+        })
+        await BrandService.listBrand().then(res => {
+            this.setState({ stateBrand: res.data.brands })
+        })
+    }
+    processPrice = (sellPrice, promotionPrice) => {
+        var result = 0;
+        if (promotionPrice === null) {
+            result = parseFloat(sellPrice)
+        }
+        else {
+            result = parseFloat(sellPrice) - parseFloat(promotionPrice)
+        }
+        return result;
     }
     render() {
-        
+        const formatter = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+            minimumFractionDigits: 0
+        })
         return (
             <main>
                 <div className="slider-area ">
@@ -23,12 +54,12 @@ class Home extends Component {
                                     </div>
                                     <div className="col-xl-5 col-lg-5 col-md-5 col-sm-8">
                                         <div className="hero__caption">
-                                            <span data-animation="fadeInRight" data-delay=".4s">60% Discount</span>
-                                            <h1 data-animation="fadeInRight" data-delay=".6s">Winter <br /> Collection</h1>
-                                            <p data-animation="fadeInRight" data-delay=".8s">Best Cloth Collection By 2020!</p>
+                                            <span data-animation="fadeInRight" data-delay=".4s">Up To 25% Discount</span>
+                                            <h1 data-animation="fadeInRight" data-delay=".6s">Winter</h1>
+                                            <p data-animation="fadeInRight" data-delay=".8s">Best Shoe By 2020!</p>
                                             {/* <!-- Hero-btn --> */}
                                             <div className="hero__btn" data-animation="fadeInRight" data-delay="1s">
-                                                <a href="industries.html" className="btn btn1 hero-btn">Shop Now</a>
+                                                <Link to="/productList" className="btn btn1 hero-btn">Shop Now</Link>
                                             </div>
                                         </div>
                                     </div>
@@ -72,17 +103,8 @@ class Home extends Component {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-xl-4 col-lg-6">
-                                <div className="single-category mb-30">
-                                    <div className="category-img">
-                                        <img src={require('../../img/categori/cat1.jpg')} />
-                                        <div className="category-caption">
-                                            <h2>Owmen`s</h2>
-                                            <span className="best"><a href="#">Best New Deals</a></span>
-                                            <span className="collection">New Collection</span>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div className="col-xl-2">
+
                             </div>
                             <div className="col-xl-4 col-lg-6">
                                 <div className="single-category mb-30">
@@ -90,8 +112,8 @@ class Home extends Component {
                                         <img src={require('../../img/categori/cat2.jpg')} />
                                         <div className="category-caption">
                                             <span className="collection">Discount!</span>
-                                            <h2>Winter Cloth</h2>
-                                            <p>New Collection</p>
+                                            <h2>Giày nữ</h2>
+                                            <span className="best"><Link to={`/productList/Nữ`}>New Collection</Link></span>
                                         </div>
                                     </div>
                                 </div>
@@ -101,12 +123,15 @@ class Home extends Component {
                                     <div className="category-img">
                                         <img src={require('../../img/categori/cat3.jpg')} />
                                         <div className="category-caption">
-                                            <h2>Man`s Cloth</h2>
-                                            <span className="best"><a href="#">Best New Deals</a></span>
+                                            <h2>Giày nam</h2>
+                                            <span className="best"><Link to={`/productList/Nam`}>Best New Deals</Link></span>
                                             <span className="collection">New Collection</span>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="col-xl-2">
+
                             </div>
                         </div>
                     </div>
@@ -142,153 +167,39 @@ class Home extends Component {
                             {/* <!-- card one --> */}
                             <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                 <div className="row">
-                                    <div className="col-xl-4 col-lg-4 col-md-6">
-                                        <div className="single-product mb-60">
-                                            <div className="product-img">
-                                                <img src={require('../../img/categori/product1.png')} />
-                                                <div className="new-product">
-                                                    <span>New</span>
+                                    {this.state.stateProducts.map((product, idx) => {
+                                        return (
+                                            <div className="col-xl-4 col-lg-4 col-md-6">
+                                                <div className="single-product mb-60">
+                                                    <div className="product-img">
+                                                        <img src={`http://localhost:5000/${product.imagePath}`} />
+                                                        <div className="new-product">
+                                                            <span>New</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="product-caption">
+                                                        <div className="product-ratting">
+                                                            <i className="far fa-star"></i>
+                                                            <i className="far fa-star"></i>
+                                                            <i className="far fa-star"></i>
+                                                            <i className="far fa-star low-star"></i>
+                                                            <i className="far fa-star low-star"></i>
+                                                        </div>
+                                                        <h4><Link to={`/productdetail/${product.alias}`}>{product.name}</Link></h4>
+                                                        <div className="price">
+                                                            <ul>
+                                                                <li>{formatter.format(this.processPrice(product.sellPrice, product.promotion))}</li>
+                                                                <li className="discount">{product.sellPrice}</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className="product-caption">
-                                                <div className="product-ratting">
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star low-star"></i>
-                                                    <i className="far fa-star low-star"></i>
-                                                </div>
-                                                <h4><a href="#">Green Dress with details</a></h4>
-                                                <div className="price">
-                                                    <ul>
-                                                        <li>$40.00</li>
-                                                        <li className="discount">$60.00</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-4 col-lg-4 col-md-6">
-                                        <div className="single-product mb-60">
-                                            <div className="product-img">
-                                                <img src={require('../../img/categori/product2.png')} />
-                                            </div>
-                                            <div className="product-caption">
-                                                <div className="product-ratting">
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star low-star"></i>
-                                                    <i className="far fa-star low-star"></i>
-                                                </div>
-                                                <h4><a href="#">Green Dress with details</a></h4>
-                                                <div className="price">
-                                                    <ul>
-                                                        <li>$40.00</li>
-                                                        <li className="discount">$60.00</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-4 col-lg-4 col-md-6">
-                                        <div className="single-product mb-60">
-                                            <div className="product-img">
-                                                <img src={require('../../img/categori/product3.png')} />
-                                                <div className="new-product">
-                                                    <span>New</span>
-                                                </div>
-                                            </div>
-                                            <div className="product-caption">
-                                                <div className="product-ratting">
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star low-star"></i>
-                                                    <i className="far fa-star low-star"></i>
-                                                </div>
-                                                <h4><a href="#">Green Dress with details</a></h4>
-                                                <div className="price">
-                                                    <ul>
-                                                        <li>$40.00</li>
-                                                        <li className="discount">$60.00</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-4 col-lg-4 col-md-6">
-                                        <div className="single-product mb-60">
-                                            <div className="product-img">
-                                                <img src={require('../../img/categori/product4.png')} />
-                                            </div>
-                                            <div className="product-caption">
-                                                <div className="product-ratting">
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star low-star"></i>
-                                                    <i className="far fa-star low-star"></i>
-                                                </div>
-                                                <h4><a href="#">Green Dress with details</a></h4>
-                                                <div className="price">
-                                                    <ul>
-                                                        <li>$40.00</li>
-                                                        <li className="discount">$60.00</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-4 col-lg-4 col-md-6">
-                                        <div className="single-product mb-60">
-                                            <div className="product-img">
-                                                <img src={require('../../img/categori/product5.png')} />
-                                            </div>
-                                            <div className="product-caption">
-                                                <div className="product-ratting">
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star low-star"></i>
-                                                    <i className="far fa-star low-star"></i>
-                                                </div>
-                                                <h4><a href="#">Green Dress with details</a></h4>
-                                                <div className="price">
-                                                    <ul>
-                                                        <li>$40.00</li>
-                                                        <li className="discount">$60.00</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-4 col-lg-4 col-md-6">
-                                        <div className="single-product mb-60">
-                                            <div className="product-img">
-                                                <img src={require('../../img/categori/product6.png')} />
-                                                <div className="new-product">
-                                                    <span>New</span>
-                                                </div>
-                                            </div>
-                                            <div className="product-caption">
-                                                <div className="product-ratting">
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star"></i>
-                                                    <i className="far fa-star low-star"></i>
-                                                    <i className="far fa-star low-star"></i>
-                                                </div>
-                                                <h4><a href="#">Green Dress with details</a></h4>
-                                                <div className="price">
-                                                    <ul>
-                                                        <li>$40.00</li>
-                                                        <li className="discount">$60.00</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        )
+
+                                    })}
+
+
                                 </div>
                             </div>
                             {/* <!-- Card two --> */}
@@ -753,7 +664,7 @@ class Home extends Component {
                 </section>
                 {/* <!-- Latest Products End -->
 <!-- Best Product Start --> */}
-                <div className="best-product-area lf-padding" >
+                {/* <div className="best-product-area lf-padding" >
                     <div className="product-wrapper bg-height" style={{ backgroundimage: "url('assets/img/categori/card.png')" }}>
                         <div className="container position-relative">
                             <div className="row justify-content-between align-items-end">
@@ -775,17 +686,14 @@ class Home extends Component {
                             </div>
                         </div>
                     </div>
-                    {/* <!-- Shape --> */}
                     <div className="shape bounce-animate d-none d-md-block">
                         <img src={require('../../img/categori/card-shape.png')} />
                     </div>
-                </div>
-                {/* <!-- Best Product End-->
-<!-- Best Collection Start --> */}
-                <div className="best-collection-area section-padding2">
+                </div> */}
+
+                {/* <div className="best-collection-area section-padding2">
                     <div className="container">
                         <div className="row d-flex justify-content-between align-items-end">
-                            {/* <!-- Left content --> */}
                             <div className="col-xl-4 col-lg-4 col-md-6">
                                 <div className="best-left-cap">
                                     <h2>Best Collection of This Month</h2>
@@ -796,13 +704,11 @@ class Home extends Component {
                                     <img src={require('../../img/collection/collection1.png')} />
                                 </div>
                             </div>
-                            {/* <!-- Mid Img --> */}
                             <div className="col-xl-2 col-lg-2 d-none d-lg-block">
                                 <div className="best-mid-img mb-30 ">
                                     <img src={require('../../img/collection/collection2.png')} />
                                 </div>
                             </div>
-                            {/* <!-- Riht Caption --> */}
                             <div className="col-xl-4 col-lg-6 col-md-6">
                                 <div className="best-right-cap ">
                                     <div className="best-single mb-30">
@@ -837,7 +743,7 @@ class Home extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 {/* <!-- Best Collection End -->
 <!-- Latest Offers Start --> */}
                 <div className="latest-wrapper lf-padding">
@@ -870,7 +776,7 @@ class Home extends Component {
 <!-- Shop Method Start--> */}
                 <div className="shop-method-area section-padding30">
                     <div className="container">
-                        <div className="row d-flex justify-content-between">
+                        {/* <div className="row d-flex justify-content-between">
                             <div className="col-xl-3 col-lg-3 col-md-6">
                                 <div className="single-method mb-40">
                                     <i className="ti-package"></i>
@@ -892,17 +798,25 @@ class Home extends Component {
                                     <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="gallery-wrapper lf-padding">
                     <div className="gallery-area">
                         <div className="container-fluid">
                             <div className="row">
-                                <div className="gallery-items">
-                                    <img src={require('../../img/gallery/gallery1.jpg')} />
-                                </div>
-                                <div className="gallery-items">
+                                {this.state.stateBrand.map((brand, idx) => {
+                                    if(idx <5){
+                                    return (
+                                        <div className="gallery-items" key = {idx}>
+                                            <Link to={`/productList/${brand.name}`}><img className="weightImage" src={`http://localhost:5000/${brand.imagePath}`} /></Link>
+                                        </div>
+                                    )
+                                    }
+                                    else return null
+                                })}
+
+                                {/* <div className="gallery-items">
                                     <img src={require('../../img/gallery/gallery2.jpg')} />
                                 </div>
                                 <div className="gallery-items">
@@ -913,7 +827,7 @@ class Home extends Component {
                                 </div>
                                 <div className="gallery-items">
                                     <img src={require('../../img/gallery/gallery5.jpg')} />
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

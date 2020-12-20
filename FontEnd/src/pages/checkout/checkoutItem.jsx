@@ -22,9 +22,14 @@ class CheckoutItem extends Component {
                             </span>
                         </div>
                         <div className="col-4 alignmentRightPrice">
+                            {checkoutItem.product.promotion === null?
                             <span className="redHightlightPriceCardTotal">
-                                {formatter.format(checkoutItem.product.price)}
+                                {formatter.format(checkoutItem.product.sellPrice)}
+                            </span>:
+                            <span className="redHightlightPriceCardTotal">
+                            {formatter.format(parseFloat(checkoutItem.product.sellPrice)-parseFloat(checkoutItem.product.promotion))}
                             </span>
+                            }
                         </div>
                     </div>
                 </div>

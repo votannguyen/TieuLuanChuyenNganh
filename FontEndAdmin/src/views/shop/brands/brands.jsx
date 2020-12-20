@@ -5,6 +5,7 @@ import {
     Button,
     Modal,
     Form,
+    Table,
 } from "react-bootstrap";
 import {
     CBadge,
@@ -29,17 +30,17 @@ const getBadge = status => {
         default: return 'primary'
     }
 }
-const fields = ['id','name', 'summary', 'imagePath']
+const fields = ['id', 'name', 'summary', 'imagePath']
 class Products extends Component {
     state = {
         showModal: false,
-        brands:{},
+        brands: {},
         brand: [],
-        listShowBrands:[],
+        listShowBrands: [],
     };
     componentDidMount() {
         this.loadData();
-        
+
     }
     loadData = () => {
         BrandService.listBrand().then((res) => {
@@ -54,7 +55,7 @@ class Products extends Component {
         const newBrand = { ...this.state.brand, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
         this.setState({ brand: newBrand });
     }
-    save=()=>{
+    save = () => {
         BrandService.createBrand(this.state.brand).then(res => {
             alert("Cập nhật thông tin thành công")
             this.loadData();
@@ -104,11 +105,11 @@ class Products extends Component {
                             <Form>
                                 <Form.Group controlId="formBasicName">
                                     <Form.Label>Tên thương hiệu</Form.Label>
-                                    <Form.Control type="text" name="nameProduct" placeholder="Tên sản phẩm" name="name" onChange={this.InputOnChange}/>
+                                    <Form.Control type="text" name="nameProduct" placeholder="Tên sản phẩm" name="name" onChange={this.InputOnChange} />
                                 </Form.Group>
                                 <Form.Group controlId="exampleForm.ControlTextarea1">
                                     <Form.Label>Mô tả</Form.Label>
-                                    <Form.Control as="textarea" type="text" name="summary" rows={2} onChange={this.InputOnChange}/>
+                                    <Form.Control as="textarea" type="text" name="summary" rows={2} onChange={this.InputOnChange} />
                                 </Form.Group>
                                 <Button variant="primary" type="submit" onClick={this.save}>
                                     Thêm
@@ -125,14 +126,63 @@ class Products extends Component {
                                     <p className="fontSizeNameTable">Danh sách thương hiệu</p>
                                 </CCardHeader>
                                 <CCardBody>
-                                    <CDataTable
+                                    <>
+                                        <CRow>
+                                            <CCol>
+                                                <CCard>
+                                                    <CCardBody>
+                                                        <Table striped hover>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Name</th>
+                                                                    <th>Summary</th>
+                                                                    <th>Image</th>
+                                                                    
+                                                                </tr>
+                                                            </thead>
+
+                                                            {/* Show danh sách các sản phẩm */}
+                                                            <tbody>
+                                                                {this.state.listShowBrands.map((brand, idx) => {
+                                                                    return (
+                                                                        <tr key={brand.id}>
+                                                                            <td>{idx + 1}</td>
+                                                                            <td>{brand.name}</td>
+                                                                            <td>{brand.summary}</td>
+
+                                                                            {brand.imagePath !== null ?
+                                                                                <td>
+                                                                                    <img
+                                                                                        className="borderImgSizeAvatar"
+                                                                                        src={`http://localhost:5000/${brand.imagePath}`}
+                                                                                        
+                                                                                    />
+                                                                                    {/* <div className="view" onClick={() => this.setShowModalViewImage(listProduct.id)}>View all</div> */}
+                                                                                </td> :
+                                                                                <td>
+                                                                                    Null
+                                                                                </td>
+                                                                            }
+                                                                            
+                                                                        </tr>
+                                                                    )
+                                                                })}
+                                                            </tbody>
+                                                        </Table>
+                                                    </CCardBody>
+                                                </CCard>
+                                            </CCol>
+                                        </CRow>
+                                    </>
+                                    {/* <CDataTable
                                         items={this.state.listShowBrands}
                                         fields={fields}
                                         hover
                                         striped
                                         bordered
                                         size="lg"
-                                        itemsPerPage={3}
+                                        itemsPerPage={10}
                                         pagination
                                         scopedSlots={{
                                             'status':
@@ -144,7 +194,7 @@ class Products extends Component {
                                                     </td>
                                                 )
                                         }}
-                                    />
+                                    /> */}
                                 </CCardBody>
                             </CCard>
                         </CCol>

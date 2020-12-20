@@ -90,7 +90,7 @@ class Register extends Component {
                 {/* <!-- Register Form Section End -->
     
     <!-- Partner Logo Section Begin --> */}
-                <div class="partner-logo">
+                {/* <div class="partner-logo">
                     <div class="container">
                         <div class="logo-carousel owl-carousel">
                             <div class="logo-item">
@@ -120,7 +120,7 @@ class Register extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 {/* <!-- Partner Logo Section End --></div> */}
             </div>
         );

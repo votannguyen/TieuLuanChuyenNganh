@@ -24,7 +24,13 @@ const cart = (state = initialState, action) => {
             index = state.findIndex(x => x.product.id === product.id)       //tìm mã sản phẩm
 
             indexSize = state.findIndex(x => x.idProductSize === sizeProduct)   //tìm index của sản phẩm bằng idSizeProduct
-
+            var promotionProduct =0;
+            if(product.promotion == null){
+                promotionProduct =0
+            }
+            else {
+                promotionProduct = parseFloat(product.promotion)
+            }
             // indexSize = state.findIndex(x => x.product.ProductSizes.id === sizeProduct.id)
             totalDiscount = 0;
             if (index !== -1 && indexSize !== -1) {
@@ -37,12 +43,13 @@ const cart = (state = initialState, action) => {
                         state[indexSize].totalDiscount = 0;
                     }
                 }
+
             }
             else {
                 state.push({
                     product: product,
                     quantity: quantity,
-                    total: product.price * quantity,
+                    total: (product.sellPrice - promotionProduct) * quantity,
                     idProductSize: sizeProduct,
                     totalDiscount,
                 })
@@ -69,7 +76,13 @@ const cart = (state = initialState, action) => {
                     }
                     else {
                         state[indexSize].quantity += 1;
-                        state[indexSize].total = state[indexSize].quantity * state[indexSize].product.price
+                        //state[indexSize].total = state[indexSize].quantity * state[indexSize].product.sellPrice
+                        if (state[indexSize].product.promotion === null) {
+                            state[indexSize].total = state[indexSize].quantity * state[indexSize].product.sellPrice
+                        }
+                        else {
+                            state[indexSize].total = state[indexSize].quantity * (parseFloat(state[indexSize].product.sellPrice) - parseFloat(state[indexSize].product.promotion))
+                        }
                         for (var idxs = 0; idxs < state.length; idxs++) {
                             state[indexSize].totalDiscount = 0;
                         }
@@ -88,7 +101,12 @@ const cart = (state = initialState, action) => {
                     }
                     else {
                         state[indexSize].quantity -= 1;
-                        state[indexSize].total = state[indexSize].quantity * state[indexSize].product.price
+                        if (state[indexSize].product.promotion === null) {
+                            state[indexSize].total = state[indexSize].quantity * state[indexSize].product.sellPrice
+                        }
+                        else {
+                            state[indexSize].total = state[indexSize].quantity * (parseFloat(state[indexSize].product.sellPrice) - parseFloat(state[indexSize].product.promotion))
+                        }
                         for (var index = 0; index < state.length; index++) {
                             state[indexSize].totalDiscount = 0;
                         }

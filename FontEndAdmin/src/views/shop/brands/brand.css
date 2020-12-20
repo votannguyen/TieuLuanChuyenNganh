@@ -8,4 +8,10 @@
 .avatar-uploader > .ant-upload {
     width: 128px;
     height: 128px;
-  }
+}
+.borderImgSizeAvatar{
+    height: 100px;
+    width: auto;
+    border-color: rgb(233, 233, 233);
+    border-radius: 5px;
+}

@@ -60,3 +60,10 @@ export const actFilterByCategory = (product, idCategory)=>{
 
     }
 }
+//Xóa filter
+export const actDeleteFilter = (product)=>{
+    return {
+        type: Types.DELETE_FILTER,
+        product
+    }
+}

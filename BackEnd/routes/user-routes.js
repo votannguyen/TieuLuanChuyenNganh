@@ -26,6 +26,18 @@ router.get(
     passport.authenticate('google', {session: false}),
     usersControllers.loginGoogle
 )
+
+router.get(
+    '/auth/facebook',
+    passport.authenticate('facebook', { scope: ["email"] })
+)
+
+router.get(
+    '/auth/facebook/callback',
+    passport.authenticate('facebook', {session: false}),
+    usersControllers.loginFacebook
+)
+
 router.post('/login', usersControllers.login);  
 router.get('/confirmation/:token', usersControllers.getConfirmation);
 

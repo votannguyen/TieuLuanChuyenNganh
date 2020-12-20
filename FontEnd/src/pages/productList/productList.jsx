@@ -2,15 +2,52 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import "../productList/productList.css";
 import ProductService from '../../services/ProductService'
+import BrandService from '../../services/BrandService';
+import GroupService from '../../services/GroupService';
+import CategoryService from '../../services/CategoryService';
 class ProductList extends Component {
   state = {
-
+    stateBrand: [],
+    stateCategory: [],
+    stateGroup: [],
+    stateBestSeller: '',
   }
   componentDidMount = () => {
     window.scrollTo(0, 0)
-    ProductService.listProduct().then(res => {
+    this.loadData();
+  }
+  async loadData() {
+    await ProductService.listProduct().then(res => {
       this.props.onLoadProductFromApi(res.data.products)
     })
+    await BrandService.listBrand().then(res => {
+      this.setState({ stateBrand: res.data.brands })
+    })
+    await GroupService.listGroup().then(res => {
+      this.setState({ stateGroup: res.data.Groups })
+    })
+    await CategoryService.listCategory().then(res => {
+      this.setState({ stateCategory: res.data.categories })
+    })
+
+  }
+  bestSeller = () => {
+    this.props.onFilterBestSeller(this.props.products)
+  }
+  deleteBestSeller = () => {
+    this.props.deleteFilter(this.props.products)
+  }
+  filterIncrease = () => {
+    this.props.onFilterPriceIncrease(this.props.products);
+  }
+  deleteFilterIncrease = () => {
+    this.props.deleteFilter(this.props.products)
+  }
+  filterDecrease = () => {
+    this.props.onFilterPriceDecrease(this.props.products);
+  }
+  deleteFilterDecrease = () => {
+    this.props.deleteFilter(this.props.products)
   }
   render() {
     return (
@@ -21,7 +58,10 @@ class ProductList extends Component {
               <div className="row">
                 <div className="col-xl-12">
                   <div className="hero-cap text-center">
-                    <h2>Product List</h2>
+                    {this.props.nameBrandUrl === undefined ?
+                      <h2>Tất cả sản phẩm</h2> :
+                      <h2>{this.props.nameBrandUrl}</h2>
+                    }
                   </div>
                 </div>
               </div>
@@ -62,10 +102,40 @@ class ProductList extends Component {
           <div className="row">
             <div className="col-2 backgroundLeftCategory">
               <div className="tagFilter">Danh mục</div>
-              <div className="filterCategory">
-                <Link to="product-listing.html">Giày chạy <i className="">(76)</i></Link>
-              </div>
-              <div className="filterCategory">
+              {this.state.stateCategory.map((Category, idx) => {
+                if (this.props.nameBrandUrl === Category.name) {
+                  return (
+                    <div className="filterCategoryEffect" key={idx}>
+                      <Link to={`/productList/${Category.name}`}>{Category.name}</Link>
+                    </div>
+                  )
+                } else {
+                  return (
+                    <div className="filterCategory" key={idx}>
+                      <Link to={`/productList/${Category.name}`}>{Category.name}</Link>
+                    </div>
+                  )
+                }
+              })}
+              <div className="tagFilter">Nhóm</div>
+              {this.state.stateGroup.map((Group, idx) => {
+                if (this.props.nameBrandUrl === Group.name) {
+                  return (
+                    <div className="filterCategoryEffect" key={idx}>
+                      <Link to={`/productList/${Group.name}`}>{Group.name}</Link>
+                    </div>
+                  )
+                }
+                else {
+                  return (
+                    <div className="filterCategory" key={idx}>
+                      <Link to={`/productList/${Group.name}`}>{Group.name}</Link>
+                    </div>
+                  )
+                }
+              })}
+
+              {/* <div className="filterCategory">
                 <Link to="product-listing.html">Giày đá banh <i className="">(21)</i></Link>
               </div>
               <div className="filterCategory">
@@ -73,17 +143,37 @@ class ProductList extends Component {
               </div>
               <div className="filterCategory">
                 <Link to="product-listing.html">Giày tây <i className="">(105)</i></Link>
-              </div>
+              </div> */}
 
               <div className="tagFilter">Thương hiệu</div>
-              <div className="filterBrand">
-                <Link to="product-listing.html">
-                  <img 
-                    className="filterImgBrand" 
-                    src="https://file.hstatic.net/1000230642/article/download1_4efe949eadcf407d8204d16fb2492540.png"/>
-                </Link>
-              </div>
-              <div className="filterBrand">
+              {this.state.stateBrand.map((Brand, idx) => {
+                if(this.props.nameBrandUrl === Brand.name){
+                  return (
+                    <div className="filterBrandEffect" key={idx}>
+                      <Link to={`/productList/${Brand.name}`}>
+                        <img
+                          className="filterImgBrand"
+                          src={`${this.props.urlBackend}${Brand.imagePath}`} />
+                      </Link>
+                    </div>
+                  )
+                }
+                else{
+                  return (
+                    <div className="filterBrand" key={idx}>
+                      <Link to={`/productList/${Brand.name}`}>
+                        <img
+                          className="filterImgBrand"
+                          src={`${this.props.urlBackend}${Brand.imagePath}`} />
+                      </Link>
+                    </div>
+                  )
+                }
+                
+              })}
+
+
+              {/* <div className="filterBrand">
                 <Link to="product-listing.html">
                   <img 
                     className="filterImgBrand" 
@@ -99,7 +189,7 @@ class ProductList extends Component {
               <div className="filterBrand">
                 <Link to="product-listing.html">
                   <img className="filterImgBrand" 
-                    src="https://lh3.googleusercontent.com/proxy/7EF-PLxlCAg55k2edOr5gzKoeDfFrQrS2x3FleT0GOZjPrD2GQyCReEUp_F0tYSwXLKO1rZfFMcAOKfPXCKie37_WwTJcIJd3CVLWw"/>
+                    src="https://181ge72mb8rnbx7z1k119thi-wpengine.netdna-ssl.com/wp-content/uploads/2018/03/vans-logo-2-300x240.png"/>
                 </Link>
               </div>
               <div className="filterBrand">
@@ -113,7 +203,7 @@ class ProductList extends Component {
                   <img className="filterImgBrand" 
                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Converse_logo.svg/1200px-Converse_logo.svg.png"/>
                 </Link>
-              </div>
+              </div> */}
 
 
               {/* <div className="ps-sidebar" data-mh="product-listing">
@@ -172,16 +262,25 @@ class ProductList extends Component {
                     <div className="nameFilter">Sắp xếp theo</div>
                   </div>
                   <div className="col-2">
-                    <div className="btn btnFilter">Khuyến mãi tốt nhất</div>
+                    {this.props.codeFilter === 0 ?
+                      <div className="btn btnFilter selectFilter" onClick={() => this.deleteBestSeller()}>Khuyến mãi tốt nhất</div> :
+                      <div className="btn btnFilter" onClick={() => this.bestSeller()}>Khuyến mãi tốt nhất</div>
+                    }
                   </div>
                   <div className="col-2">
                     <div className="btn btnFilter marginSelling">Bán chạy</div>
                   </div>
                   <div className="col-2">
-                    <div className="btn btnFilter marginIncrease">Giá tăng dần</div>
+                    {this.props.codeFilter === 2 ?
+                      <div className="btn btnFilter marginIncrease selectFilter" onClick={() => { this.deleteFilterIncrease() }}>Giá tăng dần</div> :
+                      <div className="btn btnFilter marginIncrease" onClick={() => { this.filterIncrease() }}>Giá tăng dần</div>
+                    }
                   </div>
                   <div className="col-2">
-                    <div className="btn btnFilter marginDecrease">Giá giảm dần</div>
+                    {this.props.codeFilter === 3 ?
+                      <div className="btn btnFilter marginDecrease selectFilter" onClick={() => { this.deleteFilterDecrease() }}>Giá giảm dần</div> :
+                      <div className="btn btnFilter marginDecrease" onClick={() => { this.filterDecrease() }}>Giá giảm dần</div>
+                    }
                   </div>
                   <div className="col-2">
                     <div className="displayInput">

@@ -12,7 +12,10 @@ const url={
     product: "api/product/",
     user: "api/user",
     userGoogle: "/api/userGoogle",
-
+    order : "/api/order",
+    brand: "api/brand/",
+    group: "api/group",
+    category: "api/category/",
 };
 const instance = axios.create({
     baseURL: url.baseUrl,

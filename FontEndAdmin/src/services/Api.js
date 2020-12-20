@@ -4,15 +4,17 @@ import Cookies from 'js-cookie';
 
 const url={
     baseUrl: "http://localhost:5000",
-    product: "api/product/",
+    product: "api/product",
     brand: "api/brand/",
-    category: "api/category/",
     user: "api/user/",
     login: "api/user/login/",
     group: "api/group",
+    category: "api/category/",
     image: "api/product/createProductImage",
     promotion: "/api/promotion",
     sizes: "/api/size",
+    import: "/api/import",
+    order : "/api/order",
     
     
 
@@ -39,5 +41,6 @@ export default{
     get: instance.get,
     post: instance.post,
     put: instance.put,
-    delete: instance.delete
+    delete: instance.delete,
+    patch: instance.patch
 };

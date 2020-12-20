@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import "../checkout/checkout.css";
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Province from '../../redux/reducers/ProvinceDistrictWard/province';
 import District from '../../redux/reducers/ProvinceDistrictWard/district';
 import Ward from '../../redux/reducers/ProvinceDistrictWard/ward';
+import Cookies from "js-cookie";
+import LoginUser from "../../services/UserService";
+// Import API
+import OrderService from '../../services/OrderService';
 import {
     Button,
     Modal,
@@ -13,22 +17,74 @@ import {
 } from "react-bootstrap";
 class Checkout extends Component {
     state = {
+        closeCOD: false,
         closeFormInterCard: false,
         closeFormWallet: false,
         stateDistrict: [],
         stateWard: [],
         initialState: [],
         state: '',
-        stateAddress: '',
+        user: {},
+        stateAddress: [],       // trạng thái địa chỉ
+        stateOrderDetail: [],       //Chứa tất cả các thoongt in của sản phẩm trong order
+        orderDetail: {}     //chứa từng sản phẩm trong giỏ hàng
 
     }
     componentDidMount() {
         window.scrollTo(0, 0)
+        this.defaultIdUser()
+        // for(var i = 0; i<this.props.cart.length;i++){
+        //     this.defaultOrderDetail(i);
+        // }
+        console.log(this.state.stateOrderDetail)
+
+    }
+    defaultIdUser = () => {         //xử lý các dữu liệu của order
+        var { user, discount } = this.props
+        if (discount.promotion.length <= 0) {
+            const newUser = {
+                ...this.state.user,
+                ['userId']: user.user.id,
+                ['totalPrice']: this.totalCheckout(),
+                ['promotion']: null,
+                //['orderCode']: this.randomStringCodeImport(),  // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+            }
+            this.setState({ user: newUser });
+        }
+        else {
+            const newUser = {
+                ...this.state.user,
+                ['userId']: user.user.id,
+                ['totalPrice']: this.totalCheckout(),
+                ['promotion']: discount.promotion[0].promotionCode
+            } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+            this.setState({ user: newUser });
+        }
+
+    }
+    defaultOrderDetail = (i, idOrder) => {
+        var { cart } = this.props
+        console.log(cart)
+        const newOrderDetail = {
+            ...this.state.orderDetail, ['orderDetail']: {
+                ['unitAmount']: cart[i].quantity,
+                ['unitPrice']: cart[i].product.sellPrice,
+                ['productSizeId']: cart[i].idProductSize,
+                ['orderId']: idOrder,
+            }
+        } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.state.stateOrderDetail.push(newOrderDetail)
+        console.log(this.state.stateOrderDetail)
+    }
+    defaultTotalCheckout = () => {
+        const newUser = { ...this.state.user, ['totalPrice']: this.totalCheckout() } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ user: newUser });
     }
     showFormInterCard(value) {
         if (value === false) {
             this.setState({ closeFormInterCard: true });
             this.setState({ closeFormWallet: false });
+            this.setState({ closeCOD: false });
         }
         else {
             this.setState({ closeFormInterCard: false });
@@ -39,6 +95,7 @@ class Checkout extends Component {
         if (value === false) {
             this.setState({ closeFormWallet: true });
             this.setState({ closeFormInterCard: false });
+            this.setState({ closeCOD: false });
         }
         else {
             this.setState({ closeFormWallet: false });
@@ -46,11 +103,15 @@ class Checkout extends Component {
 
     }
     closeFormWalletAndInterCard() {
+        const newUser = { ...this.state.user, ['payment']: 1 } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ user: newUser });
         this.setState({ closeFormInterCard: false });
         this.setState({ closeFormWallet: false });
+        this.setState({ closeCOD: true });
+        console.log(this.state.user)
     }
     InputOnChangeProvince = (event) => {
-        const { value } = event.target;
+        const { value, name } = event.target;
         var id;
         console.log(value);
         for (var j = 0; j < Province.length; j++) {
@@ -72,9 +133,11 @@ class Checkout extends Component {
         this.setState({ state: '' })
         console.log(this.state.stateDistrict)
         this.setState({ state: '' })
+        const newProvince = { ...this.state.stateAddress, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ stateAddress: newProvince });
     }
     InputOnChangeDistrict = (event) => {
-        const { value } = event.target;
+        const { value, name } = event.target;
         var districtId, provinceId;
         console.log(value);
         for (var j = 0; j < District.length; j++) {
@@ -94,19 +157,103 @@ class Checkout extends Component {
         this.setState({ stateWard: x.sort((a, b) => a._name.localeCompare(b._name)) })
         console.log(this.state.stateWard);
         this.setState({ state: '' })
-
+        const newDistrict = { ...this.state.stateAddress, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ stateAddress: newDistrict });
     }
     InputOnChange = (event) => {
         const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
 
         const newUser = { ...this.state.user, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
-        this.setState({ users: newUser });
+        this.setState({ user: newUser });
         console.log(this.state.user)
+    }
+    InputOnChangeWard = (event) => {
+        const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
+
+        const newWard = { ...this.state.stateAddress, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ stateAddress: newWard });
+    }
+    InputOnChangeAddress = (event) => {
+        const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
+        const newAddress = { ...this.state.user, [name]: value + ', Phường ' + this.state.stateAddress.ward + ', Quận ' + this.state.stateAddress.district + ', ' + this.state.stateAddress.province + ', Việt Nam' } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ user: newAddress });
+        console.log(this.state.user)
+    }
+    async saveOrder() {
+        var { user } = this.state;
+        var { stateAddress } = this.state;
+        console.log(this.state.user);
+        if (user.fullName === undefined || user.phone === undefined || stateAddress.province === undefined || stateAddress.district === undefined || stateAddress.ward === undefined || user.address === undefined) {
+            alert("Vui lòng nhập đủ các trường dữ liệu")
+        }
+        else {
+            await OrderService.createOrder(this.state.user).then(res => {
+                console.log(res.data.createOrder)
+                this.firstSaveOrderDetail(res.data.createOrder.id)
+            }, function (error) {
+                if (error.response) {
+                    // Request made and server responded
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                    if (error.response.status === 403) {
+                        alert("Vui Lòng đăng nhập")
+                        window.location.href = "/login"
+                    }
+
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+            })
+        }
+        // alert("Mua hàng thành công!")
+        // localStorage.removeItem("Catzct_txns");
+        // window.location.href="/"
+    }
+    async firstSaveOrderDetail(idOrder) {
+        if (this.props.cart.length > 0) {
+            for (var i = 0; i < this.props.cart.length; i++) {
+                this.defaultOrderDetail(i, idOrder);
+                this.finalSaveOrderDetail(i);
+            }
+        }
+    }
+    async finalSaveOrderDetail(i) {
+        var { stateOrderDetail } = this.state;
+        await OrderService.createOrderDetail(stateOrderDetail[i].orderDetail)
+    }
+    //Hàm random mã order
+    randomStringCodeImport = () => {
+        var charSet = '0123456789987654321001234567899876543210';  ///set chuỗi để có thể lấy ngẫu nhiên trong này bỏ vào kết quả
+        var randomString = '';
+        var len = 8;
+        for (var i = 0; i < len; i++) {
+            var randomPoz = Math.floor(Math.random() * charSet.length);
+            randomString += charSet.substring(randomPoz, randomPoz + 1);
+        }
+        return randomString;
+    }
+    paymentPayPal = () =>{
+        var { urlBackend } = this.props;
+        window.open(`${urlBackend}api/order/paypal/pay`, "mywindow", "top=50,left=500,location=1,status=1,scrollbars=1, width=800,height=800");
+        let listener = window.addEventListener('message', (message) => {
+            //message will contain facebook user and details
+            console.log(message)
+            // Cookies.set('loginInfo', JSON.stringify(message.data.token), { expires: 1 / 24 });
+            // LoginUser.getUser().then((res) => {
+            //     var userInfo = res.data.users;
+            //     this.props.onUserLogin(userInfo);
+            // });
+
+        });
     }
     render() {
         // var provinceTemp = Province.sort((a, b) => a._name - b._name)
         var provinceTemp = Province.sort((a, b) => a._name.localeCompare(b._name))          //sort by name
-        console.log(provinceTemp)
         var { checkoutItem, cart } = this.props;
         const formatter = new Intl.NumberFormat('vi-VN', {
             style: 'currency',
@@ -114,7 +261,6 @@ class Checkout extends Component {
             minimumFractionDigits: 0
         })
         return (
-
             <div className="backgroundCheckout">
                 <div className="container">
                     <div className="row">
@@ -137,7 +283,7 @@ class Checkout extends Component {
                                                 <label className="paddingLable" for="exampleInputEmail1 ">Họ và tên:</label>
                                             </div>
                                             <div className="col-md-9">
-                                                <input type="text" className="form-control" id="nameUser" placeholder="Họ và tên" onChange={this.InputOnChange} />
+                                                <input type="text" className="form-control" id="nameUser" name="fullName" placeholder="Họ và tên" onChange={this.InputOnChange} />
                                             </div>
                                         </div>
                                     </div>
@@ -145,10 +291,10 @@ class Checkout extends Component {
                                     <div className="form-group">
                                         <div className="row">
                                             <div className="col-md-3">
-                                                <label className="paddingLable" for="exampleInputEmail1 ">Số điện thoại:</label>
+                                                <label className="paddingLable" for="exampleInputEmail1" >Số điện thoại:</label>
                                             </div>
                                             <div className="col-md-9">
-                                                <input type="number" className="form-control" id="phoneUser" placeholder="Số điện thoại" onChange={this.InputOnChange} />
+                                                <input type="number" className="form-control" id="phoneUser" name="phone" placeholder="Số điện thoại" onChange={this.InputOnChange} />
                                             </div>
                                         </div>
                                     </div>
@@ -158,7 +304,7 @@ class Checkout extends Component {
                                                 <label className="paddingLable " for="exampleInputEmail1 ">Tỉnh/Thành phố:</label>
                                             </div>
                                             <div className="col-9 ">
-                                                <select className="form-control selectBoxAddress" id="cityUser" onChange={this.InputOnChangeProvince}>
+                                                <select className="form-control selectBoxAddress" id="cityUser" name="province" onChange={this.InputOnChangeProvince}>
                                                     <option>Tỉnh/Thành phố</option>
                                                     {provinceTemp.map((province, idx) => {
                                                         return (
@@ -181,7 +327,7 @@ class Checkout extends Component {
                                                 <label className="paddingLable" for="exampleInputEmail1 ">Quận huyện</label>
                                             </div>
                                             <div className="col-md-9">
-                                                <select className="form-control selectBoxAddress" id="districtUser" onChange={this.InputOnChangeDistrict}>
+                                                <select className="form-control selectBoxAddress" id="districtUser" name="district" onChange={this.InputOnChangeDistrict}>
                                                     <option>Quận huyện</option>
                                                     {this.state.stateDistrict.map((district, idx) => {
                                                         return (
@@ -203,7 +349,7 @@ class Checkout extends Component {
                                                 <label className="paddingLable" for="exampleInputEmail1 ">Phường xã</label>
                                             </div>
                                             <div className="col-md-9">
-                                                <select className="form-control selectBoxAddress" id="wardsUser">
+                                                <select className="form-control selectBoxAddress" id="wardsUser" name="ward" onChange={this.InputOnChangeWard}>
                                                     <option>Phường xã</option>
                                                     {this.state.stateWard.map((ward, idx) => {
                                                         return (
@@ -225,15 +371,11 @@ class Checkout extends Component {
                                                 <label className="paddingLable" for="exampleInputEmail1 ">Địa chỉ</label>
                                             </div>
                                             <div className="col-md-9">
-                                                <input type="text" className="form-control addressDetailHeight" id="addressDetail" onChange={this.InputOnChangeAddress} />
+                                                <input type="text" className="form-control addressDetailHeight" id="addressDetail" name="address" onChange={this.InputOnChangeAddress} />
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="form-group form-check">
-                                        <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-                                        <label className="form-check-label" for="exampleCheck1">Check me out</label>
-                                    </div>
-                                    <button type="submit" className="btn btn-primary">Submit</button>
+
                                 </form>
                                 <h3 className="h3Padding">Phương thức thanh toán</h3>
                                 <form className="backgroundContainerCheckout">
@@ -320,7 +462,7 @@ class Checkout extends Component {
                                             <div className="card-body">
                                                 <div className="row">
                                                     <div className="col-md-4">
-                                                        <Link to="/"><img className="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG/paypallogo.png'))} /></Link>
+                                                        <Link to="/"><img className="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG/paypallogo.png'))} onClick={()=>this.paymentPayPal()}/></Link>
                                                     </div>
                                                     <div className="col-md-4">
                                                         <Link to="/"><div className="container containerMono"><img className="card-img-top boderimg imgSizeMomo" src={(require('../../img/checkoutIMG/logo-momo.jpg'))} /></div></Link>
@@ -333,7 +475,9 @@ class Checkout extends Component {
                                             </div>
                                         </div> : null
                                     }
+                                    {this.state.closeCOD ? <div className="btn btn-primary" onClick={() => this.saveOrder()}>Hoàn thành</div> : null}
                                 </form>
+
                             </div>
                             <div className="col-lg-5  ">
 
@@ -342,7 +486,7 @@ class Checkout extends Component {
                                     <div className="card cardShadowTotal">
                                         <div className="card-body">
                                             <h3 className="textCenterTotal textPaddingTotal">Tổng thanh toán</h3>
-                                            <h3 className="textCenterTotal textPaddingTotal">{formatter.format(this.totalCheckout(cart))}</h3>
+                                            <h3 className="textCenterTotal textPaddingTotal">{formatter.format(this.totalCheckout())}</h3>
                                         </div>
                                     </div>
                                     <div className="card borderCardPriceParent paddingCardTotalBottom">
@@ -375,7 +519,8 @@ class Checkout extends Component {
 
         )
     }
-    totalCheckout = (cart) => {
+    totalCheckout = () => {
+        var { cart } = this.props
         var resultTotal = 0;
         var resultDiscount = 0;
         if (cart.length > 0) {
@@ -384,6 +529,7 @@ class Checkout extends Component {
                 resultDiscount += cart[i].totalDiscount
             }
         }
+
         return resultTotal - resultDiscount;
     }
     resultProductInCart = cart => {
@@ -422,6 +568,11 @@ class Checkout extends Component {
             result = (discountPrice * 100) / temporary
         }
         return result
+    }
+    processTotalPriceToState = (event) => {
+        var { value } = event.target
+        const newUser = { ...this.state.user, ['totalPrice']: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ user: newUser });
     }
 }
 

@@ -17,7 +17,7 @@ class ProductInWishList extends Component {
 
                     <Link className="nav-link-card-product aHeart link backgroundRow">
                         <div class="card showSizeBox borderNoneCardProduct">
-                            <Link to={`/productdetail/${product.id}`}>
+                            <Link to={`/productdetail/${product.alias}`}>
                                 <img
                                     className="card-img-top boderimg_Pro sizeIMG"
                                     src={`${urlBackend}${product.imagePath}`}
@@ -64,7 +64,7 @@ class ProductInWishList extends Component {
                                     <p className="card-title hoverTitleProduct nameProduct">{product.name}</p>
                                 </Link>
                                 <p className="card-text descriptionProduct">{product.description}</p>
-                                <p className="mt-3 p pFontSize">{formatter.format(product.price)}</p>
+                                <p className="mt-3 p pFontSize">{formatter.format(product.sellPrice)}</p>
                                 <div class="row">
                                     <div class="col-5">
                                         <div class="btn btn-primary" onClick={() => this.addToCart(product, sizeIsSelect)}>
@@ -74,7 +74,7 @@ class ProductInWishList extends Component {
                                         </div>
                                     </div>
                                     <div class="col-4">
-                                        <Link to={`/productdetail/${product.id}`} class="btn btn-secondary"><i class="fas fa-info-circle iPaddingRight"></i>Detail</Link>
+                                        <Link to={`/productdetail/${product.alias}`} class="btn btn-secondary"><i class="fas fa-info-circle iPaddingRight"></i>Detail</Link>
                                     </div>
                                     <div class="col-3">
                                         <div class="btn btn-danger" onClick={this.deleteProductInWishList}><i class="fas fa-trash-alt"></i></div>

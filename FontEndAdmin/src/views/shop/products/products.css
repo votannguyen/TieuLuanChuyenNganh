@@ -56,6 +56,10 @@
 .modalMaxWidth {
   max-width: 1300px !important;
 }
+.modalMaxWidthCreateImage {
+  max-width: 900px !important;
+}
+
 .modalImageMaxWidth {
   max-width: 800px !important;
 }
@@ -110,6 +114,18 @@
   margin-top: 0px;
   margin-bottom: 10px;
 }
+.borderImgSizeAvatar{
+  width: 80px;
+  height: 80px;
+  border: 1px solid rgb(177, 177, 177);
+  margin-right: 20px;
+  margin-bottom: 20px;
+  display: inline-table;
+  border-radius: 10px;
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+.borderImgSizeAvatar:hover{cursor: pointer;}
 .borderImgSizeIcon{
   width: 100px;
   height: 100px;
@@ -211,3 +227,25 @@
  .trashOnTableSize:hover{
    cursor: pointer;
  }
+
+ .promotion{
+   display: inline-flex;
+ }
+ .iconEditPromotion{
+  
+ }
+ .namePromotion{
+   padding-bottom: 10px;
+   padding-right: 10px
+   
+ }
+ .dropdown-toggle{
+  display: inline;
+  opacity: 1 !important;
+  z-index: 1;
+} 
+.btn .btn-info{
+  display: inline;
+  opacity: 1 !important;
+  z-index: 1;
+}

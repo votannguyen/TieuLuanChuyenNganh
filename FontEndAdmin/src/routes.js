@@ -3,7 +3,6 @@ import React from 'react';
 
 const Toaster = React.lazy(() => import('./views/notifications/toaster/Toaster'));
 const Tables = React.lazy(() => import('./views/base/tables/Tables'));
-
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/base/cards/Cards'));
 const Carousels = React.lazy(() => import('./views/base/carousels/Carousels'));
@@ -44,6 +43,8 @@ const Promotion = React.lazy(() => import('./views/shop/promotion/promotion') );
 const Product = React.lazy(() => import('./views/shop/products/products') );
 const Order = React.lazy(() => import('./views/shop/order/order') );
 const Sizes = React.lazy(() => import('./views/shop/sizes/sizes') );
+const ImportGoodContainer = React.lazy(() => import('./redux/containers/importGoodContainer') );
+const ImportBill = React.lazy(() => import('./views/shop/importBill/importBill') );
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/shop/user', name: 'User', component: UserManagement},
@@ -54,6 +55,8 @@ const routes = [
   { path: '/shop/promotion', name: 'Brand', component: Promotion},
   { path: '/shop/order', name: 'Order', component: Order},
   { path: '/shop/sizes', name: 'Size', component: Sizes},
+  { path: '/shop/importGood', name: 'Import Good', component: ImportGoodContainer},
+  { path: '/shop/importBill', name: 'Import Bill', component: ImportBill},
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },

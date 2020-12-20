@@ -9,7 +9,8 @@ class Header extends Component {
         id: "",
         email: "",
         token: "",
-        user: []
+        user: [],
+        strSearch: ''
 
     }
     logout = () => {
@@ -34,6 +35,15 @@ class Header extends Component {
             }
         }
         return result;
+    }
+    search = () =>{
+
+    }
+    InputOnChange = (event) => {
+        const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
+
+        const newBrand = { ...this.state.brand, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
+        this.setState({ brand: newBrand });
     }
     render() {
         var { cart, countInWishList } = this.props;
@@ -60,17 +70,7 @@ class Header extends Component {
                                                 <div className="flag">
                                                     <img src={require('../img/ShopShoeOnline/Flag_of_Vietnam.png')} />
                                                 </div>
-                                                {/* <div className="select-this">
-                                                    <form action="#">
-                                                        <div className="select-itms">
-                                                            <select name="select" id="select1">
-                                                                <option value="">VIE</option>
-                                                                <option value="">USA</option>
-
-                                                            </select>
-                                                        </div>
-                                                    </form>
-                                                </div> */}
+        
                                                 <ul className="contact-now">
                                                     <li>+777 2345 7886</li>
                                                 </ul>
@@ -189,19 +189,19 @@ class Header extends Component {
                                                 <nav>
                                                     <ul id="navigation">
                                                         <li><Link to="/productList">TẤT CẢ SẢN PHẨM</Link></li>
-                                                        <li ><Link href="#">NAM</Link>
+                                                        <li ><Link to="/productList/Nam">NAM</Link>
                                                             {/* <ul className="submenu">
                                                                 <li><a href="product_list.html"> Product list</a></li>
                                                                 <li><a href="single-product.html"> Product Details</a></li>
                                                             </ul> */}
                                                         </li>
-                                                        <li><Link to="blog.html">NỮ</Link>
+                                                        <li><Link to="/productList/Nữ">NỮ</Link>
                                                             {/* <ul className="submenu">
                                                                 <li><a href="blog.html">Blog</a></li>
                                                                 <li><a href="single-blog.html">Blog Details</a></li>
                                                             </ul> */}
                                                         </li>
-                                                        <li><a href="#">BÉ TRAI </a>
+                                                        <li><Link to="/productList/BeTrai">BÉ TRAI </Link>
                                                             {/* <ul className="submenu">
                                                                 <li><a href="login.html">Login</a></li>
                                                                 <li><a href="cart.html">Card</a></li>
@@ -212,7 +212,7 @@ class Header extends Component {
                                                                 <li><a href="checkout.html">Product Checkout</a></li>
                                                             </ul> */}
                                                         </li>
-                                                        <li><a href="contact.html">BÉ GÁI</a></li>
+                                                        <li><Link href="/productList/BeTrai">BÉ GÁI</Link></li>
                                                         <li className="hot"><a href="/productList">SALE</a></li>
                                                         <li><a href="/productList">LIÊN HỆ</a></li>
                                                         <li><a href="/productList">GIỚI THIỆU</a></li>
@@ -225,8 +225,8 @@ class Header extends Component {
                                             <ul className="header-right f-right d-none d-lg-block d-flex justify-content-between">
                                                 <li className="d-none d-xl-block searchRight">
                                                     <div className="form-box f-right ">
-                                                        <input type="text" name="Search" placeholder="Tìm kiếm....." />
-                                                        <div className="search-icon">
+                                                        <input type="text" name="Search" placeholder="Tìm kiếm....." onChange={this.inputOnChange} />
+                                                        <div className="search-icon" onClick={()=>this.search()}>
                                                             <i className="fas fa-search special-tag"></i>
                                                         </div>
                                                     </div>

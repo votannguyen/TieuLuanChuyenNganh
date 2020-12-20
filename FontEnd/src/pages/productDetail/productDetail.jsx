@@ -18,7 +18,8 @@ class ProductDetail extends Component {
         hideContainer: true,
         listImgThumbnail: [],
         realTime: '',
-        showModalViewImage: false
+        showModalViewImage: false,
+        descriptionText : []
     };
     plusQuantity = () => {
         if (this.state.quantity < 20) {
@@ -48,7 +49,6 @@ class ProductDetail extends Component {
     }
     componentDidMount() {
         window.scrollTo(0, 0)
-        console.log(this.props.p)
         ProductService.listProduct().then(res => {
             this.props.onLoadProductFromApi(res.data.products)
         })
@@ -56,7 +56,6 @@ class ProductDetail extends Component {
             this.setState({ listImgThumbnail: res.data.productImage })
             this.setState({ realTime: '' })
         })
-
     }
     setShowModalViewImage = (id) => {
         this.setState({ showModalViewImage: true })
@@ -65,7 +64,9 @@ class ProductDetail extends Component {
     setCloseModalViewImage = () => {
         this.setState({ showModalViewImage: false })
     }
-
+    selectImageShow = (imagePath) =>{
+        this.props.onSelectImageShowToProductDetail(imagePath);
+    }
     render() {
         var { product, urlBackend, sizeIsSelect } = this.props
         const formatter = new Intl.NumberFormat('vi-VN', {
@@ -98,7 +99,12 @@ class ProductDetail extends Component {
                                             if (idx < 4) {
                                                 return (
                                                     <div className="thumbnailImgProductDetail colmaginThumbail" key={idx}>
-                                                        <img id="" class="card-img-top boderimg_Pro cursorThumbnailImage" src={`${urlBackend}${listImgThumbnail.imagePath}`} />
+                                                        <img 
+                                                            id="" 
+                                                            class="card-img-top boderimg_Pro cursorThumbnailImage" 
+                                                            src={`${urlBackend}${listImgThumbnail.imagePath}`} 
+                                                            onClick={()=>this.selectImageShow(listImgThumbnail.imagePath)}
+                                                            />
                                                     </div>
                                                 )
                                             }
@@ -193,6 +199,7 @@ class ProductDetail extends Component {
                                     </div>
                                     <div className="col-lg-10">
                                         <div className="container containerRectangleVertical img-zoom-container marginContainerLeft" onMouseMove={this.hideContainer}>
+                                            {this.props.imagePath === ''?
                                             <ReactImageMagnify {...{
                                                 smallImage: {
                                                     // alt: 'Wristwatch by Ted Baker London',
@@ -206,7 +213,23 @@ class ProductDetail extends Component {
                                                     enlargedImageClassName: 'backGroundZoomImg'
 
                                                 }
+                                            }} />:
+                                            <ReactImageMagnify {...{
+                                                smallImage: {
+                                                    // alt: 'Wristwatch by Ted Baker London',
+                                                    isFluidWidth: true,
+                                                    src: `${urlBackend}${this.props.imagePath}`,
+                                                },
+                                                largeImage: {
+                                                    src: `${urlBackend}${this.props.imagePath}`,
+                                                    width: 1000,
+                                                    height: 1000,
+                                                    enlargedImageClassName: 'backGroundZoomImg'
+
+                                                }
                                             }} />
+
+                                            }
                                             {/* <img class="card-img-top boderimg_Pro" id={this.state.imgID} src={(require('../../img/Shoe/vans.png'))} /> */}
                                             {/* <InnerImageZoom src={(require('../img/Shoe/vans.png'))} zoomSrc={(require('../img/Shoe/vans.png'))} /> */}
                                             {/* <div id="myresult" class="img-zoom-result"></div> */}
@@ -219,13 +242,13 @@ class ProductDetail extends Component {
                         </div>
                         <hr className="vertical-lineHR" />
                         <div className="col-lg-6 paddingLeftContainerRight">
-                            <div className="ratingProductPacing">
+                            {/* <div className="ratingProductPacing">
                                 <i class="fas fa-trophy yellowAward"></i>
                                 Đứng thứ X trong
                                 <Link className="LinkHoverReview">
                                     Top 30 đôi giày bán chạy nhất shop
                                 </Link>
-                            </div>
+                            </div> */}
                             <div className="nameProductPacing">{product.name}</div>
                             <div className="linePacing">
                                 <i class="fas fa-star yellowStar"></i>
@@ -249,7 +272,21 @@ class ProductDetail extends Component {
                             <div className="container colorBackContainerShip">
                                 <p className="pColorShip"><i class="fas fa-truck iconShip"></i>Miễn phí ship cho đơn hàng trên 1.000.000 vnđ</p>
                             </div>
-                            <p className="pPriceProduct">{formatter.format(product.price)}</p>
+                            <div className="container containerPrice">
+                                {product.promotion === null ?
+                                    <div className="pPriceProduct">{formatter.format(parseFloat(product.sellPrice))}</div> :
+                                    <div className="inlinePromotion">
+                                        <div className="pPriceProduct">{formatter.format(parseFloat(product.sellPrice) - parseFloat(product.promotion))}</div>
+                                        <div className="infoBeforePromotion">{formatter.format(parseFloat(product.sellPrice))}</div>
+                                        <div className="percentPromotion">
+                                            {/* hàm làm tròn số */}
+                                            -{Math.round((100 - (parseFloat(parseFloat(product.sellPrice) - parseFloat(product.promotion))/parseFloat(product.sellPrice))*100) * 100) / 100}%
+                                        </div>
+                                    </div>
+                                    
+                                }
+                            </div>
+
                             {/* <p className="pSave">Tiết kiệm: 10% ({formatter.format(product.price * 0.1)})</p>
                             <p className="pSave">Giá thị trường: {formatter.format((product.price + (product.price * 0.1)))} </p> */}
                             <hr className="paddingDivHR" />
@@ -329,9 +366,9 @@ class ProductDetail extends Component {
                 <div className="container ">
                     <p className="pDicription">Mô tả sản phẩm</p>
                 </div>
-                <div className="container paddingTopAndBottomContainerMain backGroundContainerMain">
-
-
+                <div className="container paddingTopAndBottomContainerMain backGroundContainerMain descriptionProduct">
+                <pre>{product.description}</pre>
+                    
                 </div>
             </div>
         );

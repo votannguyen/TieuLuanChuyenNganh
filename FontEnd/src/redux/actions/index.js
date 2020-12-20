@@ -1,5 +1,6 @@
 import * as Types from '../constants/ActionType';
 import * as TypesProduct from '../constants/actTypeProduct';
+import * as TypesOrder from '../constants/actTypeOrder';
 export const actAddToCart = (product, quantity, total, sizeProduct, totalDiscount) => {
     return {
         type: Types.ADD_TO_CART,
@@ -71,7 +72,7 @@ export const actOnLoadPromotionInState = (promotion) => {
     }
 }
 
-//Load dữ liệu từ Api
+//Load dữ liệu product từ Api
 export const actOnloadProductFromApi = (product) => {
     return {
         type: TypesProduct.LOAD_DATA_PRODUCT_FROM_API,
@@ -86,3 +87,22 @@ export const actSelectSizeOnProduct = (sizeProduct, idProduct, quantity) => {
         idProduct
     }
 }
+
+//Load dữ liệu Order từ Api
+export const actOnloadOrderFromApi = (order) => {
+    return {
+        type: TypesOrder.LOAD_DATA_ORDER_FROM_API,
+        order
+    }
+}
+
+///cHỌN ẢNH ĐỂ HIỂN THỊ RA PRODUCT DETAILS
+export const actSelectImageShowToProductDetail = (imagePath) =>{
+    return {
+        type: TypesProduct.SELECT_IMAGE_SHOW_TO_PRODUCT_DETAIL,
+        imagePath
+    }
+}
+
+
+

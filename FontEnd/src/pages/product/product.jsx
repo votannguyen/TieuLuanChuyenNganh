@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Link, Redirect, Route } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import '../productList/productList.css';
 import './product.css';
 import Cookies from "js-cookie";
+import {
+  Form,
+} from "react-bootstrap";
 
 class Product extends Component {
   state = {}
@@ -52,6 +55,15 @@ class Product extends Component {
     var { onAddProductToWishList, wishLists, product } = this.props;
     onAddProductToWishList(product.id, wishLists);
   }
+  onChangeSize = (event) => {
+    const { value } = event.target;
+    var productSize = JSON.parse(value);
+    console.log(productSize)
+    if (value !== null) {
+      this.selectSize(productSize, productSize.id)
+    }
+
+  }
   render() {
     const formatter = new Intl.NumberFormat('vi-VN', {
       style: 'currency',
@@ -63,7 +75,7 @@ class Product extends Component {
       <div className="col-12 col-sm-8 col-md-6 col-lg-3 cardPaddingBottom cardMarginTop ">
         <div className="nav-link-card-product aHeart link backgroundRow sizeCard">
           <div className="card showSizeBox  borderNoneCardProduct">
-            <Link to={`/productdetail/${product.id}`}>
+            <Link to={`/productdetail/${product.alias}`}>
               <img
                 className="card-img-top boderimg_Pro sizeIMG"
                 src={`${urlBackend}${product.imagePath}`} />
@@ -71,7 +83,45 @@ class Product extends Component {
             <div className="card-body padding_card_body">
               <div className="heightBoxSize">
                 <div className="size-box">
-                  {product.ProductSizes.sort((a, b) => a.Size.sizeName - b.Size.sizeName).map((productSize, idx) => {
+                  <div className="form-group">
+                    <select className="form-control displaySelectBox" id="exampleFormControlSelect1" onChange={this.onChangeSize}>
+                    <option value='null'>Choose....</option>
+                      {product.ProductSizes.sort((a, b) => a.Size.sizeName - b.Size.sizeName).map((productSize, idx) => {
+                        return (
+                          <option
+                            key={idx}
+                            value={JSON.stringify(productSize)}
+                          >
+                            {productSize.Size.sizeName}
+                          </option>
+                        )
+                      })
+                      }
+                    </select>
+
+                  </div>
+                  {/* <Form.Group controlId="ControlSelect">
+                    <Form.Control
+                      required
+                      as="select"
+                      name="typeSize"
+                      onChange={this.onChangeSize}
+                    >
+                      <option value='null'>Choose....</option>
+                      {product.ProductSizes.sort((a, b) => a.Size.sizeName - b.Size.sizeName).map((productSize, idx) => {
+                        return (
+                          <option
+                            key={idx}
+                            value={JSON.stringify(productSize)}
+                          >
+                            {productSize.Size.sizeName}
+                          </option>
+                        )
+                      })}
+                    </Form.Control>
+                  </Form.Group> */}
+
+                  {/* {product.ProductSizes.sort((a, b) => a.Size.sizeName - b.Size.sizeName).map((productSize, idx) => {
                     if (sizeIsSelect !== undefined) {
                       if (sizeIsSelect === productSize.id) {
                         return (
@@ -101,7 +151,8 @@ class Product extends Component {
                         </div>
                       )
                     }
-                  })}
+                  }
+                  )} */}
                   {/* <span className="size_item pcolor">41</span>
                 <span className="size_item pcolor">42</span>
                 <span className="size_item pcolor">43</span>
@@ -111,12 +162,14 @@ class Product extends Component {
                 </div>
               </div>
               <hr />
-              <Link to={`/productdetail/${product.id}`}>
+              <Link to={`/productdetail/${product.alias}`}>
                 <p className="card-title hoverTitleProduct nameProduct">{product.name}</p>
               </Link>
               <p className="card-text descriptionProduct">{product.description}</p>
-              <p className="mt-3 p pFontSize">{formatter.format(product.price)}</p>
-
+              {product.promotion === null ?
+                <p className="mt-3 p pFontSize">{formatter.format(parseFloat(product.sellPrice))}</p> :
+                <p className="mt-3 p pFontSize">{formatter.format(parseFloat(product.sellPrice) - parseFloat(product.promotion))}</p>
+              }
               <div className="row">
                 <div className="col-4">
                   {/* <i className="far fa-heart fa-2x mt-2"></i> */}

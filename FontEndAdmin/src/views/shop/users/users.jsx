@@ -119,6 +119,11 @@ class Products extends Component {
   saveBlockUer = () => {
 
   }
+  processTimesTampToDate = (UNIX_Timestamp) =>{
+    var date = new Date(UNIX_Timestamp).toLocaleDateString("vi-Vi")
+    return date;
+  }
+
   render() {
     return (
       <div>
@@ -199,6 +204,7 @@ class Products extends Component {
                                 <th>Giới tính</th>
                                 <th>Ngày sinh</th>
                                 <th>Trạng thái</th>
+                                <th>Ngày tham gia</th>
                                 <th>Hành động</th>
                               </tr>
                             </thead>
@@ -218,6 +224,7 @@ class Products extends Component {
                                         {'Active'}
                                       </CBadge>
                                     </td>
+                                    <td>{this.processTimesTampToDate(listUser.createdAt)}</td>
                                     <td>
                                       <div className="row">
                                         <div className="col-3 info">
@@ -289,7 +296,6 @@ class Products extends Component {
                   <Table striped hover>
                     <thead>
                       <tr>
-                        <th>#</th>
                         <th>Họ Tên</th>
                         <th>Email</th>
                         <th>Số điện thoại</th>
@@ -297,6 +303,7 @@ class Products extends Component {
                         <th>Giới tính</th>
                         <th>Ngày sinh</th>
                         <th>Trạng thái</th>
+                        <th>Ngày tham gia</th>
                         <th>Hành động</th>
 
                       </tr>
@@ -304,11 +311,8 @@ class Products extends Component {
                     <tbody>
                       {this.state.listUser.map((listUser, idx) => {
                         if(listUser.isAdmin === false){
-
-                        
                         return (
-                          <tr>
-                            <td>{idx + 1}</td>
+                          <tr key={idx}>
                             <td className="tableFieldName">{listUser.fullName}</td>
                             <td>{listUser.email}</td>
                             <td>{listUser.phone}</td>
@@ -320,6 +324,7 @@ class Products extends Component {
                                 {'Active'}
                               </CBadge>
                             </td>
+                            <td>{this.processTimesTampToDate(listUser.createdAt)}</td>
                             <td>
                               <div className="row">
                                 <div className="col-3 info">

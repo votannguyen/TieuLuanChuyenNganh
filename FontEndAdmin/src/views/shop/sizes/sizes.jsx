@@ -61,13 +61,13 @@ class Sizes extends Component {
             this.setState({ sizes: res.data.sizes });
         });
         SizesService.getSizeByTypeSize('VN').then((res) => {
-            this.setState({ sizeVN: res.data.listSize.sort((a,b)=>a.sizeName-b.sizeName)})
+            this.setState({ sizeVN: res.data.listSize.sort((a, b) => a.sizeName - b.sizeName) })
         });
         SizesService.getSizeByTypeSize('US').then((res) => {
-            this.setState({ sizeUS: res.data.listSize.sort((a,b)=>a.sizeName-b.sizeName)})
+            this.setState({ sizeUS: res.data.listSize.sort((a, b) => a.sizeName - b.sizeName) })
         });
         SizesService.getSizeByTypeSize('UK').then((res) => {
-            this.setState({ sizeUK: res.data.listSize.sort((a,b)=>a.sizeName-b.sizeName)})
+            this.setState({ sizeUK: res.data.listSize.sort((a, b) => a.sizeName - b.sizeName) })
         });
     }
     InputOnChange = (event) => {
@@ -77,8 +77,8 @@ class Sizes extends Component {
         console.log(this.state.size);
     }
     save = () => {
-        for(var i = 0; i <this.state.sizes.length;i++){         //kiểm tra xem có trong cơ sở dữ liệu chưa
-            if(this.state.size.sizeName === this.state.sizes[i].sizeName && this.state.size.sizeType === this.state.sizes[i].sizeType){
+        for (var i = 0; i < this.state.sizes.length; i++) {         //kiểm tra xem có trong cơ sở dữ liệu chưa
+            if (this.state.size.sizeName === this.state.sizes[i].sizeName && this.state.size.sizeType === this.state.sizes[i].sizeType) {
                 alert("Size vừa nhập đã tồn tại vui lòng nhập Size và Size Type khác");
                 return
             }
@@ -168,35 +168,38 @@ class Sizes extends Component {
                                     <div className="row">
                                         <div className="col-4">
                                             <div className="titleTableSize">Size chuẩn việt nam (VN)</div>
-                                            <Table striped hover>
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Size Type Name</th>
-                                                        <th>Size</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {this.state.sizeVN.map((sizeVN, idx) => {
-                                                        return (
-                                                            <tr key={idx}>
-                                                                <td>{idx + 1}</td>
-                                                                <td>{sizeVN.sizeType}</td>
-                                                                <td>{sizeVN.sizeName}</td>
-                                                            </tr>
-                                                        )
-                                                    })}
-                                                </tbody>
-                                            </Table>
+                                            <div className="tbl-header">
+                                                <Table striped hover>
+                                                    <thead>
+                                                        <tr>
+                                                            <th className="th_Sticky">#</th>
+                                                            <th className="th_Sticky">Size Type Name</th>
+                                                            <th className="th_Sticky">Size</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {this.state.sizeVN.map((sizeVN, idx) => {
+                                                            return (
+                                                                <tr key={idx}>
+                                                                    <td>{idx + 1}</td>
+                                                                    <td>{sizeVN.sizeType}</td>
+                                                                    <td>{sizeVN.sizeName}</td>
+                                                                </tr>
+                                                            )
+                                                        })}
+                                                    </tbody>
+                                                </Table>
+                                            </div>
                                         </div>
                                         <div className="col-4">
                                             <div className="titleTableSize">Size chuẩn châu âu (UK)</div>
+                                            <div className="tbl-header">
                                             <Table striped hover>
                                                 <thead>
                                                     <tr>
-                                                        <th>#</th>
-                                                        <th>Size Type Name</th>
-                                                        <th>Size</th>
+                                                        <th className="th_Sticky">#</th>
+                                                        <th className="th_Sticky">Size Type Name</th>
+                                                        <th className="th_Sticky">Size</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -211,15 +214,17 @@ class Sizes extends Component {
                                                     })}
                                                 </tbody>
                                             </Table>
+                                            </div>
                                         </div>
                                         <div className="col-4">
                                             <div className="titleTableSize">Size chuẩn mỹ (US)</div>
+                                            <div className="tbl-header">
                                             <Table striped hover>
                                                 <thead>
                                                     <tr>
-                                                        <th>#</th>
-                                                        <th>Size Type Name</th>
-                                                        <th>Size</th>
+                                                        <th className="th_Sticky">#</th>
+                                                        <th className="th_Sticky">Size Type Name</th>
+                                                        <th className="th_Sticky">Size</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -234,7 +239,7 @@ class Sizes extends Component {
                                                     })}
                                                 </tbody>
                                             </Table>
-
+                                            </div>
                                         </div>
                                     </div>
 

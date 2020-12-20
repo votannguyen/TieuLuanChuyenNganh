@@ -7,51 +7,193 @@ import ProductDetail from '../../pages/productDetail/productDetail';
 //Import các props act
 import { actAddToCart, actOnLoadProductIsSelect, actOnloadProductFromApi, actSelectSizeOnProduct } from '../actions/index';
 import { actAddProductToWishList, actDeleteProductInWishList } from '../actions/ActionWishList';
+import { actDeleteFilter, actFilterBestSeller, actFilterPriceDecrease, actFilterPriceIncrease } from '../actions/ActionFilter';
 
 
 class ProductsContainer extends Component {
     state = {}
     render() {
-        var { products, urlBackend, onLoadProductFromApi } = this.props;
+        var {
+            products,
+            urlBackend,
+            onLoadProductFromApi,
+            onFilterBestSeller,
+            filterProduct,
+            deleteFilter,
+            onFilterPriceDecrease,
+            onFilterPriceIncrease,
+            nameBrandUrl
+        } = this.props;
 
         return (
             <ProductList
                 onLoadProductFromApi={onLoadProductFromApi}
                 urlBackend={urlBackend.urlBackend}
                 showProduct={this.showProduct(products.products)}
+                onFilterBestSeller={onFilterBestSeller}
+                products={products.products}
+                productFilter={filterProduct.productFilter}     //list filter
+                codeFilter={filterProduct.code}         //mã filter
+                deleteFilter={deleteFilter}       //xóa filter
+                onFilterPriceDecrease={onFilterPriceDecrease}           //filter giảm dần
+                onFilterPriceIncrease={onFilterPriceIncrease}           //filter tăng dần
+                nameBrandUrl={nameBrandUrl}
             />
-
         );
     }
     showProduct = (products) => {
         var result = null;
-        var { addToCart, loadProductIsSelect, urlBackend, onProductIsSelect, onAddProductToWishList, onDeleteProductInWishList, ownProps } = this.props;
+        var { addToCart,
+            loadProductIsSelect,
+            urlBackend,
+            onProductIsSelect,
+            onAddProductToWishList,
+            onDeleteProductInWishList,
+            nameBrandUrl,
+            filterProduct } = this.props;
         if (products.length > 0) {
-            result = products.map((product, index) => {
-                return <Product
-                    key={index}
-                    product={product}
-                    urlBackend={urlBackend.urlBackend}
-                    addToCart={addToCart}
-                    loadProductIsSelect={loadProductIsSelect}
-                    onProductIsSelect={onProductIsSelect}           //Khi người dùng chọn sản phẩm
-                    sizeIsSelect={this.findIdPro(product.id)}
-                    onAddProductToWishList = {onAddProductToWishList}
-                    onDeleteProductInWishList = {onDeleteProductInWishList}
-                    idProductInWishList = {this.findIdOnWishList(product.id)}
-                    ownProps = {ownProps}
-                />
-            });
+            if (nameBrandUrl !== undefined) {
+                if (filterProduct.productFilter.length > 0) {
+                    result = filterProduct.productFilter.map((product, index) => {
+                        if (product.Brand.name === nameBrandUrl) {
+                            return <Product
+                                key={index}
+                                product={product}
+                                urlBackend={urlBackend.urlBackend}
+                                addToCart={addToCart}
+                                loadProductIsSelect={loadProductIsSelect}
+                                onProductIsSelect={onProductIsSelect}           //Khi người dùng chọn sản phẩm
+                                sizeIsSelect={this.findIdPro(product.id)}
+                                onAddProductToWishList={onAddProductToWishList}
+                                onDeleteProductInWishList={onDeleteProductInWishList}
+                                idProductInWishList={this.findIdOnWishList(product.id)}
+                            />
+                        }
+                        if (product.Category.name === nameBrandUrl) {
+                            return <Product
+                                key={index}
+                                product={product}
+                                urlBackend={urlBackend.urlBackend}
+                                addToCart={addToCart}
+                                loadProductIsSelect={loadProductIsSelect}
+                                onProductIsSelect={onProductIsSelect}           //Khi người dùng chọn sản phẩm
+                                sizeIsSelect={this.findIdPro(product.id)}
+                                onAddProductToWishList={onAddProductToWishList}
+                                onDeleteProductInWishList={onDeleteProductInWishList}
+                                idProductInWishList={this.findIdOnWishList(product.id)}
+                            />
+                        }
+                        if (product.Category.Group.name === nameBrandUrl) {
+                            return <Product
+                                key={index}
+                                product={product}
+                                urlBackend={urlBackend.urlBackend}
+                                addToCart={addToCart}
+                                loadProductIsSelect={loadProductIsSelect}
+                                onProductIsSelect={onProductIsSelect}           //Khi người dùng chọn sản phẩm
+                                sizeIsSelect={this.findIdPro(product.id)}
+                                onAddProductToWishList={onAddProductToWishList}
+                                onDeleteProductInWishList={onDeleteProductInWishList}
+                                idProductInWishList={this.findIdOnWishList(product.id)}
+                            />
+                        }
+
+                        else return null;
+                    });
+                }
+                else {
+                    result = products.sort((a, b) => a.id - b.id).map((product, index) => {
+                        if (product.Brand.name === nameBrandUrl) {
+                            return <Product
+                                key={index}
+                                product={product}
+                                urlBackend={urlBackend.urlBackend}
+                                addToCart={addToCart}
+                                loadProductIsSelect={loadProductIsSelect}
+                                onProductIsSelect={onProductIsSelect}           //Khi người dùng chọn sản phẩm
+                                sizeIsSelect={this.findIdPro(product.id)}
+                                onAddProductToWishList={onAddProductToWishList}
+                                onDeleteProductInWishList={onDeleteProductInWishList}
+                                idProductInWishList={this.findIdOnWishList(product.id)}
+                            />
+                        }
+                        if (product.Category.name === nameBrandUrl) {
+                            return <Product
+                                key={index}
+                                product={product}
+                                urlBackend={urlBackend.urlBackend}
+                                addToCart={addToCart}
+                                loadProductIsSelect={loadProductIsSelect}
+                                onProductIsSelect={onProductIsSelect}           //Khi người dùng chọn sản phẩm
+                                sizeIsSelect={this.findIdPro(product.id)}
+                                onAddProductToWishList={onAddProductToWishList}
+                                onDeleteProductInWishList={onDeleteProductInWishList}
+                                idProductInWishList={this.findIdOnWishList(product.id)}
+                            />
+                        }
+                        if (product.Category.Group.name === nameBrandUrl) {
+                            return <Product
+                                key={index}
+                                product={product}
+                                urlBackend={urlBackend.urlBackend}
+                                addToCart={addToCart}
+                                loadProductIsSelect={loadProductIsSelect}
+                                onProductIsSelect={onProductIsSelect}           //Khi người dùng chọn sản phẩm
+                                sizeIsSelect={this.findIdPro(product.id)}
+                                onAddProductToWishList={onAddProductToWishList}
+                                onDeleteProductInWishList={onDeleteProductInWishList}
+                                idProductInWishList={this.findIdOnWishList(product.id)}
+                            />
+                        }
+
+                        else return null;
+                    });
+                }
+            }
+            else {
+                if (filterProduct.productFilter.length > 0) {
+                    result = filterProduct.productFilter.map((product, index) => {
+                        return <Product
+                            key={index}
+                            product={product}
+                            urlBackend={urlBackend.urlBackend}
+                            addToCart={addToCart}
+                            loadProductIsSelect={loadProductIsSelect}
+                            onProductIsSelect={onProductIsSelect}           //Khi người dùng chọn sản phẩm
+                            sizeIsSelect={this.findIdPro(product.id)}
+                            onAddProductToWishList={onAddProductToWishList}
+                            onDeleteProductInWishList={onDeleteProductInWishList}
+                            idProductInWishList={this.findIdOnWishList(product.id)}
+                        />
+                    });
+                }
+                else {
+                    result = products.sort((a, b) => a.id - b.id).map((product, index) => {
+                        return <Product
+                            key={index}
+                            product={product}
+                            urlBackend={urlBackend.urlBackend}
+                            addToCart={addToCart}
+                            loadProductIsSelect={loadProductIsSelect}
+                            onProductIsSelect={onProductIsSelect}           //Khi người dùng chọn sản phẩm
+                            sizeIsSelect={this.findIdPro(product.id)}
+                            onAddProductToWishList={onAddProductToWishList}
+                            onDeleteProductInWishList={onDeleteProductInWishList}
+                            idProductInWishList={this.findIdOnWishList(product.id)}
+                        />
+                    });
+                }
+            }
         }
         return result;
     }
-    findIdOnWishList(id){           //tìm để lấy id của sản phẩm tron wishList
+    findIdOnWishList(id) {           //tìm để lấy id của sản phẩm tron wishList
         var { wishLists } = this.props
         if (wishLists.length > 0) {
             for (var i = 0; i < wishLists.length; i++) {
-              if (wishLists[i].idProduct === id) {
-                return id;
-              }
+                if (wishLists[i].idProduct === id) {
+                    return id;
+                }
             }
             return -1;
         }
@@ -101,7 +243,8 @@ const mapStateToProps = (state, ownProps) => {
         urlBackend: state.urlBackend,
         sizeIsSelect: state.sizeIsSelect,
         wishLists: state.wishLists,
-        ownProps: ownProps
+        nameBrandUrl: ownProps.match.params.brandName,
+        filterProduct: state.filterProduct
     }
 }
 //nếu muốn mua nhiều sản phẩm cùng lúc thì truyền số lượng vào
@@ -124,7 +267,19 @@ const mapDispartToProps = (dispatch, props, ownProps) => {
         },
         onDeleteProductInWishList: (idProduct, wishLists) => {
             dispatch(actDeleteProductInWishList(idProduct, wishLists))
-        }
+        },
+        onFilterBestSeller: (product) => {
+            dispatch(actFilterBestSeller(product))
+        },
+        deleteFilter: (product) => {
+            dispatch(actDeleteFilter(product))
+        },
+        onFilterPriceDecrease: (product) => {
+            dispatch(actFilterPriceDecrease(product))
+        },
+        onFilterPriceIncrease: (product) => {
+            dispatch(actFilterPriceIncrease(product))
+        },
         // onChangeMessage : (message) =>{
         //     dispatch(actChangeMessage(message));
         // }

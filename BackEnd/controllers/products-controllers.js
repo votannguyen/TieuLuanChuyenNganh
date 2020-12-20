@@ -190,6 +190,8 @@ const createProduct = async (req, res, next) => {
             status: "Available",
             description: req.body.description,
             color: req.body.color,
+            sellPrice: req.body.sellPrice,
+            importPrice: req.body.importPrice,
             alias: getAlias(req.body.name),
             brandId: req.body.brandId,
             categoryId: req.body.categoryId,
@@ -230,10 +232,15 @@ const updateProductById = async (req, res, next) => {
     }
     //Kiểm tra có chèn ảnh ko
     let image;
-    if (typeof req.file !== "undefined") {
+    // if (typeof req.file !== "undefined") {
+    //     image = req.file.path;
+    // } else image = null;
+    if(typeof (req.file) !== "undefined")
+    {
         image = req.file.path;
-    } else image = null;
-
+    }
+    else image = null;
+    console.log(image)
     if (image === null) {
         const updatedProduct = {
             name: req.body.name,
@@ -241,7 +248,7 @@ const updateProductById = async (req, res, next) => {
             status: req.body.status,
             description: req.body.description,
             color: req.body.color,
-            alias: getAlias(req.body.name),
+            // alias: getAlias(req.body.name),
             brandId: req.body.brandId,
             categoryId: req.body.categoryId,
             sellPrice: req.body.sellPrice,
@@ -261,7 +268,7 @@ const updateProductById = async (req, res, next) => {
             status: req.body.status,
             description: req.body.description,
             color: req.body.color,
-            alias: getAlias(req.body.name),
+            // alias: getAlias(req.body.name),
             brandId: req.body.brandId,
             categoryId: req.body.categoryId,
             sellPrice: req.body.sellPrice,
@@ -287,7 +294,7 @@ const createProductSize = async (req, res, next) => {
         return next(error);
     }
     const createdProductSize = {
-        productCount: 0,
+        productCount: req.body.productCount,
         productId: req.body.productId,
         sizeId: req.body.sizeId
     }
@@ -295,10 +302,6 @@ const createProductSize = async (req, res, next) => {
     productSize = await ProductSize.create(createdProductSize);
     res.status(200).json({productSize});
 } 
-
-
-
-
 
 //
 const createProductImage = async (req, res, next) => {

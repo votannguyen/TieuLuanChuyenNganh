@@ -6,21 +6,23 @@ const productsControllers = require('../controllers/products-controllers');
 
 const router = express.Router();
 
-router.get('/',productsControllers.getAllProduct);
+router.get('/', productsControllers.getAllProduct);
 router.get('/:productId', productsControllers.getProductById);
 router.get('/getAlias/:productAlias', productsControllers.getProductByAlias);
-router.get('/getImageByProductId/:productId',productsControllers.getProductImageByProductId);
+router.get('/getImageByProductId/:productId', productsControllers.getProductImageByProductId);
 
 router.post(
-    '/',
-    fileUpload.single('imagePath'),
-    [   
-       check('name').not().isEmpty()
-    ],
-    productsControllers.createProduct
- );
+   '/',
+   fileUpload.single('imagePath'),
+   [
+      check('name').not().isEmpty()
+   ],
+   productsControllers.createProduct
+);
 
-router.post('/createProductSize', productsControllers.createProductSize);
+router.post('/createProductSize',
+   fileUpload.single('imagePath'),
+   productsControllers.createProductSize);
 
 
 router.post(
@@ -36,12 +38,9 @@ router.patch(
 
 
 router.patch(
-'/:productId',
-fileUpload.single('imagePath'),
-[   
-   check('name').not().isEmpty()
-],
-productsControllers.updateProductById);
+   '/:productId',
+   fileUpload.single('imagePath'),
+   productsControllers.updateProductById);
 
 router.delete(
    '/deleteProductImage/:productImageId',

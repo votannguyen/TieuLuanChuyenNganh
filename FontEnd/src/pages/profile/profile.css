@@ -108,3 +108,58 @@ h3{
 .paddingRow:hover{
     background-color: #ecf5ff;
 }
+
+.titleTable{
+    font-size: 26px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+    font-weight: 700;
+}
+.fontBadges{
+    font-size: 13px;
+    color: white;
+}
+.menuAction{
+    color: #379AF4;
+    opacity: 1;
+    position: absolute;
+    z-index: 3;
+    padding-left: 15px;
+    padding-top: 4px;
+    font-size: 18px;
+}
+.menuAction:hover{
+    cursor: pointer;
+}
+.dropdown-toggle{
+    display: inline;
+    opacity: 0;
+    z-index: 1;
+} 
+.btn .btn-info{
+    display: inline;
+    opacity: 0;
+    z-index: 1;
+}
+
+.iconInfo{
+    padding-top: 2px;
+    font-size: 22px;
+    color: #5bc0de;
+}
+
+.iconInfo:hover{
+    cursor: pointer;
+}
+.infoOrderFirst{
+    font-weight: 500;
+    padding-right: 10px;
+}
+.infoOrderEnd{
+    padding-left: 10px;
+    font-weight: 500;
+}
+.parent_infoOrder{
+    display: inline-flex;
+}

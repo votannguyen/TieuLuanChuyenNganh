@@ -6,8 +6,8 @@ class Footer extends Component {
     render() {
         return (
             <div>
-                <br/>
-                <br/>
+                <br />
+                <br />
 
                 <footer>
                     <div className="footer-area footer-padding2 " >
@@ -17,11 +17,14 @@ class Footer extends Component {
                                     <div className="single-footer-caption mb-50">
                                         <div className="single-footer-caption mb-30">
                                             <div className="footer-logo">
-                                                <a href="index.html"><img src={require('../img/logo/logo2_footer.png')} /></a>
+                                                <a href="index.html"><img src={require('../img/logo/LogoShop11.png')} /></a>
                                             </div>
                                             <div className="footer-tittle">
                                                 <div className="footer-pera">
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore.</p>
+                                                    <div>Địa chỉ: 1, Võ Văn Ngân, Quận Thủ Đức, HCM</div>
+                                                    <div>Sđt: (028) 38 753 443</div>
+                                                    <div>Email : shopShoe@gmail.com.vn</div>
+                                                    <div>Thời gian làm việc: Từ 07h30 đến 12h15, 13h15 đến 21h30 các ngày trong tuần ( Trừ ngày Lễ, Tết)</div>
                                                 </div>
                                             </div>
                                         </div>

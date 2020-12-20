@@ -3,6 +3,7 @@ const models = require('../models'); //vì đang trong controllers nên phải r
 const {getAlias,decodeAlias} = require('../middleware/utilities')
 const Product = models.Product;
 const ProductSize = models.ProductSize;
+const Brand = models.Brand;
 const ProductImage = models.ProductImage;
 const Size = models.Size;
 const Import = models.Import;
@@ -24,7 +25,10 @@ const getAllImport = async (req, res, next) => {
                                 model: ProductSize,
                                 include: [
                                     {
-                                        model: Product
+                                        model: Product,
+                                        include: [
+                                            {model: Brand}
+                                        ]
                                     },
                                     {
                                         model: Size
@@ -114,40 +118,64 @@ const addImport = async (req, res, next) => {
         importCode: req.body.importCode,
         publisherName: req.body.publisherName
     }
+    console.log(importCreated)
     let createImport;
     createImport = await Import.create(importCreated);
     res.status(200).json({createImport});
 }
 
 const addImportDetail = async (req, res, next) => {
-    const productId = req.body.productId;
-    const sizeId = req.body.sizeId;
+    const productSizeId = req.body.productSizeId;
+    // const importId = req.body.importId;
     
     // Check xem coi  productId vs sizeId có trong ProductSize chưa
-    let findProductSize;
-    findProductSize = await ProductSize.findOne(
-            {
-                where: {
-                    productId: req.body.productId,
-                    sizeId: req.body.sizeId
-                },
-            }
-        );
-    if (!findProductSize) {
-        const createdProductSize = {
-            productCount: 0,
-            productId: req.body.productId,
-            sizeId: req.body.sizeId
-        }
-        let createProductSize;
-        //Tạo productSize theo sizeid and productId
-        createProductSize = await ProductSize.create(createdProductSize);
+    // let findProductSize;
+    // findProductSize = await ProductSize.findOne(
+    //         {
+    //             where: {
+    //                 // id: req.body.productSizeId,
+    //                 // sizeId: req.body.sizeId
+    //             },
+    //         }
+    //     );
+    // if (!findProductSize) {
+    //     const createdProductSize = {
+    //         productCount: 0,
+    //         productId: req.body.productId,
+    //         sizeId: req.body.sizeId
+    //     }
+    //     let createProductSize;
+    //     //Tạo productSize theo sizeid and productId
+    //     createProductSize = await ProductSize.create(createdProductSize);
         
+    //     const importItem = {
+    //         importId : req.body.importId,
+    //         amount : req.body.amount,
+    //         importPrice: req.body.importPrice,
+    //         productSizeId : createProductSize.id
+    //     };
+    //     let importDetail;
+    //     try{
+    //         importDetail = await ImportDetail.create(importItem)
+    //     } catch(err) {
+    //         const error = new HttpError('There is system error. Pls try again', 500);
+    //         return next(error);
+    //     }
+    //     let updateProductSize;
+    //     updateProductSize = await ProductSize.update({productCount: req.body.amount}, {
+    //         where: {
+    //             id: createProductSize.id
+    //         }
+    //     });
+        
+    //     res.status(200).json({importDetail});
+    // }
+    // else{
         const importItem = {
             importId : req.body.importId,
             amount : req.body.amount,
             importPrice: req.body.importPrice,
-            productSizeId : createProductSize.id
+            productSizeId : req.body.productSizeId
         };
         let importDetail;
         try{
@@ -156,50 +184,27 @@ const addImportDetail = async (req, res, next) => {
             const error = new HttpError('There is system error. Pls try again', 500);
             return next(error);
         }
-        let updateProductSize;
-        updateProductSize = await ProductSize.update({productCount: req.body.amount}, {
-            where: {
-                id: createProductSize.id
-            }
-        });
+
+        // let getProductSize;
+        // getProductSize = await ProductSize.findOne({
+        //     where: {
+        //         id: findProductSize.id
+        //     }
+        // });
         
+        // console.log(getProductSize.productCount);
+
+
+        // let amountProductSize;
+        // amountProductSize = getProductSize.productCount + req.body.amount;
+        // let updateProductSize;
+        // updateProductSize = await ProductSize.update({productCount: amountProductSize}, {
+        //     where: {
+        //         id: findProductSize.id
+        //     }
+        // })
         res.status(200).json({importDetail});
-    }
-    else{
-        const importItem = {
-            importId : req.body.importId,
-            amount : req.body.amount,
-            importPrice: req.body.importPrice,
-            productSizeId : findProductSize.id
-        };
-        let importDetail;
-        try{
-            importDetail = await ImportDetail.create(importItem)
-        } catch(err) {
-            const error = new HttpError('There is system error. Pls try again', 500);
-            return next(error);
-        }
-
-        let getProductSize;
-        getProductSize = await ProductSize.findOne({
-            where: {
-                id: findProductSize.id
-            }
-        });
-        
-        console.log(getProductSize.productCount);
-
-
-        let amountProductSize;
-        amountProductSize = getProductSize.productCount + req.body.amount;
-        let updateProductSize;
-        updateProductSize = await ProductSize.update({productCount: amountProductSize}, {
-            where: {
-                id: findProductSize.id
-            }
-        })
-        res.status(200).json({importDetail});
-    }
+    // }
     
 }
 

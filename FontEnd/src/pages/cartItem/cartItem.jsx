@@ -92,8 +92,10 @@ class CartItem extends Component {
                                 <div className="col-6">
                                     <div className="row">
                                         <div className="col-6">
-                                            <p className="fontFamilyPriveCardProduct">{formatter.format(item.product.price)}</p>
-
+                                            {item.product.promotion === null?
+                                            <p className="fontFamilyPriveCardProduct">{formatter.format(item.product.sellPrice)}</p>:
+                                            <p className="fontFamilyPriveCardProduct">{formatter.format(parseFloat(item.product.sellPrice) - parseFloat(item.product.promotion))}</p>
+                                            }
                                         </div>
                                         <div className="col-6">
                                             <p className="textQuantity">Số lượng:</p>

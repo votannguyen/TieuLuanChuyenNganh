@@ -57,6 +57,20 @@ class Login extends Component {
         });
 
     }
+    LoginFacebook = () =>{
+        var { urlBackend } = this.props;
+        window.open(`${urlBackend}api/user/auth/facebook`, "mywindow", "top=50,left=500,location=1,status=1,scrollbars=1, width=800,height=800");
+        let listener = window.addEventListener('message', (message) => {
+            //message will contain facebook user and details
+            console.log(message)
+            Cookies.set('loginInfo', JSON.stringify(message.data.token), { expires: 1 / 24 });
+            LoginUser.getUser().then((res) => {
+                var userInfo = res.data.users;
+                this.props.onUserLogin(userInfo);
+            });
+
+        });
+    }
     // LoginGoogle = () => {
     //     this.setState({
     //          redirect: true
@@ -131,11 +145,11 @@ class Login extends Component {
                                                 <a class="lost_pass" href="#">forget password?</a>
                                                 <br />
                                                 <br />
-                                                <div id="login" className="btn btnGoogle" onClick={this.LoginGoogle}>
+                                                <div id="login" className="btn btnGoogle" onClick={()=>this.LoginGoogle()}>
                                                     <i class="fab fa-google-plus fa-3x iconGoogle"><div className="textOnIconGoogle">Đăng nhập bằng Google</div></i>
                                                 </div>
                                                 <br />
-                                                <div id="login" className="btn btnFacebook" onClick={this.LoginFacebook}>
+                                                <div id="login" className="btn btnFacebook" onClick={()=>this.LoginFacebook()}>
                                                     <i class="fab fa-facebook fa-3x iconFacebook"><div className="textOnIconGoogle">Đăng nhập bằng Facebook</div></i>
                                                 </div>
                                             </div>

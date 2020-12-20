@@ -11,7 +11,7 @@ router.get('/getSizeByType/:sizeTypeName',sizesControllers.getAllSizeByType)
 router.post(
     '/',
     [   
-       check('name').not().isEmpty()
+       check('sizeName').not().isEmpty()
     ],
     sizesControllers.createSize
 );

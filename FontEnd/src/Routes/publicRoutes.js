@@ -15,14 +15,14 @@ const routes =  [
   { path: "/login", exact: true, name: "Login", component: LoginContainer },
   { path: "/register", exact: true, name: "Register", component: Register },
   { path: "/productList", exact: true, name: "Product List", component: ProductContainer},
+  { path: "/productList/:brandName", exact: true, name: "Product List", component: ProductContainer},
   { path: "/men", exact: true, name: "Men", component: ProductList },
   { path: "/women", exact: true, name: "Women", component: ProductList },
   { path: "/boy", exact: true, name: "Boy", component: ProductList },
   { path: "/girl", exact: true, name: "Girl", component: ProductList },
   { path: "/cart", exact: true, name: "Cart", component: CartContainer },
   { path: "/checkout", exact: true, name: "Checkout", component: CheckoutContainer },
-  { path: "/productDetail/:id", exact: true , name: "Product Detail", component: ProductDetailContainer},
-  { path: "/invoiceDetail", exact: true, name: "Invoice Detail", component: InvoiceDetail },
+  { path: "/productDetail/:alias", exact: true , name: "Product Detail", component: ProductDetailContainer},
   { name: "404", component: Page404 }
 ];
 
