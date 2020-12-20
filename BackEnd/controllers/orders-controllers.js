@@ -13,7 +13,8 @@ const Size = models.Size;
 const { validationResult } = require('express-validator'); //lấy dc lỗi từ body validate
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op; 
-
+const {create_payment, execute_payment} = require('../middleware/paypal');
+const paypal = require('paypal-rest-sdk');
 
 const getAllOrder = async (req, res, next) => {
     let orders;
@@ -236,4 +237,49 @@ const returnDetail = async(req, res, next) => {
     }
     res.status(200).json({success: 001});
 }
-module.exports = {getAllOrder, addOrder, addOrderDetail, updateOrderById, returnDetail};
+const payment = async(req,res,next) => {
+    const itemsList = req.body.itemsList
+    let total; 
+    total = 0;
+    for(i = 0;i<itemsList.length;i++)
+    {
+    total+=parseFloat(itemsList[i].price)*itemsList[i].quantity;
+    }
+    let orderId;
+    orderId = itemsList[0].description;
+    create_payment(itemsList,total,orderId);
+    paypal.payment.create(create_payment_json, function (error, payment) {
+        console.log(create_payment_json)
+      if (error) {
+          throw error;
+      } else {
+          for(let i = 0;i < payment.links.length;i++){
+              if(payment.links[i].rel === 'approval_url'){
+                res.redirect(payment.links[i].href);
+              }
+            }
+      }
+    });
+}
+
+
+const success = async(req, res, next) => {
+    const payerId = req.query.PayerID;
+    const paymentId = req.query.paymentId;
+
+    execute_payment(payerId)
+    paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+        if (error) {
+            console.log(error.response);
+            throw error;
+        } else {
+            console.log((payment));
+            res.status(200).json({message: "Success", errorCode: 0})
+        }
+    });
+}
+
+const cancel = async(req,res,next) => {
+    res.status(200).json({message: "Cancel", errorCode: 1})
+}
+module.exports = {getAllOrder, addOrder, addOrderDetail, updateOrderById, returnDetail, payment, success, cancel};
