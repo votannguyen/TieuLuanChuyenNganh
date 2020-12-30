@@ -1,6 +1,6 @@
-import { push } from 'react-router-redux';
 import * as Types from '../constants/ActionType';
 import * as TypesProduct from '../constants/actTypeProduct';
+import * as TypesSearch from '../constants/actProcessFilterProduct';
 var crypto = require('crypto-js');
 // Lấy danh sách byte đã mã hóa
 var data
@@ -12,7 +12,45 @@ if (localStorage.getItem('Pross_acst')) {
     // var data = JSON.parse(localStorage.getItem('CART'));
     data = JSON.parse(message_decode);
 }
-else data = JSON.parse(localStorage.getItem('Pross_acst'));;
+else data = JSON.parse(localStorage.getItem('Pross_acst'));
+
+var dataBrands
+if (localStorage.getItem('Bross_acst')) {
+    var bytesBrands = crypto.AES.decrypt(localStorage.getItem('Bross_acst'), '300699NguyenTanVo');
+    // // Chuyển sang chuỗi gốc
+    var message_decode_brands = bytesBrands.toString(crypto.enc.Utf8);
+
+    // var data = JSON.parse(localStorage.getItem('CART'));
+    dataBrands = JSON.parse(message_decode_brands);
+}
+else dataBrands = JSON.parse(localStorage.getItem('Bross_acst'));
+
+
+var dataCategories
+if (localStorage.getItem('Caross_acst')) {
+    var bytesCategories = crypto.AES.decrypt(localStorage.getItem('Caross_acst'), '300699NguyenTanVo');
+    // // Chuyển sang chuỗi gốc
+    var message_decode_categories = bytesCategories.toString(crypto.enc.Utf8);
+
+    // var data = JSON.parse(localStorage.getItem('CART'));
+    dataCategories = JSON.parse(message_decode_categories);
+}
+else dataCategories = JSON.parse(localStorage.getItem('Caross_acst'));
+
+
+var dataGroups
+if (localStorage.getItem('Grross_acst')) {
+    var bytesGroups = crypto.AES.decrypt(localStorage.getItem('Grross_acst'), '300699NguyenTanVo');
+    // // Chuyển sang chuỗi gốc
+    var message_decode_groups = bytesGroups.toString(crypto.enc.Utf8);
+
+    // var data = JSON.parse(localStorage.getItem('CART'));
+    dataGroups = JSON.parse(message_decode_groups);
+}
+else dataGroups = JSON.parse(localStorage.getItem('Grross_acst'));
+
+
+
 var initialState = [
     // {
     //     id : 1,
@@ -120,14 +158,34 @@ var initialState = [
 
 var initialStateProduct = data ? {
     products: data,
-    sizeIsSelect: []
+    sizeIsSelect: [],
+    productPaging: "",
+    listProductPaging: [],
+    numPageSelect: "",
+    brands: dataBrands,
+    categories: dataCategories,
+    groups: dataGroups
 } : {
         products: [],
-        sizeIsSelect: []
+        sizeIsSelect: [],
+        productPaging: "",
+        listProductPaging: [],
+        numPageSelect: "",
+        brands: [],
+        categories: [],
+        groups: []
     };
 
 const products = (state = initialStateProduct, action) => {
-    var { product } = action
+    var {
+        product, //dánh sách sản phẩm
+        key,  //key dung
+        idPaging, //số trang cần tới
+        products, // danh sách product xử lý paging
+        brands,
+        categories,
+        groups
+    } = action
     switch (action.type) {
         // case Types.ON_LOAD_PRODUCT_IS_SELECT:
         //     if(product.length > 0){
@@ -142,14 +200,71 @@ const products = (state = initialStateProduct, action) => {
         //     }
         //     localStorage.setItem('PRODUCT_SELECT', JSON.stringify(product));
         case TypesProduct.LOAD_DATA_PRODUCT_FROM_API:
+            var numOfPaging = Math.floor(product.length / 12) + 1
+            var listPro = [];
+            if (numOfPaging <= 1) {
+                for (var i = 0; i < product.length; i++) {
+                    listPro.push(product[i])
+                }
+            } else {
+                for (var j = 0; j < 12; j++) {
+                    listPro.push(product[j])
+                }
+            }
             localStorage.setItem('Pross_acst', crypto.AES.encrypt(JSON.stringify(product), '300699NguyenTanVo').toString());
             return {
                 ...state,
-                products: product
+                products: product,
+                productPaging: numOfPaging,
+                listProductPaging: listPro,
+                numPageSelect: 1
             }
-
-        default: return { ...state };
-
+        case Types.LOAD_DATA_BRAND_FROM_API:
+            localStorage.setItem('Bross_acst', crypto.AES.encrypt(JSON.stringify(brands), '300699NguyenTanVo').toString());
+            return {
+                ...state,
+                brands: brands
+            }
+        case Types.LOAD_DATA_CATEGORY_FROM_API:
+            localStorage.setItem('Caross_acst', crypto.AES.encrypt(JSON.stringify(categories), '300699NguyenTanVo').toString());
+            return {
+                ...state,
+                categories: categories
+            }
+        case Types.LOAD_DATA_GROUP_FROM_API:
+            localStorage.setItem('Grross_acst', crypto.AES.encrypt(JSON.stringify(groups), '300699NguyenTanVo').toString());
+            return {
+                ...state,
+                groups: groups
+            }
+        case TypesSearch.SEARCH_BY_KEY:
+            var productFilter = state.products;
+            productFilter = productFilter.filter(productFilter => productFilter.name === key);
+            localStorage.setItem('Pross_acst', crypto.AES.encrypt(JSON.stringify(productFilter), '300699NguyenTanVo').toString());
+            return {
+                ...state,
+                products: productFilter
+            }
+        case Types.ON_SELECT_PAGE_PRODUCT:
+            var numOfPagingSelect = Math.floor(products.length / 12) + 1
+            var listProSelect = [];
+            if (numOfPagingSelect < 1) {
+                for (var iNS = 0; iNS < products.length; iNS++) {
+                    listProSelect.push(products[iNS])
+                }
+            } else {
+                for (var jNS = (12 * idPaging - 12); jNS < 12 * idPaging; jNS++) {
+                    listProSelect.push(products[jNS])
+                }
+            }
+            return {
+                ...state,
+                productPaging: numOfPagingSelect,
+                listProductPaging: listProSelect,
+                numPageSelect: idPaging
+            }
+        case Types.PAGING_PRODUCT:
+        default:return { ...state };
     }
 }
 

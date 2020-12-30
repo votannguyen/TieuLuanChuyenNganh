@@ -1,24 +1,26 @@
 import React, { Component } from "react";
 import HeaderContainer from '../redux/containers/HeaderContainer';
 import Footer from "./footer";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, withRouter } from "react-router-dom";
 import PrivateRoutes from "../Routes/privateRoutes";
 import PublicRoutes from "../Routes/publicRoutes";
 import Cookies from "js-cookie";
 import ProductService from "../services/ProductService";
 class DefaultLayout extends Component {
     state = {};
-    componentDidMount(){
+    componentDidMount() {
         ProductService.listProduct().then(res => {
-            console.log(res.data.products)
             this.props.onLoadProductFromApi(res.data.products)
         })
+        console.log(this.props.location.pathname)
     }
     render() {
         return (
             <div>
-                <HeaderContainer />
-                {Cookies.get('expireAuth') ===undefined ?
+                {this.props.location.pathname !=='/login'? this.props.location.pathname !== '/404' ?
+                    <HeaderContainer /> : null : null
+                }
+                {Cookies.get('expireAuth') === undefined ?
                     <Switch>
                         {PublicRoutes.map((route, idx) => {
                             return route.component ? (
@@ -42,14 +44,16 @@ class DefaultLayout extends Component {
                                     exact={route.exact}
                                     name={route.name}
                                     component={route.component}
-                                    />
+                                />
                             ) : null;
                         })}
                     </Switch>
                 }
-                <Footer />
+                {this.props.location.pathname !== '/login' ? this.props.location.pathname !== '/404' ?
+                    <Footer /> : null : null
+                }
             </div>
         );
     }
 }
-export default DefaultLayout;
+export default withRouter(DefaultLayout);

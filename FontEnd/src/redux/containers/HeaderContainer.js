@@ -3,16 +3,20 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../../container/header';
 import { actLogoutByUser } from '../actions/ActionLogin';
+import { actSearchByKey } from '../actions/ActionFilter'
 class HeaderContainer extends Component {
     state = {}
     render() {
-        var { cart, user, onUserLogout, wishLists } = this.props
+        var { cart, user, onUserLogout, wishLists, products, onSearchByKey, isOnUrl } = this.props
         return (
             <Header
                 user={user}
                 cart={cart}
                 onUserLogout={onUserLogout}
                 countInWishList={this.countProductInWishList(wishLists)}
+                products = {products.products}
+                onSearchByKey = {onSearchByKey}
+                isOnUrl ={isOnUrl}
             />
         );
     }
@@ -37,17 +41,21 @@ HeaderContainer.propTypes = {
 
     })).isRequired
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
     return {
         cart: state.cart,
         user: state.user,
-        wishLists: state.wishLists
+        wishLists: state.wishLists,
+        products: state.products,
     }
 }
 const mapDispartToProps = (dispatch, props) => {
     return {
         onUserLogout: () => {
             dispatch(actLogoutByUser());
+        },
+        onSearchByKey: (key, products) =>{
+            dispatch(actSearchByKey(key, products));
         }
     }
 }

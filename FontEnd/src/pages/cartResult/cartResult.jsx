@@ -31,9 +31,11 @@ class CartResult extends Component {
         // this.setState({totalResult:totalResult});
 
         this.processNameDiscount(discountState, discountCurrent);
-        var { onChangeDiscountInCart } = this.props;
-        onChangeDiscountInCart(discountState, discountCurrent, cart);
-
+        var { onChangeDiscountInCart, onSelectDiscountInCart } = this.props;
+        if(this.processNameDiscount(discountState, discountCurrent) === true){
+            onChangeDiscountInCart(discountState, discountCurrent, cart);
+            onSelectDiscountInCart(discountState, discountCurrent)
+        }
     }
     
     //xử lý giảm giá
@@ -57,7 +59,7 @@ class CartResult extends Component {
                     nameDiscount = `Bạn đã sử dụng mã giảm giá ${discount.promotion[i].promotionValue * 100} %`;
                     this.setState({ nameDiscount: nameDiscount })
                     this.setState({ nameTagDiscount: 'nameTagSuccessDiscount' })
-                    break
+                    return true;
                 }
                 else{
                     nameDiscount = `Bạn đã sử dụng mã giảm giá ${formatter.format(discount.promotion[i].promotionValue)}`;
@@ -73,6 +75,7 @@ class CartResult extends Component {
             nameDiscount = 'Mã bạn nhập không đúng đã hoặc đã sử dụng'
             this.setState({ nameDiscount: nameDiscount })
             this.setState({ nameTagDiscount: 'nameTagFailDiscount' })
+            return false
         }
 
     }

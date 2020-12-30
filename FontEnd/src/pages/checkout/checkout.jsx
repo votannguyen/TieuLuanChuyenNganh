@@ -41,7 +41,7 @@ class Checkout extends Component {
     }
     defaultIdUser = () => {         //xử lý các dữu liệu của order
         var { user, discount } = this.props
-        if (discount.promotion.length <= 0) {
+        if (discount.promotionIsSelect === '') {
             const newUser = {
                 ...this.state.user,
                 ['userId']: user.user.id,
@@ -56,7 +56,7 @@ class Checkout extends Component {
                 ...this.state.user,
                 ['userId']: user.user.id,
                 ['totalPrice']: this.totalCheckout(),
-                ['promotion']: discount.promotion[0].promotionCode
+                ['promotion']: discount.promotionIsSelect
             } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
             this.setState({ user: newUser });
         }
@@ -68,7 +68,7 @@ class Checkout extends Component {
         const newOrderDetail = {
             ...this.state.orderDetail, ['orderDetail']: {
                 ['unitAmount']: cart[i].quantity,
-                ['unitPrice']: cart[i].product.sellPrice,
+                ['unitPrice']: parseFloat(cart[i].total) / parseFloat(cart[i].quantity),
                 ['productSizeId']: cart[i].idProductSize,
                 ['orderId']: idOrder,
             }
@@ -188,8 +188,12 @@ class Checkout extends Component {
         }
         else {
             await OrderService.createOrder(this.state.user).then(res => {
-                console.log(res.data.createOrder)
                 this.firstSaveOrderDetail(res.data.createOrder.id)
+                if(res.status === 200){
+                    alert("Mua hàng thành công!")
+                    localStorage.removeItem("Catzct_txns");
+                    window.location.href="/"
+                }
             }, function (error) {
                 if (error.response) {
                     // Request made and server responded
@@ -200,7 +204,6 @@ class Checkout extends Component {
                         alert("Vui Lòng đăng nhập")
                         window.location.href = "/login"
                     }
-
                 } else if (error.request) {
                     // The request was made but no response was received
                     console.log(error.request);
@@ -210,8 +213,9 @@ class Checkout extends Component {
                 }
             })
         }
-        // alert("Mua hàng thành công!")
-        // localStorage.removeItem("Catzct_txns");
+        
+        // await alert("Mua hàng thành công!")
+        // await localStorage.removeItem("Catzct_txns");
         // window.location.href="/"
     }
     async firstSaveOrderDetail(idOrder) {
@@ -237,19 +241,66 @@ class Checkout extends Component {
         }
         return randomString;
     }
-    paymentPayPal = () =>{
-        var { urlBackend } = this.props;
-        window.open(`${urlBackend}api/order/paypal/pay`, "mywindow", "top=50,left=500,location=1,status=1,scrollbars=1, width=800,height=800");
-        let listener = window.addEventListener('message', (message) => {
-            //message will contain facebook user and details
-            console.log(message)
-            // Cookies.set('loginInfo', JSON.stringify(message.data.token), { expires: 1 / 24 });
-            // LoginUser.getUser().then((res) => {
-            //     var userInfo = res.data.users;
-            //     this.props.onUserLogin(userInfo);
-            // });
+    async paymentPayPal() {
+        var { urlBackend } = this.props.urlBackend;
+        var { user } = this.state;
+        var { stateAddress } = this.state;
+        console.log(urlBackend)
+        var item = JSON.stringify(this.processItemOnCart())
+        console.log(item)
 
-        });
+        if (Cookies.get('expireAuth') === undefined) {
+            alert('Bạn vui lòng đăng nhập trước khi thanh toán!')
+        }
+        else {
+            await OrderService.paypal({ itemsList: item }).then(res => {
+                window.open(`${res.data.link}`, "mywindow", "top=50,left=500,location=1,status=1,scrollbars=1, width=800,height=800");
+            })
+            let listener = window.addEventListener('message', (message) => {
+                //message will contain facebook user and details
+                console.log(message)
+                if (message.data.errorCode === 0) {
+
+                    this.saveOrder();
+
+                }
+                else {
+                    alert("Bạn thanh toán chưa thành công vui lòng thanh toán lại")
+                }
+
+            });
+        }
+
+        //});
+
+    }
+    processItemOnCart() {
+        var { cart } = this.props
+        var item = [];
+        var itemIs = {
+            "name": "",
+            "sku": "",
+            "price": "",
+            "currency": "",
+            "quantity": ""
+        }
+        for (var i = 0; i < cart.length; i++) {
+            itemIs.name = cart[i].product.name;
+            itemIs.sku = 'Đôi';
+            itemIs.price = ((Math.round((parseFloat(cart[i].total) - parseFloat(cart[i].totalDiscount)) * (0.000043)) * 100) / 100).toString();
+            itemIs.currency = 'USD';
+            itemIs.quantity = cart[i].quantity;
+            item.push(itemIs);
+            console.log(item)
+            itemIs = {
+                "name": "",
+                "sku": "",
+                "price": "",
+                "currency": "",
+                "quantity": ""
+            }
+        }
+        return item;
     }
     render() {
         // var provinceTemp = Province.sort((a, b) => a._name - b._name)
@@ -462,7 +513,7 @@ class Checkout extends Component {
                                             <div className="card-body">
                                                 <div className="row">
                                                     <div className="col-md-4">
-                                                        <Link to="/"><img className="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG/paypallogo.png'))} onClick={()=>this.paymentPayPal()}/></Link>
+                                                        <div to="/"><img className="card-img-top boderimg imgSizePayment" src={(require('../../img/checkoutIMG/paypallogo.png'))} onClick={() => this.paymentPayPal()} /></div>
                                                     </div>
                                                     <div className="col-md-4">
                                                         <Link to="/"><div className="container containerMono"><img className="card-img-top boderimg imgSizeMomo" src={(require('../../img/checkoutIMG/logo-momo.jpg'))} /></div></Link>

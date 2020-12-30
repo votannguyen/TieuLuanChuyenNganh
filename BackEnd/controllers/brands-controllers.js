@@ -148,7 +148,7 @@ const updateBrandById = async (req, res, next) => {
     if (image === null) {
         const updatedBrand = {
             name: req.body.name,
-            description: req.body.description,
+            summary: req.body.summary,
             alias: getAlias(req.body.name)
         };
         let brands;

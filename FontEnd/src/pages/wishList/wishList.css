@@ -17,14 +17,8 @@
 .heightBoxSize{
     height: 50px;
 }
-..descriptionProduct {
-    /* font-family: Open Sans, sans-serif !important;
-  font-size: 18px;
-  text-overflow: ellipsis !important;
-  
-  width: 200px;
-  overflow: hidden;
-  word-break: break-all; */
+.descriptionProduct {
+
     font-size: 13px;
     width: auto ;
     overflow: hidden;
@@ -35,14 +29,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
   }
-  .nameProduct {
-    /* font-family: Open Sans, sans-serif !important;
-  font-size: 18px;
-  text-overflow: ellipsis !important;
-  
-  width: 200px;
-  overflow: hidden;
-  word-break: break-all; */
+.nameProduct {
     font-size: 18px;
     width: auto;
     overflow: hidden;

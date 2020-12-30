@@ -27,7 +27,7 @@ const routes = [
   { path: "/checkout", exact: true, name: "Checkout", component: CheckoutContainer },
   { path: "/productDetail/:alias", name: "Product Detail", component: ProductDetailContainer },
   { path: "/invoiceDetail/:orderDetailId", exact: true, name: "Invoice Detail", component: InvoiceDetailContainer },
-  { name: "404", component: Page404 }
+  { name: "/404", component: Page404 }
 ];
 
 export default routes;

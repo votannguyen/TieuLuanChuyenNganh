@@ -1,6 +1,7 @@
 import * as Types from '../constants/ActionType';
 import * as TypesProduct from '../constants/actTypeProduct';
 import * as TypesOrder from '../constants/actTypeOrder';
+import discount from '../reducers/discount';
 export const actAddToCart = (product, quantity, total, sizeProduct, totalDiscount) => {
     return {
         type: Types.ADD_TO_CART,
@@ -31,12 +32,21 @@ export const actChangeQuantityProductInCart = (product, check, idSizeProduct) =>
         idSizeProduct
     }
 }
+//thay đổi mã giảm giá
 export const actChangeDiscountInCart = (discount, inputDiscount, cart) => {
     return {
         type: Types.CHANGE_DISCOUNT_IN_CART,
         discount,
         inputDiscount,
         cart
+    }
+}
+//select discount
+export const actSelectDiscountInCart = (discount, inputDiscount) =>{
+    return{
+        type: Types.DISCOUNT_IS_SELECT_IN_CART,
+        discount,
+        inputDiscount
     }
 }
 export const actOnLoadThisPage = cart => {
@@ -104,5 +114,43 @@ export const actSelectImageShowToProductDetail = (imagePath) =>{
     }
 }
 
+
+//xỬ LÝ chọn Paging
+export const actSelectPagingProduct = (products, idPaging) =>{
+    return {
+        type: Types.ON_SELECT_PAGE_PRODUCT,
+        products,
+        idPaging
+    }
+}
+//xử lý phân trang
+export const actPagingProduct = (products) => {
+    return {
+        type: Types.PAGING_PRODUCT,
+        products
+    }
+}
+
+//xỬ LÝ LƯU DỮ LIỆU KHI GỌI API Brand
+export const actLoadBrandsFromAPI = (brands) => {
+    return {
+        type: Types.LOAD_DATA_BRAND_FROM_API,
+        brands
+    }
+}
+//xỬ LÝ LƯU DỮ LIỆU KHI GỌI API Category
+export const actLoadCategoriesFromAPI = (categories) => {
+    return {
+        type: Types.LOAD_DATA_CATEGORY_FROM_API,
+        categories
+    }
+}
+//xỬ LÝ LƯU DỮ LIỆU KHI GỌI Group
+export const actLoadGroupsFromAPI = (groups) => {
+    return {
+        type: Types.LOAD_DATA_GROUP_FROM_API,
+        groups
+    }
+}
 
 

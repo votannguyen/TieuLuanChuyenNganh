@@ -252,15 +252,16 @@ const loginGoogle = async(req, res, next) => {
 }
 const loginFacebook = async (req, res, next) =>{
     let existingUser;
+    console.log(userProfile._json)
     existingUser = await User.findOne({
-        where: { email: userProfile._json.email }
+        where: { email: userProfile._json.id }
     });
     if (!existingUser) {
         const createdUser = {
-            googleId: userProfile._json.sub,
+            facebookId: userProfile._json.id,
             fullName: userProfile._json.name,
-            email: userProfile._json.email,
-            authType: 2,
+            email: userProfile._json.id,
+            authType: 3,
             isAdmin: false,
             isConfirm: true,
             isLock: false,
@@ -480,5 +481,6 @@ const lockUser = async(req, res, next) => {
     }
     res.status(200).json({message: 'Update success'});
 }
+
 
 module.exports = {getUser, getMyUser,  register, login, getConfirmation, updateMyUser, getUserById, lockUser, loginGoogle, loginFacebook};

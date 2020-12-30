@@ -271,18 +271,21 @@ class Products extends Component {
       }
     }
   }
-  saveImageProduct = (id) => {
+  async saveImageProduct(id){
     console.log(id);
-    this.saveAvatarImage(id);
-    setTimeout(this.firstSaveImage(id), 500);
-    this.loadData();
-    this.loadData();
+    await this.saveAvatarImage(id);
+    await this.firstSaveImage(id);
+    await this.setState({avatarProductSaveAPI: []});
+    await this.setState({listImageToApi: []});
+    await this.loadData();
+    await this.loadData();
   }
   saveAvatarImage = (id) => {
     var data = new FormData();
     console.log(this.state.avatarProductSaveAPI[[0]])
     data.append("imagePath", this.state.avatarProductSaveAPI[[0]]);
     ProductService.updateProduct(data, id)
+    
     this.setCloseModalCreateImage()
     this.componentDidMount()
   }
@@ -907,6 +910,7 @@ class Products extends Component {
                         <th>Name Product</th>
                         <th>Color</th>
                         <th>Brand</th>
+                        <th>Category</th>
                         <th>Size</th>
                         <th>Price</th>
                         <th>Promotion</th>
@@ -937,6 +941,7 @@ class Products extends Component {
                             <td>{listProduct.name}</td>
                             <td>{listProduct.color}</td>
                             <td>{listProduct.Brand.name}</td>
+                            <td>{listProduct.Category.name}({listProduct.Category.Group.name})</td>
                             <td><div className="view" onClick={() => this.setShowModalViewSizeProduct(listProduct.id)}>View all size</div></td>
                             <td>{formatter.format(listProduct.sellPrice)}</td>
                             <td>

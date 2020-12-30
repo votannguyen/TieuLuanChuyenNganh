@@ -56,17 +56,17 @@ class Sizes extends Component {
     componentDidMount() {
         this.loadData();
     }
-    loadData = () => {
-        SizesService.listSize().then((res) => {
+    async loadData(){
+        await SizesService.listSize().then((res) => {
             this.setState({ sizes: res.data.sizes });
         });
-        SizesService.getSizeByTypeSize('VN').then((res) => {
+        await SizesService.getSizeByTypeSize('VN').then((res) => {
             this.setState({ sizeVN: res.data.listSize.sort((a, b) => a.sizeName - b.sizeName) })
         });
-        SizesService.getSizeByTypeSize('US').then((res) => {
+        await SizesService.getSizeByTypeSize('US').then((res) => {
             this.setState({ sizeUS: res.data.listSize.sort((a, b) => a.sizeName - b.sizeName) })
         });
-        SizesService.getSizeByTypeSize('UK').then((res) => {
+        await SizesService.getSizeByTypeSize('UK').then((res) => {
             this.setState({ sizeUK: res.data.listSize.sort((a, b) => a.sizeName - b.sizeName) })
         });
     }
@@ -76,16 +76,16 @@ class Sizes extends Component {
         this.setState({ size: newSize });
         console.log(this.state.size);
     }
-    save = () => {
+    async save(){
         for (var i = 0; i < this.state.sizes.length; i++) {         //kiểm tra xem có trong cơ sở dữ liệu chưa
             if (this.state.size.sizeName === this.state.sizes[i].sizeName && this.state.size.sizeType === this.state.sizes[i].sizeType) {
                 alert("Size vừa nhập đã tồn tại vui lòng nhập Size và Size Type khác");
                 return
             }
         }
-        SizesService.createSize(this.state.size).then(res => {
-            // alert("Cập nhật thông tin thành công")
-            // this.loadData();
+        await SizesService.createSize(this.state.size).then(res => {
+            alert("Cập nhật thông tin thành công")
+            this.loadData();
         }, function (error) {
             alert("Lỗi")
         });
@@ -150,7 +150,7 @@ class Sizes extends Component {
                                         })}
                                     </Form.Control>
                                 </Form.Group>
-                                <Button variant="primary" type="submit" onClick={this.save}>
+                                <Button variant="primary" onClick={()=>this.save()}>
                                     Thêm
                                 </Button>
                             </Form>

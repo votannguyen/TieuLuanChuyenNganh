@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import "../productList/productList.css";
 import ProductService from '../../services/ProductService'
 import BrandService from '../../services/BrandService';
 import GroupService from '../../services/GroupService';
 import CategoryService from '../../services/CategoryService';
+import {
+  Form,
+  Pagination
+} from "react-bootstrap";
 class ProductList extends Component {
   state = {
     stateBrand: [],
@@ -14,42 +18,61 @@ class ProductList extends Component {
   }
   componentDidMount = () => {
     window.scrollTo(0, 0)
-    this.loadData();
+    
   }
-  async loadData() {
-    await ProductService.listProduct().then(res => {
-      this.props.onLoadProductFromApi(res.data.products)
-    })
-    await BrandService.listBrand().then(res => {
-      this.setState({ stateBrand: res.data.brands })
-    })
-    await GroupService.listGroup().then(res => {
-      this.setState({ stateGroup: res.data.Groups })
-    })
-    await CategoryService.listCategory().then(res => {
-      this.setState({ stateCategory: res.data.categories })
-    })
+  // loadData() {
+  //   this.loadProduct();
+  //   this.loadBrand();
+  //   this.loadGroup();
+  //   this.loadCategory();
+  // }
+  // async loadProduct() {
+  //   await ProductService.listProduct().then(res => {
+  //     this.props.onLoadProductFromApi(res.data.products)
+  //   })
+  // }
+  // async loadBrand() {
+  //   await BrandService.listBrand().then(res => {
+  //     this.setState({ stateBrand: res.data.brands })
+  //   })
+  // }
+  // async loadGroup() {
+  //   await GroupService.listGroup().then(res => {
+  //     this.setState({ stateGroup: res.data.Groups })
+  //   })
+  // }
+  // async loadCategory() {
+  //   await CategoryService.listCategory().then(res => {
+  //     this.setState({ stateCategory: res.data.categories })
+  //   })
 
-  }
+  // }
   bestSeller = () => {
     this.props.onFilterBestSeller(this.props.products)
+    this.processPaging(this.props.numPageSelect);
   }
   deleteBestSeller = () => {
     this.props.deleteFilter(this.props.products)
+    this.processPaging(this.props.numPageSelect);
   }
   filterIncrease = () => {
     this.props.onFilterPriceIncrease(this.props.products);
+    this.processPaging(this.props.numPageSelect);
   }
   deleteFilterIncrease = () => {
     this.props.deleteFilter(this.props.products)
+    this.processPaging(this.props.numPageSelect);
   }
   filterDecrease = () => {
     this.props.onFilterPriceDecrease(this.props.products);
+    this.processPaging(this.props.numPageSelect);
   }
   deleteFilterDecrease = () => {
     this.props.deleteFilter(this.props.products)
+    this.processPaging(this.props.numPageSelect);
   }
   render() {
+    var {categories, groups, brands} = this.props
     return (
       <div className="backGroundProductList">
         <div className="slider-area ">
@@ -102,7 +125,7 @@ class ProductList extends Component {
           <div className="row">
             <div className="col-2 backgroundLeftCategory">
               <div className="tagFilter">Danh mục</div>
-              {this.state.stateCategory.map((Category, idx) => {
+              {categories.map((Category, idx) => {
                 if (this.props.nameBrandUrl === Category.name) {
                   return (
                     <div className="filterCategoryEffect" key={idx}>
@@ -118,7 +141,7 @@ class ProductList extends Component {
                 }
               })}
               <div className="tagFilter">Nhóm</div>
-              {this.state.stateGroup.map((Group, idx) => {
+              {groups.map((Group, idx) => {
                 if (this.props.nameBrandUrl === Group.name) {
                   return (
                     <div className="filterCategoryEffect" key={idx}>
@@ -146,8 +169,8 @@ class ProductList extends Component {
               </div> */}
 
               <div className="tagFilter">Thương hiệu</div>
-              {this.state.stateBrand.map((Brand, idx) => {
-                if(this.props.nameBrandUrl === Brand.name){
+              {brands.map((Brand, idx) => {
+                if (this.props.nameBrandUrl === Brand.name) {
                   return (
                     <div className="filterBrandEffect" key={idx}>
                       <Link to={`/productList/${Brand.name}`}>
@@ -158,7 +181,7 @@ class ProductList extends Component {
                     </div>
                   )
                 }
-                else{
+                else {
                   return (
                     <div className="filterBrand" key={idx}>
                       <Link to={`/productList/${Brand.name}`}>
@@ -169,7 +192,6 @@ class ProductList extends Component {
                     </div>
                   )
                 }
-                
               })}
 
 
@@ -296,6 +318,34 @@ class ProductList extends Component {
                 <div className="row">
                   {this.props.showProduct}
                 </div>
+                <div className="pagingDisplay">
+                  <div className="row">
+                    <div className="col-4"></div>
+                    <div className="col-4">
+                      <Pagination>
+                        <Pagination.First />
+                        <Pagination.Prev />
+                        {this.props.products.map((product, idx) => {
+                          if (idx < this.pagingShow()) {
+                            if(idx+1 === this.props.numPageSelect){
+                              return (
+                                <Pagination.Item active onClick={() => this.processPaging(idx + 1)}>{idx + 1}</Pagination.Item>
+                              )
+                            }else{
+                            return (
+                              <Pagination.Item onClick={() => this.processPaging(idx + 1)}>{idx + 1}</Pagination.Item>
+                            )}
+                          }
+                          else return null
+                        })
+                        }
+                        <Pagination.Next />
+                        <Pagination.Last />
+                      </Pagination>
+                    </div>
+                    <div className="col-4"></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -303,5 +353,25 @@ class ProductList extends Component {
       </div>
     );
   }
+  processPaging = (idPaging) => {
+    console.log(this.props.location.pathname);
+    // if(this.props.location.pathname === '/productList'){
+      this.props.onSelectPagingProduct(this.props.products, idPaging)
+    
+    // else{
+    //   this.props.onSelectPagingProduct(this.props.filterProduct, idPaging)
+    // }
+    window.scrollTo(0, 400)
+  }
+  pagingShow = () => {
+    var numOfPagingSelect;
+      numOfPagingSelect = Math.floor(this.props.products.length / 12) + 1
+    
+    // else{
+    //   numOfPagingSelect = Math.floor(this.props.filterProduct.length / 12) + 1
+    // }
+    // var numOfPagingSelect = Math.floor(this.props.products.length / 12) + 1
+    return numOfPagingSelect;
+  }
 }
-export default ProductList;
+export default withRouter(ProductList);

@@ -3,9 +3,10 @@ import Cookies from 'js-cookie';
 
 
 const url={
+    //baseUrl: "https://shop-shoe-backend.herokuapp.com/",
     baseUrl: "http://localhost:5000",
     product: "api/product",
-    brand: "api/brand/",
+    brand: "api/brand",
     user: "api/user/",
     login: "api/user/login/",
     group: "api/group",

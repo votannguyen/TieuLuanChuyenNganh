@@ -67,3 +67,11 @@ export const actDeleteFilter = (product)=>{
         product
     }
 }
+
+//Tìm kiếm theo ký tự
+export const actSearchByKey = (key, products) =>{
+    return {
+        type: Types.SEARCH_BY_KEY,
+        key, products
+    }
+}

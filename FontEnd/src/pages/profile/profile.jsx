@@ -29,7 +29,7 @@ class Profile extends Component {
         UserService.getUser().then((res) => {
             this.setState({ user: res.data.users });
         });
-        OrderService.listOrder().then(res => {
+        OrderService.getMyOrder().then(res => {
             this.setState({ stateListOrder: res.data.orders })
             this.props.onLoadOrderFromApi(res.data.orders)
         })

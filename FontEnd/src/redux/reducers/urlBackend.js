@@ -1,5 +1,6 @@
 var initialUrlBackend = {
     urlBackend: 'http://localhost:5000/'
+    //urlBackend: 'https://shop-shoe-backend.herokuapp.com/'
 };
 
 const urlBackend = (state = initialUrlBackend, action) =>{

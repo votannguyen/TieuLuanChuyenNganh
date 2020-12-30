@@ -257,14 +257,13 @@ class ImportGood extends Component {
     InputOnChangeCategory = (event) => {
         const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
         // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
-        {
-            this.state.category.map((category) => {
-                if (category.name === value) {
-                    const newProduct = { ...this.state.products, [name]: category.id }
-                    this.setState({ products: newProduct });
-                }
-            })
-        }
+        console.log(value)
+        this.state.category.map((category) => {
+            if (parseInt(category.id) === parseInt(value)) {
+                const newProduct = { ...this.state.products, [name]: category.id, ['groupId']: category.Group.id }
+                this.setState({ products: newProduct });
+            }
+        })
         console.log(this.state.products)
     }
     InputOnChangeBrand = (event) => {
@@ -398,7 +397,7 @@ class ImportGood extends Component {
         return randomString;
     }
 
-    processImport = () => {
+    processImport = async () => {
         var { products } = this.props;
         if (this.state.statePublisherName.publisherName === undefined) {
             alert('Vui lòng nhập nhà cung cấp');
@@ -413,15 +412,18 @@ class ImportGood extends Component {
             dataImport.append("publisherName", this.state.statePublisherName.publisherName);
             // dataImport.append("publisherName", publisherName);
             console.log(dataImport)
-            ImportService.createImport(dataImport).then(res => {
+            await ImportService.createImport(dataImport).then(res => {
                 console.log(res.data.createImport.id);
                 this.saveProductInImportDetail(res.data.createImport.id);
             })
-            alert("Lưu hóa đơn thành công");
-            localStorage.removeItem("STATE_IMPORT");
-            this.loadData();
-            this.loadData();
+            this.deleteImportGoodFromLocalStorage()
+
         }
+    }
+    async deleteImportGoodFromLocalStorage() {
+        await alert("Lưu hóa đơn thành công");
+        await localStorage.removeItem("STATE_IMPORT");
+        await this.loadData();
     }
     findIdProductNewCreate = () => {        // hàm tìm id của product mới thêm vào
         var idProduct;
@@ -637,8 +639,8 @@ class ImportGood extends Component {
                                                     return (
                                                         <option
                                                             key={idx}
-                                                            value={category.name}>
-                                                            {category.name}
+                                                            value={category.id}>
+                                                            {category.name} ({category.Group.name})
                                                         </option>
                                                     )
                                                 })}

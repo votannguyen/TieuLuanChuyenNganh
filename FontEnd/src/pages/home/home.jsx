@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import "../home/home.css";
-import ProductService from '../../services/ProductService'
+import { connect } from 'react-redux';
+import ProductService from '../../services/ProductService';
 import BrandService from '../../services/BrandService';
+import GroupService from '../../services/GroupService';
+import CategoryService from '../../services/CategoryService';
+import { actLoadBrandsFromAPI, actLoadCategoriesFromAPI, actLoadGroupsFromAPI, actOnloadProductFromApi } from '../../redux/actions/index';
 class Home extends Component {
     state = {
         stateBrand: [],
@@ -15,12 +19,34 @@ class Home extends Component {
         window.scrollTo(0, 0)
         this.loadData();
     }
-    async loadData() {
+    loadData() {
+        this.loadProduct();
+        this.loadBrand();
+        this.loadGroup();
+        this.loadCategory();
+    }
+    async loadProduct() {
         await ProductService.listProduct().then(res => {
+            this.props.onLoadProductFromApi(res.data.products)
             this.setState({ stateProducts: res.data.products })
         })
+    }
+    async loadBrand() {
         await BrandService.listBrand().then(res => {
+            this.props.onLoadBrandsFromApi(res.data.brands)
             this.setState({ stateBrand: res.data.brands })
+        })
+    }
+    async loadGroup() {
+        await GroupService.listGroup().then(res => {
+            this.props.onLoadGroupsFromApi(res.data.Groups)
+            //this.setState({ stateGroup: res.data.Groups })
+        })
+    }
+    async loadCategory() {
+        await CategoryService.listCategory().then(res => {
+            this.props.onLoadCategoriesFromApi(res.data.categories)
+            //this.setState({ stateCategory: res.data.categories })
         })
     }
     processPrice = (sellPrice, promotionPrice) => {
@@ -138,7 +164,7 @@ class Home extends Component {
                 </section>
                 {/* <!-- Category Area End-->
                 <!-- Latest Products Start --> */}
-                <section className="latest-product-area padding-bottom">
+                <section className="latest-product-area">
                     <div className="container">
                         <div className="row product-btn d-flex justify-content-end align-items-end">
                             {/* <!-- Section Tittle --> */}
@@ -166,41 +192,75 @@ class Home extends Component {
                         <div className="tab-content" id="nav-tabContent">
                             {/* <!-- card one --> */}
                             <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                                <div className="row">
-                                    {this.state.stateProducts.map((product, idx) => {
-                                        return (
-                                            <div className="col-xl-4 col-lg-4 col-md-6">
-                                                <div className="single-product mb-60">
-                                                    <div className="product-img">
-                                                        <img src={`http://localhost:5000/${product.imagePath}`} />
-                                                        <div className="new-product">
-                                                            <span>New</span>
+                                {this.props.products ?
+                                    <div className="row">
+                                        {this.state.stateProducts.map((product, idx) => {
+                                            return (
+                                                <div className="col-xl-4 col-lg-4 col-md-6">
+                                                    <div className="single-product mb-60">
+                                                        <div className="product-img">
+                                                            <img src={`${this.props.urlBackend.urlBackend}${product.imagePath}`} />
+                                                            <div className="new-product">
+                                                                <span>New</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div className="product-caption">
-                                                        <div className="product-ratting">
-                                                            <i className="far fa-star"></i>
-                                                            <i className="far fa-star"></i>
-                                                            <i className="far fa-star"></i>
-                                                            <i className="far fa-star low-star"></i>
-                                                            <i className="far fa-star low-star"></i>
-                                                        </div>
-                                                        <h4><Link to={`/productdetail/${product.alias}`}>{product.name}</Link></h4>
-                                                        <div className="price">
-                                                            <ul>
-                                                                <li>{formatter.format(this.processPrice(product.sellPrice, product.promotion))}</li>
-                                                                <li className="discount">{product.sellPrice}</li>
-                                                            </ul>
+                                                        <div className="product-caption">
+                                                            <div className="product-ratting">
+                                                                <i className="far fa-star"></i>
+                                                                <i className="far fa-star"></i>
+                                                                <i className="far fa-star"></i>
+                                                                <i className="far fa-star low-star"></i>
+                                                                <i className="far fa-star low-star"></i>
+                                                            </div>
+                                                            <h4><Link to={`/productdetail/${product.alias}`}>{product.name}</Link></h4>
+                                                            <div className="price">
+                                                                <ul>
+                                                                    <li>{formatter.format(this.processPrice(product.sellPrice, product.promotion))}</li>
+                                                                    <li className="discount">{product.sellPrice}</li>
+                                                                </ul>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        )
+                                            )
+                                        })}
+                                    </div> :
+                                    <div className="row">
+                                        {this.props.products.products.map((product, idx) => {
+                                            return (
+                                                <div className="col-xl-4 col-lg-4 col-md-6">
+                                                    <div className="single-product mb-60">
+                                                        <div className="product-img">
+                                                            <img src={`http://localhost:5000/${product.imagePath}`} />
+                                                            <div className="new-product">
+                                                                <span>New</span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="product-caption">
+                                                            <div className="product-ratting">
+                                                                <i className="far fa-star"></i>
+                                                                <i className="far fa-star"></i>
+                                                                <i className="far fa-star"></i>
+                                                                <i className="far fa-star low-star"></i>
+                                                                <i className="far fa-star low-star"></i>
+                                                            </div>
+                                                            <h4><Link to={`/productdetail/${product.alias}`}>{product.name}</Link></h4>
+                                                            <div className="price">
+                                                                <ul>
+                                                                    <li>{formatter.format(this.processPrice(product.sellPrice, product.promotion))}</li>
+                                                                    <li className="discount">{product.sellPrice}</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
 
-                                    })}
+                                        })}
 
 
-                                </div>
+                                    </div>
+                                }
                             </div>
                             {/* <!-- Card two --> */}
                             <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
@@ -662,181 +722,76 @@ class Home extends Component {
                         {/* <!-- End Nav Card --> */}
                     </div>
                 </section>
-                {/* <!-- Latest Products End -->
-<!-- Best Product Start --> */}
-                {/* <div className="best-product-area lf-padding" >
-                    <div className="product-wrapper bg-height" style={{ backgroundimage: "url('assets/img/categori/card.png')" }}>
-                        <div className="container position-relative">
-                            <div className="row justify-content-between align-items-end">
-                                <div className="product-man position-absolute  d-none d-lg-block">
-                                    <img src={require('../../img/categori/card-man.png')} />
-                                </div>
-                                <div className="col-xl-2 col-lg-2 col-md-2 d-none d-lg-block">
-                                    <div className="vertical-text">
-                                        <span>Manz</span>
-                                    </div>
-                                </div>
-                                <div className="col-xl-8 col-lg-8">
-                                    <div className="best-product-caption">
-                                        <h2>Find The Best Product<br /> from Our Shop</h2>
-                                        <p>Designers who are interesten creating state ofthe.</p>
-                                        <a href="#" className="black-btn">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="shape bounce-animate d-none d-md-block">
-                        <img src={require('../../img/categori/card-shape.png')} />
-                    </div>
-                </div> */}
 
-                {/* <div className="best-collection-area section-padding2">
-                    <div className="container">
-                        <div className="row d-flex justify-content-between align-items-end">
-                            <div className="col-xl-4 col-lg-4 col-md-6">
-                                <div className="best-left-cap">
-                                    <h2>Best Collection of This Month</h2>
-                                    <p>Designers who are interesten crea.</p>
-                                    <a href="#" className="btn shop1-btn">Shop Now</a>
-                                </div>
-                                <div className="best-left-img mb-30 d-none d-sm-block">
-                                    <img src={require('../../img/collection/collection1.png')} />
-                                </div>
-                            </div>
-                            <div className="col-xl-2 col-lg-2 d-none d-lg-block">
-                                <div className="best-mid-img mb-30 ">
-                                    <img src={require('../../img/collection/collection2.png')} />
-                                </div>
-                            </div>
-                            <div className="col-xl-4 col-lg-6 col-md-6">
-                                <div className="best-right-cap ">
-                                    <div className="best-single mb-30">
-                                        <div className="single-cap">
-                                            <h4>Menz Winter<br /> Jacket</h4>
-                                        </div>
-                                        <div className="single-img">
-                                            <img src={require('../../img/collection/collection3.png')} />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="best-right-cap">
-                                    <div className="best-single mb-30">
-                                        <div className="single-cap active">
-                                            <h4>Menz Winter<br />Jacket</h4>
-                                        </div>
-                                        <div className="single-img">
-                                            <img src={require('../../img/collection/collection4.png')} />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="best-right-cap">
-                                    <div className="best-single mb-30">
-                                        <div className="single-cap">
-                                            <h4>Menz Winter<br /> Jacket</h4>
-                                        </div>
-                                        <div className="single-img">
-                                            <img src={require('../../img/collection/collection5.png')} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
-                {/* <!-- Best Collection End -->
-<!-- Latest Offers Start --> */}
-                <div className="latest-wrapper lf-padding">
-                    <div className="latest-area latest-height d-flex align-items-center" data-background={require("../../img/collection/latest-offer.png")}>
-                        <div className="container">
-                            <div className="row d-flex align-items-center">
-                                <div className="col-xl-5 col-lg-5 col-md-6 offset-xl-1 offset-lg-1">
-                                    <div className="latest-caption">
-                                        <h2>Get Our<br />Latest Offers News</h2>
-                                        <p>Subscribe news latter</p>
-                                    </div>
-                                </div>
-                                <div className="col-xl-5 col-lg-5 col-md-6 ">
-                                    <div className="latest-subscribe">
-                                        <form action="#">
-                                            <input type="email" placeholder="Your email here" />
-                                            <button>Shop Now</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {/* <!-- man Shape --> */}
-                        <div className="man-shape">
-                            <img src={require('../../img/collection/latest-man.png')} />
-                        </div>
-                    </div>
-                </div>
-                {/* <!-- Latest Offers End -->
-<!-- Shop Method Start--> */}
-                <div className="shop-method-area section-padding30">
-                    <div className="container">
-                        {/* <div className="row d-flex justify-content-between">
-                            <div className="col-xl-3 col-lg-3 col-md-6">
-                                <div className="single-method mb-40">
-                                    <i className="ti-package"></i>
-                                    <h6>Free Shipping Method</h6>
-                                    <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
-                                </div>
-                            </div>
-                            <div className="col-xl-3 col-lg-3 col-md-6">
-                                <div className="single-method mb-40">
-                                    <i className="ti-unlock"></i>
-                                    <h6>Secure Payment System</h6>
-                                    <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
-                                </div>
-                            </div>
-                            <div className="col-xl-3 col-lg-3 col-md-6">
-                                <div className="single-method mb-40">
-                                    <i className="ti-reload"></i>
-                                    <h6>Secure Payment System</h6>
-                                    <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
-                                </div>
-                            </div>
-                        </div> */}
-                    </div>
-                </div>
                 <div className="gallery-wrapper lf-padding">
                     <div className="gallery-area">
                         <div className="container-fluid">
-                            <div className="row">
-                                {this.state.stateBrand.map((brand, idx) => {
-                                    if(idx <5){
-                                    return (
-                                        <div className="gallery-items" key = {idx}>
-                                            <Link to={`/productList/${brand.name}`}><img className="weightImage" src={`http://localhost:5000/${brand.imagePath}`} /></Link>
-                                        </div>
-                                    )
+                            {this.props.products.brands === undefined ?
+                                <div className="row">
+                                    {this.props.products.brands.map((brand, idx) => {
+                                        if (idx < 5) {
+                                            return (
+                                                <div className="gallery-items" key={idx}>
+                                                    <Link to={`/productList/${brand.name}`}><img className="weightImage" src={`http://localhost:5000/${brand.imagePath}`} /></Link>
+                                                </div>
+                                            )
+                                        }
+                                        else return null
+                                    })
                                     }
-                                    else return null
-                                })}
-
-                                {/* <div className="gallery-items">
-                                    <img src={require('../../img/gallery/gallery2.jpg')} />
+                                </div> :
+                                <div className="row">
+                                    {this.state.stateBrand.map((brand, idx) => {
+                                        if (idx < 5) {
+                                            return (
+                                                <div className="gallery-items" key={idx}>
+                                                    <Link to={`/productList/${brand.name}`}><img className="weightImage" src={`http://localhost:5000/${brand.imagePath}`} /></Link>
+                                                </div>
+                                            )
+                                        }
+                                        else return null
+                                    })
+                                    }
                                 </div>
-                                <div className="gallery-items">
-                                    <img src={require('../../img/gallery/gallery3.jpg')} />
-                                </div>
-                                <div className="gallery-items">
-                                    <img src={require('../../img/gallery/gallery4.jpg')} />
-                                </div>
-                                <div className="gallery-items">
-                                    <img src={require('../../img/gallery/gallery5.jpg')} />
-                                </div> */}
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>
-
-
             </main>
         );
     }
+
+}
+const mapStateToProps = (state, ownProps) => {
+    return {
+        products: state.products,
+        urlBackend: state.urlBackend,
+        sizeIsSelect: state.sizeIsSelect,
+        wishLists: state.wishLists,
+        nameBrandUrl: ownProps.match.params.brandName,
+        filterProduct: state.filterProduct,
+    }
+}
+//nếu muốn mua nhiều sản phẩm cùng lúc thì truyền số lượng vào
+const mapDispartToProps = (dispatch, props, ownProps) => {
+    return {
+        onLoadProductFromApi: (product) => {
+            dispatch(actOnloadProductFromApi(product));
+        },
+        onLoadBrandsFromApi: (brands) => {
+            dispatch(actLoadBrandsFromAPI(brands));
+        },
+        onLoadCategoriesFromApi: (categories) => {
+            dispatch(actLoadCategoriesFromAPI(categories));
+        },
+        onLoadGroupsFromApi: (groups) => {
+            dispatch(actLoadGroupsFromAPI(groups));
+        },
+        // onChangeMessage : (message) =>{
+        //     dispatch(actChangeMessage(message));
+        // }
+    }
 }
 
-export default Home;
+
+export default connect(mapStateToProps, mapDispartToProps)(Home);

@@ -11,18 +11,19 @@ class DefaultLayoutContainer extends Component {
         })
     }
     render() { 
-        var {user, onLoadProductFromApi} = this.props
+        var {user, onLoadProductFromApi, isOnUrl} = this.props
         return ( 
             <DefaultLayout
                 auth = {user.auth}
                 onLoadProductFromApi = {onLoadProductFromApi}
+                isOnUrl = {isOnUrl}
             />
          );
     }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
     return {
-        user : state.user
+        user : state.user,
     }
 }
 const mapDispartToProps = (dispatch, props) => {

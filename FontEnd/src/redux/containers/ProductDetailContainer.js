@@ -4,7 +4,17 @@ import ProductDetail from '../../pages/productDetail/productDetail';
 import { actAddToCart, actSelectSizeOnProduct, actOnloadProductFromApi, actSelectImageShowToProductDetail } from '../actions/index';
 class ProductDetailContainer extends Component {
     render() {
-        var { products, idOnUrl, addToCart, urlBackend, onProductIsSelect, onLoadProductFromApi, onSelectImageShowToProductDetail, imagePath } = this.props
+        var { 
+            products, 
+            idOnUrl, 
+            addToCart, 
+            urlBackend, 
+            onProductIsSelect, 
+            onLoadProductFromApi, 
+            onSelectImageShowToProductDetail, 
+            imagePath,
+            cart
+        } = this.props
         var index = this.findIdProOnState(idOnUrl);
         return (
             <ProductDetail
@@ -17,6 +27,7 @@ class ProductDetailContainer extends Component {
                 onLoadProductFromApi={onLoadProductFromApi}
                 onSelectImageShowToProductDetail ={onSelectImageShowToProductDetail}
                 imagePath = {imagePath.imagePathSelect}
+                cart = {cart}           //state redux giỏ hàng
             />
         );
     }
@@ -53,7 +64,8 @@ const mapStateToProps = (state, ownProps) => {
         // id: props.computedMatch.params.id,
         urlBackend: state.urlBackend,
         sizeIsSelect: state.sizeIsSelect,
-        imagePath : state.imagePath
+        imagePath : state.imagePath,
+        cart: state.cart,
     }
 }
 const mapDispartToProps = (dispatch, props) => {

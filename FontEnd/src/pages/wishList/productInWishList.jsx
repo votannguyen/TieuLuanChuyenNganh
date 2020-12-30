@@ -60,7 +60,7 @@ class ProductInWishList extends Component {
                                     </div>
                                 </div>
                                 <hr />
-                                <Link to={`/productdetail/${product.id}`}>
+                                <Link to={`/productdetail/${product.alias}`}>
                                     <p className="card-title hoverTitleProduct nameProduct">{product.name}</p>
                                 </Link>
                                 <p className="card-text descriptionProduct">{product.description}</p>

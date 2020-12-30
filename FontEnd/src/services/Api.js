@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 
 const url={
     baseUrl: "http://localhost:5000",
+    //baseUrl: "https://shop-shoe-backend.herokuapp.com/",
     login: "api/user/login",
     register: "api/user/signup",
     userInfo: "api/user/myaccount",

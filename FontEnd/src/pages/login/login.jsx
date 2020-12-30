@@ -93,7 +93,7 @@ class Login extends Component {
     render() {
         return (
             <div className="loginbackground">
-                <div class="slider-area ">
+                {/* <div class="slider-area ">
                     <div class="single-slider slider-height2 d-flex align-items-center data-background-login">
                         <div class="container">
                             <div class="row">
@@ -105,7 +105,7 @@ class Login extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <section class="login_part section_padding ">
                     <div class="container">
                         <div class="row align-items-center formRightbackground radiusFormLogin">

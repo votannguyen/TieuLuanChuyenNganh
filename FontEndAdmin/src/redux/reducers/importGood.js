@@ -17,11 +17,22 @@ const stateImportProductGood = (state = initialStateImportProductGood, action) =
     var { idProduct, product, idProductOnApi , productSize, indexProductSize } = action
     var indexCode = -1;
     var indexName = -1;
+    var indexCategory = -1;
     switch (action.type) {
         case Types.ADD_PRODUCT_TO_IMPORTS:
             indexCode = state.products.findIndex(x => x.product.productCode === product.productCode)
             indexName = state.products.findIndex(x => x.product.name === product.name)
+            indexCategory = state.products.findIndex(x=>x.product.groupId === product.groupId)
+            console.log(indexCategory)
             if (indexCode !== -1 || indexName !== -1) {
+                if(indexCategory!==-1){
+
+                }
+                else{
+                    state.products.push({
+                        product
+                    })
+                }
 
             }
             else {

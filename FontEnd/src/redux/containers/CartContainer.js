@@ -7,7 +7,7 @@ import CartResult from '../../pages/cartResult/cartResult';
 
 import * as Message from '../constants/Message';
 
-import { actChangeDiscountInCart, actChangeQuantityProductInCart, actDeleteProductInCart, actOnloadProductFromApi, actOnLoadPromotionInState, actOnLoadThisPage } from '../actions/index';
+import { actChangeDiscountInCart, actChangeQuantityProductInCart, actDeleteProductInCart, actOnloadProductFromApi, actOnLoadPromotionInState, actOnLoadThisPage, actSelectDiscountInCart } from '../actions/index';
 
 class CartContainer extends Component {
     state = {}
@@ -25,7 +25,7 @@ class CartContainer extends Component {
         );
     }
     showCartItem = (cart) => {
-        var { onDeleteProductInCart, onChangQuantityProductInCart, onChangeDiscountInCart, urlBackend } = this.props;
+        var { onDeleteProductInCart, onChangQuantityProductInCart, onChangeDiscountInCart, urlBackend, onSelectDiscountInCart } = this.props;
         var result = <tr>
             <td>
                 {Message.MSG_CART_EMPTY}
@@ -42,6 +42,7 @@ class CartContainer extends Component {
                         onDeleteProductInCart={onDeleteProductInCart}
                         onChangQuantityProductInCart={onChangQuantityProductInCart}
                         onChangeDiscountInCart={onChangeDiscountInCart}
+                        onSelectDiscountInCart ={onSelectDiscountInCart}
                         sizeName={this.findNameSize(item.product.id, item.idProductSize)}
                         idSizeProduct = {this.findIdSizeProduct(item.product.id, item.idProductSize)}
                     />
@@ -96,7 +97,7 @@ class CartContainer extends Component {
     }
     showTotalResult = (cart, discount) => {
         var result = null;
-        var { onChangeDiscountInCart } = this.props;
+        var { onChangeDiscountInCart, onSelectDiscountInCart } = this.props;
         if (cart.length > 0) {
             return (
                 <CartResult
@@ -105,6 +106,7 @@ class CartContainer extends Component {
                     onChangeDiscountInCart={onChangeDiscountInCart}
                     processTotal={this.processTotal(cart)}
                     showTotalAmount={this.showTotalAmount(cart)}
+                    onSelectDiscountInCart = {onSelectDiscountInCart}
                 />
             )
         }
@@ -173,6 +175,9 @@ const mapDispatchToProps = (dispatch, props) => {
         },
         onChangeDiscountInCart: (discount, inputDiscount, cart) => {
             dispatch(actChangeDiscountInCart(discount, inputDiscount, cart));
+        },
+        onSelectDiscountInCart: (discount, inputDiscount) =>{
+            dispatch(actSelectDiscountInCart(discount, inputDiscount));
         },
         onLoadThisPage: cart => {
             dispatch(actOnLoadThisPage(cart));

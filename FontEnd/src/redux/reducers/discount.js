@@ -1,4 +1,3 @@
-import PromotionService from '../../services/PromotionService';
 import * as Types from '../constants/ActionType';
 
 var discountPer=[
@@ -60,19 +59,23 @@ var discountPer=[
     },
 ]
 var discountCodes = {
-    promotion: []
+    promotion: [],
+    promotionIsSelect: ''
 }
 
 const discount = (state = discountCodes, action) => {
-    var { promotion } = action;
+    var { promotion, discount, inputDiscount } = action;
     switch(action.type){
         case Types.ON_LOAD_PROMOTION_ON_STATE:
             return{
                 ...state,
                 promotion : promotion
             }
-
-        
+        case Types.DISCOUNT_IS_SELECT_IN_CART:
+            return{
+                ...state,
+                promotionIsSelect: inputDiscount
+            }
         default : return{...state};
     }
 }

@@ -23,7 +23,7 @@ const routes =  [
   { path: "/cart", exact: true, name: "Cart", component: CartContainer },
   { path: "/checkout", exact: true, name: "Checkout", component: CheckoutContainer },
   { path: "/productDetail/:alias", exact: true , name: "Product Detail", component: ProductDetailContainer},
-  { name: "404", component: Page404 }
+  { name: "/404", component: Page404 }
 ];
 
 export default routes;

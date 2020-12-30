@@ -20,7 +20,7 @@ router.post(
 router.get('/:brandId', brandsControllers.getBrandById);
 router.delete('/:brandId', brandsControllers.deleteBrandById);
 router.patch(
-   '/:brandId/',
+   '/:brandId',
    fileUpload.single('imagePath'),
    [
       check('name').not().isEmpty()

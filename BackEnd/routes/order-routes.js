@@ -8,7 +8,9 @@ const router = express.Router();
 
 
 router.get('/',ordersControllers.getAllOrder);
-
+router.post('/paypal/pay',ordersControllers.payment);
+router.get('/paypal/success',ordersControllers.success);
+router.get('/paypal/cancel',ordersControllers.cancel);
 // router.get('/:orderId',ordersControllers.getOrderByProductId)
 router.use(isAuth);
 router.post(
@@ -27,6 +29,7 @@ router.post(
     ordersControllers.addOrderDetail
 )
 router.patch('/returnOrderDetail/:detailId',ordersControllers.returnDetail)
+router.get('/myOrder',ordersControllers.getOrderByUserID)
 
 router.use(isAdmin);
 

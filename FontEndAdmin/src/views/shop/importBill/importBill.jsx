@@ -101,7 +101,7 @@ class ImportBill extends Component {
                                     <CCol>
                                         <CCard>
                                             <CCardHeader>
-                                                <p className="fontSizeNameTable">Hóa đơn nhập hàng</p>
+                                                <p className="fontSizeNameTable">Hóa đơn bán</p>
                                                 <p className="fontSizeNameTable">({this.state.stateImportOnModal.importCode})</p>
                                             </CCardHeader>
                                             <CCardBody>

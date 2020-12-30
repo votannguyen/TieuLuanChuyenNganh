@@ -7,7 +7,7 @@ paypal.configure({
     client_secret: PAYPAL_CLIENT_SECRET
 });
 
-const create_payment = (items, total, orderId) => {
+const create_payment = (items, total) => {
     return create_payment_json = {
         "intent": "sale",
         "payer": {
@@ -25,7 +25,7 @@ const create_payment = (items, total, orderId) => {
                 "currency": "USD",
                 "total": total.toString()
             },
-            "description": orderId
+            "description": "Thanks for your payment"
         }]
     
     }

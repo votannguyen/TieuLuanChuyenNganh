@@ -43,7 +43,6 @@ const getAllProduct = async (req, res, next) => {
         console.log(products)
     } catch (err) {
         const error = new HttpError('Something went wrong, coud not find any product', 500);
-        
         return next(error);
     }
 

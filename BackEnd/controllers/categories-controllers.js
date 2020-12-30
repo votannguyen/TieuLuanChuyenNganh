@@ -72,7 +72,7 @@ const createCategory = async (req, res, next) => {
     {
         const createdCategory = {
             name: req.body.name,
-            description: req.body.description,
+            summary: req.body.summary,
             groupId: req.body.groupId,
             alias: getAlias(req.body.name)
           };

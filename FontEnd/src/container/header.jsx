@@ -19,8 +19,9 @@ class Header extends Component {
         this.props.onUserLogout();
         this.loadData();
     }
-    componentDidMount () {
+    componentDidMount() {
         this.loadData();
+        console.log(window.location.pathname)
     }
     loadData = () => {
         UserService.getUser().then((res) => {
@@ -36,19 +37,23 @@ class Header extends Component {
         }
         return result;
     }
-    search = () =>{
+    search = () => {
+        var { onSearchByKey, products } = this.props
+        // onSearchByKey(value, products);
 
     }
-    InputOnChange = (event) => {
-        const { name, value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
+    inputOnChange = (event) => {
+        const { value } = event.target; // đặt biến để phân rã các thuộc tính trong iout ra
+        console.log(value)
+        var { products } = this.props
+        this.props.onSearchByKey(value, products);
 
-        const newBrand = { ...this.state.brand, [name]: value } // ... là clone tat ca thuoc tinh cua major có qua thuộc tính mới, [name] lấy cái name đè lên name của tồn tại nếu k có thì thành 1 cái field mới
-        this.setState({ brand: newBrand });
     }
     render() {
         var { cart, countInWishList } = this.props;
         return (
-            <div onLoad={this.loadData}>
+
+            < div onLoad={this.loadData} >
                 {/* <div id="preloader-active">
                     <div className="preloader d-flex align-items-center justify-content-center">
                         <div className="preloader-inner position-relative">
@@ -59,7 +64,7 @@ class Header extends Component {
                         </div>
                     </div>
                 </div> */}
-                <header>
+                <header header >
                     <div className="header-area">
                         <div className="main-header ">
                             <div className="header-top top-bg d-none d-lg-block">
@@ -70,18 +75,18 @@ class Header extends Component {
                                                 <div className="flag">
                                                     <img src={require('../img/ShopShoeOnline/Flag_of_Vietnam.png')} />
                                                 </div>
-        
+
                                                 <ul className="contact-now">
                                                     <li>+777 2345 7886</li>
                                                 </ul>
                                             </div>
                                             <div className="header-info-right ">
                                                 <ul>
-                                                    {Cookies.get("loginInfo")  ?
+                                                    {Cookies.get("loginInfo") ?
                                                         <li className="aBac"><Link to="/profile">Tài Khoản Của Tôi</Link></li>
                                                         : null
                                                     }
-                                                    {Cookies.get("loginInfo")  ?
+                                                    {Cookies.get("loginInfo") ?
                                                         <li><Link to="/wishlist">Sản Phẩm Yêu Thích</Link></li>
                                                         : null
                                                     }
@@ -102,7 +107,7 @@ class Header extends Component {
                                     </button>
                                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                         <ul class="navbar-nav mr-auto">
-                                            {Cookies.get("loginInfo")  ?
+                                            {Cookies.get("loginInfo") ?
                                                 <li class="nav-item dropdown">
                                                     <a class="nav-link dropdown-toggle nameProfile" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <img className="btnUser" src={require('../img/Shoe/avatar.jpg')}></img>{this.state.user.fullName}
@@ -176,12 +181,13 @@ class Header extends Component {
                                     </div>
                                 </nav>
                             </div>
-                            <div className="header-bottom header-sticky">
+                            {/* <div className="header-bottom header-sticky"> */}
+                            <div className="header-bottom">
                                 <div className="container-fluid">
                                     <div className="row align-items-center">
                                         <div className="col-xl-1 col-lg-1 col-md-1 col-sm-3">
                                             <div className="logo img">
-                                                <Link className="nav-link" to='/home' ><img src={require('../img/logo/LogoShop11.png')} /></Link>
+                                                <Link className="nav-link" to='/home'><img src={require('../img/logo/LogoShop11.png')} /></Link>
                                             </div>
                                         </div>
                                         <div className="col-xl-6 col-lg-8 col-md-8 col-sm-5">
@@ -224,9 +230,9 @@ class Header extends Component {
                                         <div className="col-xl-5 col-lg-3 col-md-3 col-sm-3 fix-card">
                                             <ul className="header-right f-right d-none d-lg-block d-flex justify-content-between">
                                                 <li className="d-none d-xl-block searchRight">
-                                                    <div className="form-box f-right ">
-                                                        <input type="text" name="Search" placeholder="Tìm kiếm....." onChange={this.inputOnChange} />
-                                                        <div className="search-icon" onClick={()=>this.search()}>
+                                                    <div className="form-box f-right" >
+                                                        <input type="text" onChange={this.inputOnChange} name="Search" placeholder="Tìm kiếm.....aaa" />
+                                                        <div className="search-icon" onClick={() => this.search()}>
                                                             <i className="fas fa-search special-tag"></i>
                                                         </div>
                                                     </div>
@@ -235,10 +241,10 @@ class Header extends Component {
                                                     <div className="marginQuantity">
                                                         <div className="row">
                                                             <div className="col-6">
-                                                        <div className="quantityFavorit">{countInWishList}</div>
+                                                                <div className="quantityFavorit">{countInWishList}</div>
                                                             </div>
                                                             <div className="col-6">
-                                                        <div className="quantityCart">{this.resultProductInCart(cart)}</div>
+                                                                <div className="quantityCart">{this.resultProductInCart(cart)}</div>
                                                             </div>
                                                         </div>
                                                     </div> :
@@ -252,11 +258,19 @@ class Header extends Component {
                                                         </div>
                                                     </li> : null
                                                 }
-                                                <li>
+                                                {Cookies.get("loginInfo") ?
+                                                    <li>
+                                                        <div className="shopping-card">
+                                                            <Link to="/cart"><i className="fas fa-shopping-cart"></i></Link>
+                                                        </div>
+                                                    </li>:
+                                                    <li>
                                                     <div className="shopping-card">
                                                         <Link to="/cart"><i className="fas fa-shopping-cart"></i></Link>
                                                     </div>
                                                 </li>
+                                                }
+
 
                                                 {Cookies.get("loginInfo") ?
                                                     <div className="none-mobile">
@@ -282,8 +296,11 @@ class Header extends Component {
                         </div>
                     </div>
                 </header >
-            </div>
+                <a id="scrollUp" href="#top" className="popop"><i class="fas fa-arrow-up"></i></a>
+            </div >
+
         );
+
     }
 }
 export default Header;

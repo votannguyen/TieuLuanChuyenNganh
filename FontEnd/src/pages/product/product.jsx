@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-import '../productList/productList.css';
-import './product.css';
 import Cookies from "js-cookie";
 import {
   Form,
 } from "react-bootstrap";
-
+import '../productList/productList.css';
+import './product.css';
 class Product extends Component {
   state = {}
 
@@ -60,7 +59,7 @@ class Product extends Component {
     var productSize = JSON.parse(value);
     console.log(productSize)
     if (value !== null) {
-      this.selectSize(productSize, productSize.id)
+      this.selectSize(productSize, productSize.productId)
     }
 
   }
@@ -163,12 +162,12 @@ class Product extends Component {
               </div>
               <hr />
               <Link to={`/productdetail/${product.alias}`}>
-                <p className="card-title hoverTitleProduct nameProduct">{product.name}</p>
+                <div className="card-title hoverTitleProduct nameProduct">{product.name}</div>
               </Link>
-              <p className="card-text descriptionProduct">{product.description}</p>
+              {/* <p className="card-text descriptionProduct">{product.description}</p> */}
               {product.promotion === null ?
-                <p className="mt-3 p pFontSize">{formatter.format(parseFloat(product.sellPrice))}</p> :
-                <p className="mt-3 p pFontSize">{formatter.format(parseFloat(product.sellPrice) - parseFloat(product.promotion))}</p>
+                <div className="mt-3 p pFontSize">{formatter.format(parseFloat(product.sellPrice))}</div> :
+                <div className="mt-3 p pFontSize">{formatter.format(parseFloat(product.sellPrice) - parseFloat(product.promotion))}</div>
               }
               <div className="row">
                 <div className="col-4">

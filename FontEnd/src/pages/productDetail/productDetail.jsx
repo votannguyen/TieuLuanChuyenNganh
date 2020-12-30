@@ -19,7 +19,7 @@ class ProductDetail extends Component {
         listImgThumbnail: [],
         realTime: '',
         showModalViewImage: false,
-        descriptionText : []
+        descriptionText: []
     };
     plusQuantity = () => {
         if (this.state.quantity < 20) {
@@ -48,13 +48,18 @@ class ProductDetail extends Component {
 
     }
     componentDidMount() {
-        window.scrollTo(0, 0)
-        ProductService.listProduct().then(res => {
-            this.props.onLoadProductFromApi(res.data.products)
-        })
-        ProductService.getImageByProductId(this.props.idProduct).then(res => {
+        window.scrollTo(0, 0);
+        this.loadThumbnailImage();
+        this.loadProduct();
+    }
+    async loadThumbnailImage() {
+        await ProductService.getImageByProductId(this.props.idProduct).then(res => {
             this.setState({ listImgThumbnail: res.data.productImage })
-            this.setState({ realTime: '' })
+        })
+    }
+    async loadProduct() {
+        await ProductService.getImageByProductId(this.props.idProduct).then(res => {
+            this.setState({ listImgThumbnail: res.data.productImage })
         })
     }
     setShowModalViewImage = (id) => {
@@ -64,7 +69,7 @@ class ProductDetail extends Component {
     setCloseModalViewImage = () => {
         this.setState({ showModalViewImage: false })
     }
-    selectImageShow = (imagePath) =>{
+    selectImageShow = (imagePath) => {
         this.props.onSelectImageShowToProductDetail(imagePath);
     }
     render() {
@@ -95,17 +100,25 @@ class ProductDetail extends Component {
                             <div className="">
                                 <div className="row">
                                     <div className="col-lg-2 colmaginProDe backGroundContainerMain marginContainerLeft ">
+                                        <div className="thumbnailImgProductDetail colmaginThumbail" >
+                                            <img
+                                                class="card-img-top boderimg_Pro cursorThumbnailImage"
+                                                src={`${urlBackend}${product.imagePath}`}
+                                                onClick={() => this.selectImageShow(product.imagePath)}
+                                            />
+                                        </div>
                                         {this.state.listImgThumbnail.map((listImgThumbnail, idx) => {
-                                            if (idx < 4) {
+                                            if (idx < 3) {
                                                 return (
-                                                    <div className="thumbnailImgProductDetail colmaginThumbail" key={idx}>
-                                                        <img 
-                                                            id="" 
-                                                            class="card-img-top boderimg_Pro cursorThumbnailImage" 
-                                                            src={`${urlBackend}${listImgThumbnail.imagePath}`} 
-                                                            onClick={()=>this.selectImageShow(listImgThumbnail.imagePath)}
-                                                            />
+                                                    <div className="thumbnailImgProductDetail colmaginThumbail" >
+                                                        <img key={idx}
+                                                            id=""
+                                                            class="card-img-top boderimg_Pro cursorThumbnailImage"
+                                                            src={`${urlBackend}${listImgThumbnail.imagePath}`}
+                                                            onClick={() => this.selectImageShow(listImgThumbnail.imagePath)}
+                                                        />
                                                     </div>
+
                                                 )
                                             }
                                             else { return (<div></div>) }
@@ -199,35 +212,35 @@ class ProductDetail extends Component {
                                     </div>
                                     <div className="col-lg-10">
                                         <div className="container containerRectangleVertical img-zoom-container marginContainerLeft" onMouseMove={this.hideContainer}>
-                                            {this.props.imagePath === ''?
-                                            <ReactImageMagnify {...{
-                                                smallImage: {
-                                                    // alt: 'Wristwatch by Ted Baker London',
-                                                    isFluidWidth: true,
-                                                    src: `${urlBackend}${product.imagePath}`,
-                                                },
-                                                largeImage: {
-                                                    src: `${urlBackend}${product.imagePath}`,
-                                                    width: 1000,
-                                                    height: 1000,
-                                                    enlargedImageClassName: 'backGroundZoomImg'
+                                            {this.props.imagePath === '' ?
+                                                <ReactImageMagnify {...{
+                                                    smallImage: {
+                                                        // alt: 'Wristwatch by Ted Baker London',
+                                                        isFluidWidth: true,
+                                                        src: `${urlBackend}${product.imagePath}`,
+                                                    },
+                                                    largeImage: {
+                                                        src: `${urlBackend}${product.imagePath}`,
+                                                        width: 1000,
+                                                        height: 1000,
+                                                        enlargedImageClassName: 'backGroundZoomImg'
 
-                                                }
-                                            }} />:
-                                            <ReactImageMagnify {...{
-                                                smallImage: {
-                                                    // alt: 'Wristwatch by Ted Baker London',
-                                                    isFluidWidth: true,
-                                                    src: `${urlBackend}${this.props.imagePath}`,
-                                                },
-                                                largeImage: {
-                                                    src: `${urlBackend}${this.props.imagePath}`,
-                                                    width: 1000,
-                                                    height: 1000,
-                                                    enlargedImageClassName: 'backGroundZoomImg'
+                                                    }
+                                                }} /> :
+                                                <ReactImageMagnify {...{
+                                                    smallImage: {
+                                                        // alt: 'Wristwatch by Ted Baker London',
+                                                        isFluidWidth: true,
+                                                        src: `${urlBackend}${this.props.imagePath}`,
+                                                    },
+                                                    largeImage: {
+                                                        src: `${urlBackend}${this.props.imagePath}`,
+                                                        width: 1000,
+                                                        height: 1000,
+                                                        enlargedImageClassName: 'backGroundZoomImg'
 
-                                                }
-                                            }} />
+                                                    }
+                                                }} />
 
                                             }
                                             {/* <img class="card-img-top boderimg_Pro" id={this.state.imgID} src={(require('../../img/Shoe/vans.png'))} /> */}
@@ -280,10 +293,10 @@ class ProductDetail extends Component {
                                         <div className="infoBeforePromotion">{formatter.format(parseFloat(product.sellPrice))}</div>
                                         <div className="percentPromotion">
                                             {/* hàm làm tròn số */}
-                                            -{Math.round((100 - (parseFloat(parseFloat(product.sellPrice) - parseFloat(product.promotion))/parseFloat(product.sellPrice))*100) * 100) / 100}%
+                                            -{Math.round((100 - (parseFloat(parseFloat(product.sellPrice) - parseFloat(product.promotion)) / parseFloat(product.sellPrice)) * 100) * 100) / 100}%
                                         </div>
                                     </div>
-                                    
+
                                 }
                             </div>
 
@@ -295,16 +308,31 @@ class ProductDetail extends Component {
                             </p>
                             <p>kích thước:
                             {product.ProductSizes.sort((a, b) => a.Size.sizeName - b.Size.sizeName).map((productSize, idx) => {
-                                if (sizeIsSelect !== undefined) {
-                                    if (sizeIsSelect.productSize.id === productSize.id) {
-                                        return (
-                                            <div
-                                                className="sizeShoe pInline sizeShoeSelect"
-                                                onClick={() => this.selectSize(productSize, productSize.productId)}
-                                            >
-                                                {productSize.Size.sizeName}
-                                            </div>
-                                        )
+                                if (productSize.productCount > 0) {
+
+
+                                    if (sizeIsSelect !== undefined) {
+                                        if (sizeIsSelect.productSize.id === productSize.id) {
+                                            return (
+                                                <div
+                                                    className="sizeShoe pInline sizeShoeSelect"
+                                                    onClick={() => this.selectSize(productSize, productSize.productId)}
+                                                >
+                                                    {productSize.Size.sizeName}
+                                                </div>
+                                            )
+                                        }
+                                        else {
+                                            return (
+                                                <div
+                                                    className="sizeShoe pInline"
+                                                    onClick={() => this.selectSize(productSize, productSize.productId)}
+                                                >
+                                                    {productSize.Size.sizeName}
+                                                </div>
+                                            )
+
+                                        }
                                     }
                                     else {
                                         return (
@@ -315,18 +343,7 @@ class ProductDetail extends Component {
                                                 {productSize.Size.sizeName}
                                             </div>
                                         )
-
                                     }
-                                }
-                                else {
-                                    return (
-                                        <div
-                                            className="sizeShoe pInline"
-                                            onClick={() => this.selectSize(productSize, productSize.productId)}
-                                        >
-                                            {productSize.Size.sizeName}
-                                        </div>
-                                    )
                                 }
                             })}
                                 {/* <div className="sizeShoe pInline">40</div>
@@ -366,9 +383,9 @@ class ProductDetail extends Component {
                 <div className="container ">
                     <p className="pDicription">Mô tả sản phẩm</p>
                 </div>
-                <div className="container paddingTopAndBottomContainerMain backGroundContainerMain descriptionProduct">
-                <pre>{product.description}</pre>
-                    
+                <div className="container paddingTopAndBottomContainerMain backGroundContainerMain descriptionProductDetail">
+                    <pre>{product.description}</pre>
+
                 </div>
             </div>
         );
@@ -378,15 +395,50 @@ class ProductDetail extends Component {
         this.props.onProductIsSelect(sizeProduct, idProduct);
     }
     addToCart = (product, quantity) => {
+        var { addToCart, sizeIsSelect, cart } = this.props;
 
-        var { addToCart } = this.props;
 
-        if (this.props.sizeIsSelect === undefined) {
+        if (sizeIsSelect === undefined) {
             alert("Vui lòng chọn size cho sản phẩm")
         }
         else {
-            addToCart(product, quantity, this.props.sizeIsSelect.productSize.id)
+            console.log(sizeIsSelect);
+            console.log(this.findIdProAndIdSize(product.id, sizeIsSelect.productSize.id))
+            if (this.findIdProAndIdSize(product.id, sizeIsSelect.productSize.id) === -1) {
+                if (sizeIsSelect.productSize.productCount >= quantity) {
+                    addToCart(product, quantity, sizeIsSelect.productSize.id)
+                }
+                else {
+                    alert('Số lượng bạn chọn vượt quá số lượng trong kho');
+                }
+            }
+            else {
+                console.log(cart)
+                var i = this.findIdProAndIdSize(product.id, sizeIsSelect.productSize.id)
+                if (sizeIsSelect.productSize.productCount >= parseFloat(quantity) + parseFloat(cart[i].quantity)) {
+                    addToCart(product, quantity, sizeIsSelect.productSize.id)
+                }
+                else {
+                    alert('Số lượng bạn chọn vượt quá số lượng trong kho');
+                }
+            }
         }
+
+    }
+    findIdProAndIdSize = (idPro, idSize) => {
+        var { cart } = this.props
+        if (cart.length > 0) {
+            for (var i = 0; i < cart.length; i++) {
+                if (cart[i].product.id === idPro && cart[i].idProductSize === idSize) {
+                    return i;
+                }
+            }
+        }
+        else {
+            return -1;
+        }
+        return -1;
+
     }
 }
 
