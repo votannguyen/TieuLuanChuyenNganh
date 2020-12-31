@@ -5,7 +5,7 @@ const User = models.User;
 const brcypt = require('bcryptjs');
 const { validationResult } = require('express-validator'); //lấy dc lỗi từ body validate
 
-const {JWT_SECRET, GMAIL_USER, GMAIL_PASS} = require('../config')
+const {JWT_SECRET, GMAIL_USER, GMAIL_PASS,PORT} = require('../config')
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const {getToken} = require('../middleware/check-auth');
@@ -120,7 +120,7 @@ const register = async(req, res, next) =>{
         const error = new HttpError('Signing up failed, please try again later.',500);
          return next(error)
     }
-    const url = `http://localhost:5000/api/user/confirmation/${token}`;
+    const url = `${PORT}/api/user/confirmation/${token}`;
     transporter.sendMail({
         to: createdUser.email,
         subject: 'Confirm Email',
@@ -252,16 +252,15 @@ const loginGoogle = async(req, res, next) => {
 }
 const loginFacebook = async (req, res, next) =>{
     let existingUser;
-    console.log(userProfile._json)
     existingUser = await User.findOne({
-        where: { email: userProfile._json.id }
+        where: { email: userProfile._json.email }
     });
     if (!existingUser) {
         const createdUser = {
-            facebookId: userProfile._json.id,
+            googleId: userProfile._json.sub,
             fullName: userProfile._json.name,
-            email: userProfile._json.id,
-            authType: 3,
+            email: userProfile._json.email,
+            authType: 2,
             isAdmin: false,
             isConfirm: true,
             isLock: false,
@@ -481,6 +480,5 @@ const lockUser = async(req, res, next) => {
     }
     res.status(200).json({message: 'Update success'});
 }
-
 
 module.exports = {getUser, getMyUser,  register, login, getConfirmation, updateMyUser, getUserById, lockUser, loginGoogle, loginFacebook};

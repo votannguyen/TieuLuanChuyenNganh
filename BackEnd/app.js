@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 const passportConfig = require('./middleware/passport');
+const {PORT} = require('./config')
 
 const brandRoutes  = require('./routes/brand-routes'); 
 const userRoutes  = require('./routes/user-routes');
@@ -17,7 +18,6 @@ const sizeRoutes = require('./routes/size-routes');
 const orderRoutes = require('./routes/order-routes');
 const promotionRoutes = require('./routes/promotion-routes');
 const importRoutes = require('./routes/import-routes');
-const {createProxyMiddleware} = require('http-proxy-middleware');
 const HttpError = require('./error-handle/http-error');
 const app = express();
 
@@ -73,7 +73,7 @@ app.use((error, req, res, next) => {
     res.json({message: error.message || 'An unknown error occurred'});
 })
 //Start server
-app.listen(process.env.PORT || 5000); 
+app.listen(PORT); 
 
 
 

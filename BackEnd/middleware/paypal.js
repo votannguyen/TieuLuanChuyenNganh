@@ -1,5 +1,5 @@
 const paypal = require('paypal-rest-sdk');
-const {PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET} = require('../config')
+const {PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PORT} = require('../config')
 
 paypal.configure({
     mode: 'sandbox', 
@@ -14,8 +14,8 @@ const create_payment = (items, total) => {
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "http://localhost:5000/api/order/paypal/success",
-            "cancel_url": "http://localhost:5000/api/order/paypal/cancel"
+            "return_url": `${PORT}/api/order/paypal/success`,
+            "cancel_url": `${PORT}/api/order/paypal/cancel`
         },
         "transactions": [{
             "item_list": {
@@ -25,7 +25,7 @@ const create_payment = (items, total) => {
                 "currency": "USD",
                 "total": total.toString()
             },
-            "description": "Thanks for your payment"
+            "description": "Thanks for your shopping"
         }]
     
     }
